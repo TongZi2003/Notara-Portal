@@ -6,10 +6,10 @@ import { createHash } from 'node:crypto';
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 
-export const OPEN_LABS_FEED_URL = 'https://learn.oh-my-student.com/feeds/open-labs/catalog.json';
-export const HS_PHYSICS_FEED_URL = 'https://learn.oh-my-student.com/feeds/hs-physics/catalog.json';
-export const HS_MATH_FEED_URL = 'https://learn.oh-my-student.com/feeds/hs-math/catalog.json';
-export const UNI_MATH_FEED_URL = 'https://learn.oh-my-student.com/feeds/uni-math/catalog.json';
+export const OPEN_LABS_FEED_URL = 'https://packs.oh-my-student.com/public/feeds/open-labs/catalog.json';
+export const HS_PHYSICS_FEED_URL = 'https://packs.oh-my-student.com/public/feeds/hs-physics/catalog.json';
+export const HS_MATH_FEED_URL = 'https://packs.oh-my-student.com/public/feeds/hs-math/catalog.json';
+export const UNI_MATH_FEED_URL = 'https://packs.oh-my-student.com/public/feeds/uni-math/catalog.json';
 
 export const OPEN_LABS_PACK_DEFS = Object.freeze([
   Object.freeze({
