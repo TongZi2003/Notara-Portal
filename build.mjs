@@ -687,7 +687,7 @@ function renderCodeVideoPage(catalogItems = []) {
           title="${esc(def.title)}"
           sandbox="allow-scripts"
           style="display:block;width:100%;height:${Number(def.demoHeight) || 472}px;border:0;background:#f6f1e6;"
-          loading="${idx === 0 ? 'eager' : 'lazy'}"
+          loading="eager"
         ></iframe>
       </div>
     </section>`;
