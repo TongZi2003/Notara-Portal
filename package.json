@@ -1,0 +1,15 @@
+{
+  "name": "notara-portal",
+  "private": true,
+  "type": "module",
+  "description": "Standalone static portal website for oh-my-student.com & learn.oh-my-student.com (Alibaba Cloud ESA Pages).",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "katex": "0.16.47"
+  }
+}

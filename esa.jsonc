@@ -1,0 +1,10 @@
+// Alibaba Cloud ESA Pages build for oh-my-student.com & learn.oh-my-student.com.
+// Leave the ESA Pages 根目录 at the default `/`.
+{
+  "installCommand": "npm ci --no-audit --no-fund",
+  "buildCommand": "npm run build",
+  "assets": {
+    "directory": "./dist",
+    "notFoundStrategy": "404Page"
+  }
+}
