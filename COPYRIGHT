@@ -1,0 +1,11 @@
+Copyright (c) 2026 Notara. All rights reserved.
+
+This repository hosts the public static website for oh-my-student.com and
+learn.oh-my-student.com. Unless explicitly stated otherwise, original website
+copy, stylesheets, layout code, and artwork are not licensed for redistribution
+or derivative commercial use.
+
+Third-party notices:
+- LXGW WenKai (vendor-assets/fonts/wenkai.woff2): SIL Open Font License 1.1
+  (see vendor-assets/fonts/wenkai-license.txt).
+- KaTeX (installed via npm during build): MIT License.
