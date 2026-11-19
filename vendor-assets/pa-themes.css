@@ -7531,7 +7531,7 @@ body[data-ds-dark-theme] .nv-block-graph {
 }
 
 .nv-sandbox-html-card:not(.nv-sandbox-in-canvas):not(.nv-sandbox-html-full) .nv-sandbox-html-body {
-  padding: 6px 8px 8px;
+  padding: 0;
   background: var(--pa-bg-surface);
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
