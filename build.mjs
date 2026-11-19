@@ -681,12 +681,12 @@ function renderCodeVideoPage(catalogItems = []) {
           <a href="/feeds/open-labs/bundles/${esc(def.id)}.notara-pack.json" style="color:var(--accent);text-decoration:underline;">查看真实 .notara-pack.json ↗</a>
         </div>
       </div>
-      <div style="border:1px solid var(--rule-strong);border-radius:14px;overflow:hidden;background:#fdfbf7;box-shadow:0 12px 32px rgba(44,39,34,0.06);">
+      <div style="border:1px solid rgba(92,76,58,0.22);border-radius:8px;overflow:hidden;background:#f6f1e6;box-shadow:0 8px 26px rgba(44,39,34,0.06);">
         <iframe
           src="/code-video/demos/${esc(def.demoSlug)}.html"
           title="${esc(def.title)}"
           sandbox="allow-scripts"
-          style="display:block;width:100%;height:${Number(def.demoHeight) || 610}px;border:0;background:#fdfbf7;"
+          style="display:block;width:100%;height:${Number(def.demoHeight) || 472}px;border:0;background:#f6f1e6;"
           loading="${idx === 0 ? 'eager' : 'lazy'}"
         ></iframe>
       </div>
@@ -699,7 +699,7 @@ function renderCodeVideoPage(catalogItems = []) {
         <p class="section-rubric">L1 真实公开连接器源 · 交互式代码视频</p>
         <h1>随时按下暂停就能改参数的<span class="nowrap"> 20 KB 矢量代码微课。</span></h1>
         <p>
-          下面两套开放微课包已直接打包为标准 <code>.notara-pack.json</code> 并挂载至公网开放连接器源。你可以在网页里直接点击播放、拖动时间轴、随时暂停伸手改参数；也可以把下方 <code>catalog.json</code> 地址贴进 Notara 桌面端「私人书房 → 连接器」，一键免登录订阅并无损合入你的本地学习集。
+          下面三套开放微课包已直接打包为标准 <code>.notara-pack.json</code> 并挂载至公网开放连接器源。你可以在网页里直接点击播放、拖动时间轴、随时暂停伸手改参数；也可以把下方 <code>catalog.json</code> 地址贴进 Notara 桌面端「私人书房 → 连接器」，一键免登录订阅并无损合入你的本地学习集。
         </p>
         <div style="margin-top:18px;padding:12px 16px;border-radius:10px;border:1px solid var(--rule-strong);background:var(--paper-sheet);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
           <div style="min-width:0;font-size:13px;">

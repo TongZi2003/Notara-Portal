@@ -3140,6 +3140,14 @@ body[data-ds-dark-theme] .nv-block-graph {
   border-style: dashed;
 }
 
+.pa-widget-sync-pill,
+.pa-widget-state-chip {
+  background: var(--pa-bg-subtle);
+  border-style: dashed;
+  border-color: var(--pa-border-strong);
+  color: var(--pa-ink-secondary);
+}
+
 .pa-relay-receipt {
   display: inline-flex;
   align-items: center;

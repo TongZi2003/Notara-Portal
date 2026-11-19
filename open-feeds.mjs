@@ -40,7 +40,7 @@ export const OPEN_LABS_PACK_DEFS = Object.freeze([
     requiresAccount: false,
     demoHtmlRelPath: '可视化/磁场动态圆应试代码视频.html',
     demoSlug: 'magnetic-dynamic-circle',
-    demoHeight: 685,
+    demoHeight: 472,
     changelog: [
       {
         version: '1.0.0',

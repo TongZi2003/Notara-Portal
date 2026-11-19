@@ -1,444 +1,423 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>应试代码微课 · 高考物理有界磁场动态圆临界实战</title>
+<title>有界磁场动态圆 · 应试代码微课</title>
 <style>
-  :root {
-    --cv-bg: var(--pa-bg-surface, #fdfbf7);
-    --cv-subtle: var(--pa-bg-subtle, #f7f3ea);
-    --cv-muted: var(--pa-bg-muted, #f0ebe0);
-    --cv-ink: var(--pa-ink, #2c2722);
-    --cv-ink-2: var(--pa-ink-secondary, #6c6358);
-    --cv-ink-3: var(--pa-ink-muted, #968c80);
-    --cv-border: var(--pa-border, rgba(82, 72, 60, 0.14));
-    --cv-border-strong: var(--pa-border-strong, rgba(82, 72, 60, 0.24));
-    --cv-accent: var(--pa-accent, #7d5c46);
-    --cv-red: #b43e2a;
-    --cv-red-soft: rgba(180, 62, 42, 0.11);
-    --cv-indigo: #3f536e;
-    --cv-indigo-soft: rgba(63, 83, 110, 0.11);
-    --cv-font: var(--pa-font-sans, "PingFang SC", "Noto Serif SC", Georgia, serif);
-    --cv-mono: var(--pa-font-mono, "SF Mono", ui-monospace, monospace);
-  }
-  * { box-sizing: border-box; }
-  body {
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
     margin: 0;
-    padding: 12px 14px 16px;
-    background: var(--cv-bg);
-    color: var(--cv-ink);
-    font-family: var(--cv-font);
-    font-size: 13px;
-    line-height: 1.52;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
-  .cv-shell {
-    max-width: 920px;
-    margin: 0 auto;
-    border: 1px solid var(--cv-border-strong);
-    border-radius: 12px;
-    background: var(--cv-bg);
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
     overflow: hidden;
   }
-  .cv-head {
+  .sheet-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap;
-    padding: 9px 14px;
-    background: var(--cv-subtle);
-    border-bottom: 1px solid var(--cv-border);
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
   }
-  .cv-title-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .cv-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 8px;
-    border-radius: 999px;
-    font-size: 11px;
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
     font-weight: 600;
-    background: var(--cv-red-soft);
-    color: var(--cv-red);
   }
-  .cv-badge--mode {
-    background: var(--cv-indigo-soft);
-    color: var(--cv-indigo);
-  }
-  .cv-title { margin: 0; font-size: 14px; font-weight: 600; color: var(--cv-ink); }
-  .cv-meta { font-size: 11.5px; color: var(--cv-ink-3); font-family: var(--cv-mono); }
 
-  .cv-prompt-strip {
-    padding: 7px 14px;
-    background: #f5efe4;
-    border-bottom: 1px solid var(--cv-border);
-    font-size: 12px;
-    color: var(--cv-ink-2);
-  }
-  .cv-prompt-strip strong { color: var(--cv-ink); }
-
-  .cv-main-grid {
+  .sheet-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.38fr) minmax(248px, 0.85fr);
-    border-bottom: 1px solid var(--cv-border);
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
   }
-  .cv-canvas-pane {
-    position: relative;
-    background: #fcfaf4;
-    border-right: 1px solid var(--cv-border);
-    min-height: 332px;
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   canvas {
     display: block;
     width: 100%;
-    height: 332px;
+    height: 300px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
   }
 
-  /* Exam Red-Pen Bet Checkpoint Overlay */
-  .cv-bet-overlay {
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    padding: 11px 13px;
-    border-radius: 10px;
-    background: rgba(253, 251, 247, 0.97);
-    border: 1.5px solid var(--cv-red);
-    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
-  }
-  .cv-bet-overlay[hidden] { display: none; }
-  .cv-bet-head {
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 6px;
   }
-  .cv-bet-tag {
-    font-size: 11px;
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
     font-weight: 700;
-    color: var(--cv-red);
-    letter-spacing: 0.04em;
+    color: #2b251f;
   }
-  .cv-bet-q {
-    margin: 0 0 8px;
-    font-size: 12.5px;
-    color: var(--cv-ink);
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
     font-weight: 600;
   }
-  .cv-bet-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 7px;
-  }
-  .cv-bet-btn {
-    text-align: left;
-    border: 1px solid var(--cv-border-strong);
-    background: var(--cv-subtle);
-    color: var(--cv-ink);
-    border-radius: 7px;
-    padding: 6px 9px;
-    font-size: 11.5px;
-    line-height: 1.4;
-    cursor: pointer;
-  }
-  .cv-bet-btn:hover { border-color: var(--cv-accent); background: #f2eadf; }
-  .cv-bet-feedback {
-    margin-top: 7px;
-    padding: 6px 9px;
-    border-radius: 7px;
-    font-size: 11.5px;
-    line-height: 1.45;
-  }
-  .cv-bet-feedback[hidden] { display: none; }
-  .cv-bet-feedback--wrong { background: var(--cv-red-soft); color: var(--cv-red); border: 1px solid rgba(180,62,42,0.28); }
-  .cv-bet-feedback--right { background: rgba(125,92,70,0.11); color: var(--cv-ink); border: 1px solid rgba(125,92,70,0.32); }
 
-  /* Right Exam Rubric Panel */
-  .cv-rubric-pane {
-    padding: 10px 12px;
-    background: var(--cv-bg);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .cv-rubric-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 11.5px;
-    font-weight: 700;
-    color: var(--cv-accent);
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--cv-border);
-  }
-  .cv-live-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-  }
-  .cv-stat-box {
-    padding: 5px 7px;
-    border-radius: 7px;
-    background: var(--cv-subtle);
-    border: 1px solid var(--cv-border);
-    font-size: 11px;
-  }
-  .cv-stat-box span { display: block; color: var(--cv-ink-3); font-size: 10.5px; }
-  .cv-stat-box strong { font-family: var(--cv-mono); font-size: 12px; color: var(--cv-ink); }
-  .cv-rubric-list {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+  .sol-steps {
+    list-style: none;
     margin: 0;
     padding: 0;
-    list-style: none;
-  }
-  .cv-rubric-step {
-    padding: 6px 8px;
-    border-radius: 7px;
-    border: 1px solid var(--cv-border);
-    background: var(--cv-bg);
-    font-size: 11.5px;
-    color: var(--cv-ink-2);
-    line-height: 1.42;
-  }
-  .cv-rubric-step.is-active {
-    border-color: var(--cv-accent);
-    background: rgba(125, 92, 70, 0.08);
-    color: var(--cv-ink);
-  }
-  .cv-rubric-step.is-warn {
-    border-color: var(--cv-red);
-    background: var(--cv-red-soft);
-    color: var(--cv-red);
-  }
-  .cv-rubric-step-top {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
-  .cv-pts { font-family: var(--cv-mono); font-size: 10.5px; color: var(--cv-red); }
-
-  .cv-subtitle-bar {
-    padding: 9px 14px;
-    background: var(--cv-subtle);
-    border-bottom: 1px solid var(--cv-border);
-    min-height: 50px;
-    display: flex;
-    align-items: center;
-  }
-  .cv-subtitle-text { margin: 0; font-size: 12.5px; color: var(--cv-ink); line-height: 1.55; }
-  .cv-subtitle-scene { font-weight: 700; color: var(--cv-red); margin-right: 6px; }
-
-  .cv-transport {
-    padding: 9px 14px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    border-bottom: 1px solid var(--cv-border);
   }
-  .cv-transport-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
-  .cv-play-btn {
-    border: 1px solid var(--cv-ink);
-    background: var(--cv-ink);
-    color: #fdfbf7;
-    border-radius: 7px;
-    padding: 5px 12px;
-    font-size: 12px;
-    font-weight: 600;
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.52;
     cursor: pointer;
-    min-width: 112px;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
   }
-  .cv-time { font-family: var(--cv-mono); font-size: 11.5px; color: var(--cv-ink-2); min-width: 84px; }
-  .cv-timeline { flex: 1 1 180px; accent-color: var(--cv-red); cursor: pointer; }
-  .cv-pill-group { display: inline-flex; gap: 4px; flex-wrap: wrap; }
-  .cv-pill {
-    border: 1px solid var(--cv-border-strong);
-    background: var(--cv-bg);
-    color: var(--cv-ink-2);
-    border-radius: 6px;
-    padding: 3px 8px;
+  .sol-step:hover { opacity: 0.85; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #a83825;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13.5px;
+    color: #25201b;
+    line-height: 1.65;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
     font-size: 11.5px;
     cursor: pointer;
+    padding: 0;
   }
-  .cv-pill[aria-pressed="true"] {
-    background: var(--cv-accent);
-    border-color: var(--cv-accent);
-    color: #fdfbf7;
-    font-weight: 600;
-  }
-  .cv-chapters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
-  .cv-chapter-btn {
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
     text-align: left;
-    border: 1px solid var(--cv-border);
-    background: var(--cv-subtle);
-    color: var(--cv-ink-2);
-    border-radius: 7px;
-    padding: 5px 8px;
-    font-size: 11px;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.5px;
+    color: #2b251f;
     cursor: pointer;
-    line-height: 1.35;
+    transition: border-color 120ms ease, background 120ms ease;
   }
-  .cv-chapter-btn strong { display: block; color: var(--cv-ink); font-size: 11.5px; }
-  .cv-chapter-btn[aria-current="step"] { border-color: var(--cv-red); background: var(--cv-red-soft); }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
 
-  .cv-interact {
-    padding: 9px 14px 12px;
-    background: var(--cv-bg);
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    flex-wrap: wrap;
   }
-  .cv-interact-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .cv-slider-wrap { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--cv-ink-2); }
-  .cv-slider-wrap input { width: 118px; accent-color: var(--cv-red); }
-  .cv-quote-btn {
-    border: 1px solid var(--cv-accent);
-    background: rgba(125, 92, 70, 0.08);
-    color: var(--cv-accent);
-    border-radius: 7px;
-    padding: 5px 11px;
-    font-size: 12px;
-    font-weight: 600;
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
     cursor: pointer;
   }
-  .cv-quote-btn:hover { background: var(--cv-accent); color: #fdfbf7; }
-  .cv-toast { width: 100%; font-size: 11.5px; color: var(--cv-accent); min-height: 15px; }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+  }
 
-  @media (max-width: 720px) {
-    .cv-main-grid { grid-template-columns: 1fr; }
-    .cv-canvas-pane { border-right: 0; border-bottom: 1px solid var(--cv-border); }
-    .cv-chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .cv-bet-actions { grid-template-columns: 1fr; }
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 74px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #7d5c46;
+  }
+
+  @media (max-width: 680px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
   }
 </style>
 </head>
 <body>
-<div class="cv-shell">
-  <header class="cv-head">
-    <div class="cv-title-group">
-      <span class="cv-badge" id="mode-badge">高考应试代码微课 · 含押注断点</span>
-      <h1 class="cv-title">有界磁场动态圆（放缩圆 × 旋转圆）临界相切实战</h1>
-    </div>
-    <span class="cv-meta">26 KB 矢量 · 同步阅卷采分板</span>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">有界匀强磁场动态圆</h1>
+    <div class="sheet-live" id="live-readout"></div>
   </header>
 
-  <div class="cv-prompt-strip">
-    <strong>真题原型：</strong>匀强磁场宽为 <code>d</code>（<code>0 ≤ x ≤ d</code>，B 垂直纸面向里 <code>×</code>），<code>+q</code> 粒子从左边界 <code>O(0,0)</code> 射入。求恰好不穿出右边界的临界半径，以及右边界有效打击区间。
-  </div>
-
-  <div class="cv-main-grid">
-    <div class="cv-canvas-pane">
-      <canvas id="stage" aria-label="有界磁场放缩圆与旋转圆临界相切动画"></canvas>
-
-      <!-- Red-Pen Examiner Bet Checkpoint -->
-      <div class="cv-bet-overlay" id="bet-overlay" hidden>
-        <div class="cv-bet-head">
-          <span class="cv-bet-tag">⚡ 考场红笔押注 · 临界相切已自动定格</span>
-          <button type="button" class="cv-pill" id="bet-skip">继续播放 →</button>
-        </div>
-        <p class="cv-bet-q">考生甲看磁场宽为 d，直接写“相切即 2R = d → R = 0.5d”。作为阅卷老师，这步怎么判？</p>
-        <div class="cv-bet-actions">
-          <button type="button" class="cv-bet-btn" data-bet="wrong">
-            <strong>A. 给满分</strong>：圆与右边界相切，直径就是磁场宽度 d
-          </button>
-          <button type="button" class="cv-bet-btn" data-bet="right">
-            <strong>B. 扣 6 分！</strong>漏了圆心横坐标 R·sin30°，应列 R(1+sin30°)=d → R=2d/3
-          </button>
-        </div>
-        <div class="cv-bet-feedback" id="bet-feedback" hidden></div>
-      </div>
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
     </div>
 
-    <aside class="cv-rubric-pane" aria-label="同步高考阅卷采分板">
-      <div class="cv-rubric-head">
-        <span id="rubric-title">同步高考阅卷采分板（满分 9 分）</span>
-        <span class="cv-badge cv-badge--mode" id="model-pill">放缩圆</span>
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>参考解答</h2>
+          <span class="sol-total mono">9 分</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0">
+            <div class="sol-step-top"><span>（一）洛伦兹力提供向心力</span><span class="sol-pts mono">+2</span></div>
+            <div class="sol-eq"><math display="inline"><mi>q</mi><mi>v</mi><mi>B</mi><mo>=</mo><mfrac><mrow><mi>m</mi><msup><mi>v</mi><mn>2</mn></msup></mrow><mi>R</mi></mfrac></math>，得 <math display="inline"><mi>R</mi><mo>=</mo><mfrac><mrow><mi>m</mi><mi>v</mi></mrow><mrow><mi>q</mi><mi>B</mi></mrow></mfrac></math></div>
+          </li>
+          <li class="sol-step" data-jump="18" data-step="1" data-active="true">
+            <div class="sol-step-top"><span>（二）右边界相切临界</span><span class="sol-pts mono">+3</span></div>
+            <div class="sol-eq"><math display="inline"><mi>R</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>sin</mi><mo>&#x2061;</mo><mn>30</mn><mo>°</mo><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>d</mi><mo>⇒</mo><msub><mi>R</mi><mi>c</mi></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>d</mi></mrow><mn>3</mn></mfrac></math></div>
+          </li>
+          <li class="sol-step" data-jump="29" data-step="2">
+            <div class="sol-step-top"><span>（三）穿界运动时间腰斩</span><span class="sol-pts mono">+2</span></div>
+            <div class="sol-eq"><math display="inline"><mi>R</mi><mo>&lt;</mo><msub><mi>R</mi><mi>c</mi></msub></math> 时 <math display="inline"><mi>t</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>T</mi></mrow><mn>3</mn></mfrac></math>；穿界骤降为 <math display="inline"><mfrac><mi>T</mi><mn>3</mn></mfrac></math></div>
+          </li>
+          <li class="sol-step" data-jump="42" data-step="3">
+            <div class="sol-step-top"><span>（四）旋转圆右界亮带</span><span class="sol-pts mono">+2</span></div>
+            <div class="sol-eq"><math display="inline"><mrow><mo stretchy="false">|</mo><mi>y</mi><mo stretchy="false">|</mo></mrow><mo>≤</mo><msqrt><mrow><mn>2</mn><mi>R</mi><mi>d</mi><mo>−</mo><msup><mi>d</mi><mn>2</mn></msup></mrow></msqrt><mo>≈</mo><mn>0.71</mn><mi>d</mi></math></div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>朱笔点检 · 00:18</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：<math display="inline"><mn>2</mn><mi>R</mi><mo>=</mo><mi>d</mi><mo>⇒</mo><mi>R</mi><mo>=</mo><mfrac><mi>d</mi><mn>2</mn></mfrac></math></button>
+          <button type="button" class="bet-choice" data-bet="right">乙：<math display="inline"><mi>R</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>sin</mi><mo>&#x2061;</mo><mn>30</mn><mo>°</mo><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>d</mi><mo>⇒</mo><msub><mi>R</mi><mi>c</mi></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>d</mi></mrow><mn>3</mn></mfrac></math></button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
       </div>
 
-      <div class="cv-live-stats">
-        <div class="cv-stat-box"><span>轨道半径 R/d</span><strong id="st-r">0.67 d</strong></div>
-        <div class="cv-stat-box"><span>入射角 α（相对+x）</span><strong id="st-a">-30°</strong></div>
-        <div class="cv-stat-box"><span>最右端 x_max</span><strong id="st-xmax">1.00 d</strong></div>
-        <div class="cv-stat-box"><span>偏转角 / 时间</span><strong id="st-time">120° · 0.33T</strong></div>
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">朱笔押注</button>
       </div>
-
-      <ol class="cv-rubric-list">
-        <li class="cv-rubric-step is-active" id="rb-1">
-          <div class="cv-rubric-step-top"><span>① 动力学半径公式</span><span class="cv-pts">+2 分</span></div>
-          <div>qvB = mv²/R ⇒ R = mv/(qB)，左手定则判圆心在右上方。</div>
-        </li>
-        <li class="cv-rubric-step" id="rb-2">
-          <div class="cv-rubric-step-top"><span>② 临界几何方程（核心防丢分）</span><span class="cv-pts">+3 分</span></div>
-          <div id="rb-2-body">圆心 x_c = R·sin30°，相切条件 R(1+sin30°)=d ⇒ R_c = 2d/3。</div>
-        </li>
-        <li class="cv-rubric-step" id="rb-3">
-          <div class="cv-rubric-step-top"><span>③ 穿界判别与时间跳变</span><span class="cv-pts">+2 分</span></div>
-          <div id="rb-3-body">R &lt; 2d/3 从左出（t 恒为 2T/3）；穿右界瞬间骤降至 T/3！</div>
-        </li>
-        <li class="cv-rubric-step" id="rb-4">
-          <div class="cv-rubric-step-top"><span>④ 旋转圆右边界打击亮带</span><span class="cv-pts">+2 分</span></div>
-          <div id="rb-4-body">定 R=0.75d：相切锁最高点 +0.71d，防误用直径弦 ±1.12d。</div>
-        </li>
-      </ol>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
     </aside>
   </div>
 
-  <div class="cv-subtitle-bar">
-    <p class="cv-subtitle-text" id="subtitle"></p>
-  </div>
-
-  <div class="cv-transport">
-    <div class="cv-transport-row">
-      <button type="button" class="cv-play-btn" id="play-btn">▶ 播放应试微课</button>
-      <span class="cv-time" id="time-readout">00:18 / 00:48</span>
-      <input type="range" id="timeline" class="cv-timeline" min="0" max="48" step="0.05" value="18" aria-label="代码视频时间轴">
-      <div class="cv-pill-group" role="group" aria-label="播放倍速">
-        <button type="button" class="cv-pill" data-speed="0.75" aria-pressed="false">0.75×</button>
-        <button type="button" class="cv-pill" data-speed="1" aria-pressed="true">1×</button>
-        <button type="button" class="cv-pill" data-speed="1.5" aria-pressed="false">1.5×</button>
-      </div>
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="18.0" aria-label="时间轴">
+      <span class="clock mono" id="time-readout">00:18 / 00:48</span>
     </div>
-
-    <div class="cv-chapters" role="group" aria-label="考场实战分幕">
-      <button type="button" class="cv-chapter-btn" data-jump="0">
-        <strong>01 · 放缩圆扫屏</strong>左界折返 · 时间恒定
-      </button>
-      <button type="button" class="cv-chapter-btn" data-jump="12" aria-current="step">
-        <strong>02 · 临界押注 ⚡</strong>2R=d 为何扣 6 分
-      </button>
-      <button type="button" class="cv-chapter-btn" data-jump="24">
-        <strong>03 · 穿界时间腰斩</strong>240° 骤跳 120°
-      </button>
-      <button type="button" class="cv-chapter-btn" data-jump="36">
-        <strong>04 · 旋转圆亮带</strong>相切定最高打点
-      </button>
-    </div>
-  </div>
-
-  <div class="cv-interact">
-    <div class="cv-interact-left">
-      <div class="cv-pill-group" role="group" aria-label="切换动态圆模型">
-        <button type="button" class="cv-pill" data-model="scale" aria-pressed="true">放缩圆（调半径 R）</button>
-        <button type="button" class="cv-pill" data-model="rotate" aria-pressed="false">旋转圆（调角度 α）</button>
-        <button type="button" class="cv-pill" id="open-bet-btn">触发红笔押注 ⚡</button>
-      </div>
-      <label class="cv-slider-wrap">
-        <span>R/d：</span>
-        <input type="range" id="r-slider" data-param="R_over_d" min="0.28" max="1.25" step="0.01" value="0.67">
+    <div class="foot-params">
+      <label class="param-pair">
+        <math display="inline"><mi>R</mi><mo>/</mo><mi>d</mi></math>
+        <input type="range" class="hairline-range" id="r-slider" data-param="R_over_d" min="0.28" max="1.20" step="0.01" value="0.67">
       </label>
-      <label class="cv-slider-wrap">
-        <span>入射角 α：</span>
-        <input type="range" id="a-slider" data-param="alphaDeg" min="-88" max="45" step="1" value="-30">
+      <label class="param-pair">
+        <math display="inline"><mi>α</mi></math>
+        <input type="range" class="hairline-range" id="a-slider" data-param="alpha_deg" min="-84" max="20" step="1" value="-30">
       </label>
     </div>
-    <button type="button" class="cv-quote-btn" id="quote-btn">把当前临界帧带给 AI 老师 ↗</button>
-    <div class="cv-toast" id="toast" role="status" aria-live="polite"></div>
-  </div>
+  </footer>
 </div>
 
 <script>
@@ -446,10 +425,10 @@
   var TOTAL = 48;
   var playing = false;
   var interactiveOverride = false;
-  var speed = 1;
-  var t = 18.0; // Start on the dramatic critical tangency frame so visitors immediately see the triangle!
   var betFiredDuringPlay = false;
   var showWrongGap = false;
+  var betResult = '';
+  var t = 18.0;
   var manualModel = 'scale';
   var manualR = 2 / 3;
   var manualAlpha = -30;
@@ -458,35 +437,25 @@
   var canvas = document.getElementById('stage');
   var ctx = canvas.getContext('2d');
   var playBtn = document.getElementById('play-btn');
-  var timeEl = document.getElementById('time-readout');
   var timeline = document.getElementById('timeline');
-  var subtitleEl = document.getElementById('subtitle');
-  var badgeEl = document.getElementById('mode-badge');
-  var modelPill = document.getElementById('model-pill');
+  var timeEl = document.getElementById('time-readout');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
   var rSlider = document.getElementById('r-slider');
   var aSlider = document.getElementById('a-slider');
-  var toastEl = document.getElementById('toast');
-
   var betOverlay = document.getElementById('bet-overlay');
   var betFeedback = document.getElementById('bet-feedback');
   var betSkip = document.getElementById('bet-skip');
-
-  var stR = document.getElementById('st-r');
-  var stA = document.getElementById('st-a');
-  var stXmax = document.getElementById('st-xmax');
-  var stTime = document.getElementById('st-time');
-
-  var rb1 = document.getElementById('rb-1');
-  var rb2 = document.getElementById('rb-2');
-  var rb3 = document.getElementById('rb-3');
-  var rb4 = document.getElementById('rb-4');
-  var rb2Body = document.getElementById('rb-2-body');
-  var rb3Body = document.getElementById('rb-3-body');
-
-  var speedBtns = Array.prototype.slice.call(document.querySelectorAll('[data-speed]'));
-  var modelBtns = Array.prototype.slice.call(document.querySelectorAll('[data-model]'));
-  var chapterBtns = Array.prototype.slice.call(document.querySelectorAll('[data-jump]'));
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
   var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function frac(a, b) { return '<mfrac><mrow>' + a + '</mrow><mrow>' + b + '</mrow></mfrac>'; }
+  var F_RC = M('<msub><mi>R</mi><mi>c</mi></msub>');
+  var F_2D3 = M(frac('<mn>2</mn><mi>d</mi>', '<mn>3</mn>'));
+  var F_2T3 = M(frac('<mn>2</mn><mi>T</mi>', '<mn>3</mn>'));
+  var F_T3 = M(frac('<mi>T</mi>', '<mn>3</mn>'));
 
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
   function easeInOut(u) { return u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; }
@@ -500,30 +469,39 @@
     var xc = -R * Math.sin(rad);
     var yc = R * Math.cos(rad);
     var xmax = xc + R;
-    var phi0 = rad - Math.PI / 2; // CCW start angle on circle
-    var hitsRight = xmax >= 1.0 - 0.004;
-    var isTangent = Math.abs(xmax - 1.0) <= 0.012;
+    var phi0 = Math.atan2(-yc, -xc);
+    var hitsRight = xmax > 1.0005;
+    var isTangent = Math.abs(xmax - 1.0) <= 0.015;
     var phiOut, dPhi, exitX, exitY;
 
     if (hitsRight) {
       var cosVal = clamp((1.0 - xc) / R, -1, 1);
-      phiOut = -Math.acos(cosVal);
-      if (phiOut < phi0) phiOut += Math.PI * 2;
+      var a1 = Math.acos(cosVal);
+      var cands = [a1, -a1].map(function (a) {
+        var ang = a;
+        while (ang <= phi0 + 1e-4) ang += Math.PI * 2;
+        return ang;
+      });
+      phiOut = Math.min(cands[0], cands[1]);
       dPhi = phiOut - phi0;
       exitX = 1.0;
       exitY = yc + R * Math.sin(phiOut);
     } else {
-      // Exits left boundary x = 0 cleanly going CCW
-      var cosLeft = clamp(-xc / R, -1, 1);
-      phiOut = Math.acos(cosLeft);
-      if (phiOut <= phi0 + 1e-4) phiOut += Math.PI * 2;
+      var cosL = clamp(-xc / R, -1, 1);
+      var c1 = Math.acos(cosL);
+      var best = Infinity;
+      [c1, -c1].forEach(function (a) {
+        var ang = a;
+        while (ang <= phi0 + 0.05) ang += Math.PI * 2;
+        if (ang < best) best = ang;
+      });
+      phiOut = best;
       dPhi = phiOut - phi0;
       exitX = 0.0;
       exitY = yc + R * Math.sin(phiOut);
     }
     return {
-      R: R, alphaDeg: alphaDeg, rad: rad,
-      xc: xc, yc: yc, xmax: xmax,
+      R: R, alphaDeg: alphaDeg, xc: xc, yc: yc, xmax: xmax,
       phi0: phi0, phiOut: phiOut, dPhi: dPhi,
       degSweep: (dPhi * 180) / Math.PI,
       timeT: dPhi / (Math.PI * 2),
@@ -534,70 +512,69 @@
 
   function computeState() {
     var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
-    var model = manualModel;
-    var R = manualR;
-    var alpha = manualAlpha;
-    var captionTitle = '';
-    var captionBody = '';
+    var model = manualModel, R = manualR, alpha = manualAlpha;
+    var noteHtml = '';
 
     if (!interactiveOverride) {
       if (sceneIdx === 0) {
-        model = 'scale';
-        alpha = -30;
-        R = 0.30 + 0.30 * easeInOut(clamp(t / 12, 0, 1));
-        captionTitle = '第 1 幕 · 放缩圆审题扫描：';
-        captionBody = '初速度方向固定（向下偏 30°），速率增大时圆心 O′ 沿虚线向外滑。此时 R < 2d/3，所有粒子都折返左边界，偏转角恒为 240°、时间恒为 2T/3！';
+        model = 'scale'; alpha = -30;
+        R = 0.34 + 0.28 * easeInOut(clamp(t / 12, 0, 1));
+        noteHtml = '方向锁在 ' + M('<mo>−</mo><mn>30</mn><mo>°</mo>') + ' 增大速率，只要 ' + M('<mi>R</mi><mo>&lt;</mo>' + frac('<mn>2</mn><mi>d</mi>', '<mn>3</mn>')) + '，粒子全折返左界，用时恒为 ' + F_2T3 + '。';
       } else if (sceneIdx === 1) {
-        model = 'scale';
-        alpha = -30;
-        var p1 = clamp((t - 12) / 6, 0, 1);
-        R = 0.50 + ((2 / 3) - 0.50) * easeInOut(p1);
-        captionTitle = '第 2 幕 · 临界相切几何定格：';
-        captionBody = '盯紧直角三角形！圆心横坐标已占去 x_c = R·sin30° = 0.5R，再加上右侧半径 R 才等于磁场宽 d，故 R_c = 2d/3 ≈ 0.67d。';
+        model = 'scale'; alpha = -30;
+        R = 0.50 + (2 / 3 - 0.50) * easeInOut(clamp((t - 12) / 6, 0, 1));
+        noteHtml = '斜射不能套 ' + M('<mn>2</mn><mi>R</mi><mo>=</mo><mi>d</mi>') + '：圆心横距 ' + M('<mi>R</mi><mi>sin</mi><mo>&#x2061;</mo><mn>30</mn><mo>°</mo>') + ' 加半径 ' + M('<mi>R</mi>') + ' 等于 ' + M('<mi>d</mi>') + '，故 ' + F_RC + ' = ' + F_2D3 + '。';
       } else if (sceneIdx === 2) {
-        model = 'scale';
-        alpha = -30;
-        var p2 = clamp((t - 24) / 12, 0, 1);
-        R = 0.65 + 0.48 * easeInOut(p2);
-        captionTitle = '第 3 幕 · 穿出右边界，运动时间直接腰斩！';
-        captionBody = '留意 R 跨过 0.67d 的那一帧：粒子不再绕回左边界，偏转角从 240° 骤跳到 120°，运动时间立刻腰斩，且速度越大在磁场里待得越短！';
+        model = 'scale'; alpha = -30;
+        R = 0.65 + 0.46 * easeInOut(clamp((t - 24) / 12, 0, 1));
+        noteHtml = M('<mi>R</mi>') + ' 刚跨过 ' + F_2D3 + ' 即穿出右界，圆心角从 ' + M('<mn>240</mn><mo>°</mo>') + ' 跳至 ' + M('<mn>120</mn><mo>°</mo>') + '，用时由 ' + F_2T3 + ' 瞬间腰斩。';
       } else {
-        model = 'rotate';
-        R = 0.75;
-        var p3 = clamp((t - 36) / 12, 0, 1);
-        alpha = -86 + 86 * easeInOut(p3); // Sweeps through full right-boundary band [-86°, -19.5°] and peels off!
-        captionTitle = '第 4 幕 · 旋转圆找右边界打击亮带：';
-        captionBody = '速率固定（R=0.75d）、旋转入射角 α：右边界赤陶色亮带正是全部可打击区间 [-0.71d, +0.71d]，最高点由相切（α≈-19.5°）锁定！';
+        model = 'rotate'; R = 0.75;
+        alpha = -82 + 64 * easeInOut(clamp((t - 36) / 12, 0, 1));
+        noteHtml = '定半径 ' + M('<mi>R</mi><mo>=</mo><mn>0.75</mn><mi>d</mi>') + ' 旋转入射角，右界朱红亮带覆盖 ' + M('<mo stretchy="false">[</mo><mo>−</mo><mn>0.71</mn><mi>d</mi><mo>,</mo><mo>+</mo><mn>0.71</mn><mi>d</mi><mo stretchy="false">]</mo>') + '。';
       }
-      manualModel = model;
-      manualR = R;
-      manualAlpha = alpha;
+      manualModel = model; manualR = R; manualAlpha = alpha;
+    } else if (showWrongGap) {
+      noteHtml = '按 ' + M('<mn>2</mn><mi>R</mi><mo>=</mo><mi>d</mi>') + ' 画出的圆最远只到 ' + M('<mn>0.75</mn><mi>d</mi>') + '，距右界仍空出 ' + M('<mn>0.25</mn><mi>d</mi>') + '，并未相切。';
+    } else if (model === 'scale') {
+      noteHtml = '把 ' + M('<mi>R</mi><mo>/</mo><mi>d</mi>') + ' 拖过 ' + F_2D3 + '，直接观察偏转角与用时从 ' + F_2T3 + ' 骤降至 ' + F_T3 + '。';
     } else {
-      captionTitle = '考场实验接管态（' + formatTime(t) + '）：';
-      if (showWrongGap) {
-        captionBody = '已按考生甲错解演示 R = 0.50d：你看赤陶箭头标出的空档——粒子最远只到 0.75d，离右边界还差整整 0.25d，完全没切到！';
-      } else if (model === 'scale') {
-        captionBody = '正在手动调节放缩圆：把 R/d 反复拖过 0.67，观察右上方「偏转角 / 时间」从 240°·0.67T 骤跳到 120°·0.33T 的瞬间！';
-      } else {
-        captionBody = '正在手动旋转入射角 α（定半径 R=' + R.toFixed(2) + 'd）：把 α 拖到 -19° 附近，确认轨迹圆刚好擦着右边界最高亮带点出射。';
-      }
+      noteHtml = '定半径旋转 ' + M('<mi>α</mi>') + '：拖到 ' + M('<mo>−</mo><mn>19</mn><mo>°</mo>') + ' 附近即擦过右界最高受击点。';
     }
 
-    var traj = solveTrajectory(R, alpha);
-    return {
-      sceneIdx: sceneIdx,
-      model: model,
-      traj: traj,
-      captionTitle: captionTitle,
-      captionBody: captionBody
-    };
+    return { sceneIdx: sceneIdx, model: model, traj: solveTrajectory(R, alpha), noteHtml: noteHtml };
+  }
+
+  function drawMathSub(base, sub, x, y, size, color) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.font = 'italic ' + size + 'px "Times New Roman", Georgia, serif';
+    ctx.fillText(base, x, y);
+    var w = ctx.measureText(base).width;
+    if (sub) {
+      ctx.font = Math.round(size * 0.72) + 'px "Times New Roman", Georgia, serif';
+      ctx.fillText(sub, x + w + 0.5, y + size * 0.24);
+    }
+    ctx.restore();
+  }
+
+  function drawArrowHead(x, y, angle, len, color) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x - len * Math.cos(angle - 0.36), y - len * Math.sin(angle - 0.36));
+    ctx.lineTo(x - len * Math.cos(angle + 0.36), y - len * Math.sin(angle + 0.36));
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
   }
 
   function render() {
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var rect = canvas.getBoundingClientRect();
-    var W = Math.max(300, Math.round(rect.width));
-    var H = Math.max(240, Math.round(rect.height));
+    var W = Math.max(260, Math.round(rect.width));
+    var H = Math.max(220, Math.round(rect.height));
     if (canvas.width !== Math.round(W * dpr) || canvas.height !== Math.round(H * dpr)) {
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
@@ -607,210 +584,243 @@
     var st = computeState();
     var tr = st.traj;
 
-    // World units: field is x in [0, 1] (d = 1), y centered near 0.25d
-    var scale = Math.min(W * 0.42, H * 0.44);
-    var ox = W * 0.30;
-    var oy = H * 0.60;
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, W, H);
+
+    var scale = Math.min(W * 0.42, H * 0.385);
+    var ox = (W - scale) * 0.48;
+    var oy = H * 0.65;
     function mx(x) { return ox + x * scale; }
     function my(y) { return oy - y * scale; }
 
-    ctx.fillStyle = '#fcfaf4';
-    ctx.fillRect(0, 0, W, H);
+    var fieldTop = 30;
+    var fieldBot = H - 14;
 
-    // Magnetic strip region 0 <= x <= d
-    ctx.fillStyle = 'rgba(125, 92, 70, 0.065)';
-    ctx.fillRect(mx(0), 14, scale, H - 28);
+    // Field strip [0, d]
+    ctx.fillStyle = 'rgba(125, 92, 70, 0.032)';
+    ctx.fillRect(mx(0), fieldTop, scale, fieldBot - fieldTop);
 
-    // Magnetic field '×' crosses inside strip
-    ctx.strokeStyle = 'rgba(125, 92, 70, 0.24)';
-    ctx.lineWidth = 1.1;
-    for (var gx = 0.14; gx < 0.96; gx += 0.20) {
-      for (var gy = -0.85; gy <= 1.25; gy += 0.34) {
-        var px = mx(gx), py = my(gy);
-        if (py < 24 || py > H - 24) continue;
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.21)';
+    ctx.lineWidth = 1;
+    for (var ci = 0; ci < 5; ci++) {
+      for (var ri = 0; ri < 6; ri++) {
+        var gx = mx((ci + 0.5) / 5);
+        var gy = fieldTop + 16 + (ri / 5) * (fieldBot - fieldTop - 30);
         ctx.beginPath();
-        ctx.moveTo(px - 3.5, py - 3.5); ctx.lineTo(px + 3.5, py + 3.5);
-        ctx.moveTo(px + 3.5, py - 3.5); ctx.lineTo(px - 3.5, py + 3.5);
+        ctx.moveTo(gx - 3, gy - 3); ctx.lineTo(gx + 3, gy + 3);
+        ctx.moveTo(gx + 3, gy - 3); ctx.lineTo(gx - 3, gy + 3);
         ctx.stroke();
       }
     }
 
-    // Left & right boundaries x=0, x=d
-    ctx.strokeStyle = '#524a41';
-    ctx.lineWidth = 1.8;
-    ctx.beginPath(); ctx.moveTo(mx(0), 14); ctx.lineTo(mx(0), H - 14); ctx.stroke();
-    ctx.strokeStyle = tr.isTangent ? '#b43e2a' : '#524a41';
-    ctx.lineWidth = tr.isTangent ? 2.4 : 1.8;
-    ctx.beginPath(); ctx.moveTo(mx(1), 14); ctx.lineTo(mx(1), H - 14); ctx.stroke();
-
-    ctx.font = '600 11px "SF Mono", ui-monospace, monospace';
-    ctx.fillStyle = '#6c6358';
-    ctx.fillText('左边界 x=0', mx(0) - 62, 26);
-    ctx.fillStyle = tr.isTangent ? '#b43e2a' : '#6c6358';
-    ctx.fillText(tr.isTangent ? '右边界 x=d（临界相切！）' : '右边界 x=d', mx(1) + 7, 26);
-
-    // Width indicator d at bottom
-    ctx.strokeStyle = '#8b7b6b';
-    ctx.lineWidth = 1.1;
-    ctx.beginPath();
-    ctx.moveTo(mx(0), H - 16); ctx.lineTo(mx(1), H - 16);
-    ctx.stroke();
-    ctx.fillStyle = '#6c6358';
-    ctx.fillText('磁场宽 d', mx(0.5) - 22, H - 20);
-
-    // Mode-specific helper locus
-    if (st.model === 'scale') {
-      // Normal ray along which O' slides
-      var nx = -Math.sin(tr.rad), ny = Math.cos(tr.rad);
-      ctx.strokeStyle = 'rgba(63, 83, 110, 0.42)';
-      ctx.lineWidth = 1.25;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.moveTo(mx(0), my(0));
-      ctx.lineTo(mx(nx * 1.45), my(ny * 1.45));
-      ctx.stroke();
-      ctx.setLineDash([]);
-    } else {
-      // Rotating circle: center locus circle + right-boundary illuminated hit band!
-      ctx.strokeStyle = 'rgba(63, 83, 110, 0.32)';
-      ctx.lineWidth = 1.2;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.arc(mx(0), my(0), tr.R * scale, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      if (2 * tr.R >= 1.0) {
-        var yBand = Math.sqrt(Math.max(0, 2 * tr.R - 1.0));
-        ctx.strokeStyle = '#b43e2a';
-        ctx.lineWidth = 5.5;
-        ctx.beginPath();
-        ctx.moveTo(mx(1), my(yBand));
-        ctx.lineTo(mx(1), my(-yBand));
-        ctx.stroke();
-        ctx.font = '600 11px "PingFang SC", sans-serif';
-        ctx.fillStyle = '#b43e2a';
-        ctx.fillText('右界亮带 +' + yBand.toFixed(2) + 'd', mx(1) + 8, my(yBand) + 4);
-        ctx.fillText('下界 -' + yBand.toFixed(2) + 'd', mx(1) + 8, my(-yBand) + 4);
-      }
-    }
-
-    // Full dashed reference trajectory circle
-    ctx.strokeStyle = 'rgba(125, 92, 70, 0.28)';
+    // Left solid boundary, right dashed boundary
+    ctx.strokeStyle = 'rgba(44, 39, 34, 0.54)';
     ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(mx(0), fieldTop); ctx.lineTo(mx(0), fieldBot);
+    ctx.stroke();
+
     ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(mx(1), fieldTop); ctx.lineTo(mx(1), fieldBot);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Dimension d cleanly above fieldTop
+    var dimY = fieldTop - 10;
+    ctx.strokeStyle = '#7c6f60';
+    ctx.lineWidth = 0.85;
+    ctx.beginPath();
+    ctx.moveTo(mx(0), dimY - 3); ctx.lineTo(mx(0), dimY + 3);
+    ctx.moveTo(mx(1), dimY - 3); ctx.lineTo(mx(1), dimY + 3);
+    ctx.moveTo(mx(0), dimY); ctx.lineTo(mx(1), dimY);
+    ctx.stroke();
+    drawMathSub('d', '', mx(0.5) - 4, dimY - 4, 13, '#7c6f60');
+
+    // Rotating circle right-boundary bright band
+    if (st.model === 'rotate' && tr.R >= 0.5) {
+      var yBand = Math.sqrt(Math.max(0, 2 * tr.R - 1));
+      ctx.save();
+      ctx.strokeStyle = 'rgba(168, 56, 37, 0.56)';
+      ctx.lineWidth = 4.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(mx(1), my(yBand));
+      ctx.lineTo(mx(1), my(-yBand));
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Faint compass parent circle
+    ctx.save();
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.24)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 4]);
     ctx.beginPath();
     ctx.arc(mx(tr.xc), my(tr.yc), tr.R * scale, 0, Math.PI * 2);
     ctx.stroke();
-    ctx.setLineDash([]);
+    ctx.restore();
 
-    // Active particle trajectory arc inside magnetic field (Note canvas Y-down flips CCW to CW: anticlockwise=true draws CCW in math coords!)
-    ctx.strokeStyle = tr.hitsRight ? '#b43e2a' : '#3f536e';
-    ctx.lineWidth = 2.8;
-    ctx.beginPath();
-    ctx.arc(mx(tr.xc), my(tr.yc), tr.R * scale, -tr.phi0, -tr.phiOut, true);
-    ctx.stroke();
+    // Critical geometric right-triangle
+    if (st.model === 'scale') {
+      ctx.save();
+      ctx.fillStyle = 'rgba(168, 56, 37, 0.065)';
+      ctx.beginPath();
+      ctx.moveTo(mx(0), my(0));
+      ctx.lineTo(mx(tr.xc), my(tr.yc));
+      ctx.lineTo(mx(0), my(tr.yc));
+      ctx.closePath();
+      ctx.fill();
 
-    // Geometric right-triangle callout: x_c = R sin(theta) & horizontal R to right edge
-    ctx.strokeStyle = '#7d5c46';
-    ctx.lineWidth = 1.4;
-    ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = 'rgba(168, 56, 37, 0.55)';
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      ctx.moveTo(mx(0), my(0));
+      ctx.lineTo(mx(tr.xc), my(tr.yc));
+      ctx.lineTo(mx(0), my(tr.yc));
+      ctx.stroke();
+
+      var sq = 6;
+      ctx.beginPath();
+      ctx.moveTo(mx(0) + sq, my(tr.yc));
+      ctx.lineTo(mx(0) + sq, my(tr.yc) + sq);
+      ctx.lineTo(mx(0), my(tr.yc) + sq);
+      ctx.stroke();
+
+      ctx.strokeStyle = tr.isTangent ? '#a83825' : 'rgba(168, 56, 37, 0.55)';
+      ctx.lineWidth = tr.isTangent ? 1.5 : 1.1;
+      ctx.beginPath();
+      ctx.moveTo(mx(tr.xc), my(tr.yc));
+      ctx.lineTo(mx(tr.xmax), my(tr.yc));
+      ctx.stroke();
+
+      if (tr.xc * scale > 24) {
+        ctx.fillStyle = '#a83825';
+        ctx.font = 'italic 11.5px "Times New Roman", Georgia, serif';
+        ctx.fillText('R sin 30°', mx(tr.xc * 0.5) - 21, my(tr.yc) - 6);
+      }
+      ctx.fillStyle = tr.isTangent ? '#a83825' : '#7c6f60';
+      ctx.font = 'italic 12.5px "Times New Roman", Georgia, serif';
+      ctx.fillText('R', mx(tr.xc + tr.R * 0.5) - 4, my(tr.yc) - 6);
+      ctx.restore();
+    }
+
+    if (showWrongGap && tr.xmax < 0.98) {
+      ctx.save();
+      ctx.strokeStyle = '#a83825';
+      ctx.lineWidth = 1.6;
+      var gyGap = my(tr.yc);
+      ctx.beginPath();
+      ctx.moveTo(mx(tr.xmax) + 2, gyGap);
+      ctx.lineTo(mx(1) - 2, gyGap);
+      ctx.stroke();
+      ctx.fillStyle = '#a83825';
+      ctx.font = '600 11px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('空档 0.25d', mx((tr.xmax + 1) / 2) - 26, gyGap + 16);
+      ctx.restore();
+    }
+
+    // Actual trajectory arc
+    ctx.save();
+    ctx.strokeStyle = '#26211c';
+    ctx.lineWidth = 2.2;
+    ctx.lineCap = 'round';
     ctx.beginPath();
-    ctx.moveTo(mx(0), my(tr.yc));
-    ctx.lineTo(mx(tr.xc), my(tr.yc));
-    ctx.lineTo(mx(tr.xc + tr.R), my(tr.yc));
+    for (var s = 0; s <= 96; s++) {
+      var phi = tr.phi0 + (tr.dPhi * s) / 96;
+      var px = mx(tr.xc + tr.R * Math.cos(phi));
+      var py = my(tr.yc + tr.R * Math.sin(phi));
+      if (s === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
     ctx.stroke();
+    ctx.restore();
+
+    // Entry velocity v0
+    var vLen = 34;
+    var rad = (tr.alphaDeg * Math.PI) / 180;
+    var vxEnd = mx(0) + vLen * Math.cos(rad);
+    var vyEnd = my(0) - vLen * Math.sin(rad);
+    ctx.strokeStyle = '#a83825';
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(mx(0), my(0));
-    ctx.lineTo(mx(tr.xc), my(tr.yc));
+    ctx.lineTo(vxEnd, vyEnd);
     ctx.stroke();
-    ctx.setLineDash([]);
+    drawArrowHead(vxEnd, vyEnd, Math.atan2(vyEnd - my(0), vxEnd - mx(0)), 7, '#a83825');
+    drawMathSub('v', '0', vxEnd + 4, vyEnd + 4, 13, '#a83825');
 
-    // If wrong answer R=0.50d gap demo is active, highlight missing 0.25d gap!
-    if (showWrongGap && tr.xmax < 0.99) {
-      ctx.strokeStyle = '#b43e2a';
-      ctx.lineWidth = 2.6;
+    function drawDot(x, y, r, fill, ring) {
       ctx.beginPath();
-      ctx.moveTo(mx(tr.xmax), my(tr.yc));
-      ctx.lineTo(mx(1.0), my(tr.yc));
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = fill;
+      ctx.fill();
+      if (ring) {
+        ctx.strokeStyle = ring;
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+      }
+    }
+    drawDot(mx(0), my(0), 3.3, '#26211c');
+    drawMathSub('O', '', mx(0) - 16, my(0) + 4, 13, '#26211c');
+
+    drawDot(mx(tr.xc), my(tr.yc), 3.1, '#a83825');
+    drawMathSub("O′", '', mx(tr.xc) + 6, my(tr.yc) + 13, 12.5, '#a83825');
+
+    drawDot(mx(tr.exitX), my(tr.exitY), 4.1, '#a83825', '#faf6ee');
+
+    if (tr.isTangent) {
+      ctx.save();
+      ctx.strokeStyle = '#a83825';
+      ctx.lineWidth = 1.25;
+      ctx.beginPath();
+      ctx.arc(mx(1), my(tr.yc), 7.5, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.font = '700 11.5px "PingFang SC", sans-serif';
-      ctx.fillStyle = '#b43e2a';
-      ctx.fillText('还差 ' + (1 - tr.xmax).toFixed(2) + 'd！', mx((tr.xmax + 1) / 2) - 24, my(tr.yc) - 10);
+      ctx.restore();
     }
 
-    // Entry velocity arrow v0 at O(0,0)
-    var vLen = 36;
-    ctx.strokeStyle = '#2c2722';
-    ctx.fillStyle = '#2c2722';
-    ctx.lineWidth = 2.0;
-    ctx.beginPath();
-    ctx.moveTo(mx(0) - Math.cos(tr.rad) * 26, my(0) + Math.sin(tr.rad) * 26);
-    ctx.lineTo(mx(0) + Math.cos(tr.rad) * vLen, my(0) - Math.sin(tr.rad) * vLen);
-    ctx.stroke();
+    // DOM updates
+    var rMath = Math.abs(tr.R - 2 / 3) < 0.015 ? F_2D3 : M('<mn>' + tr.R.toFixed(2) + '</mn><mi>d</mi>');
+    var timeMath = Math.abs(tr.timeT - 2 / 3) < 0.02
+      ? F_2T3
+      : Math.abs(tr.timeT - 1 / 3) < 0.02
+        ? F_T3
+        : M('<mn>' + tr.timeT.toFixed(2) + '</mn><mi>T</mi>');
 
-    // Dots: Origin O, Center O', Exit point
-    ctx.fillStyle = '#2c2722';
-    ctx.beginPath(); ctx.arc(mx(0), my(0), 4.5, 0, Math.PI * 2); ctx.fill();
-    ctx.font = '600 11px "SF Mono", ui-monospace, monospace';
-    ctx.fillText('O', mx(0) - 16, my(0) + 14);
+    liveEl.innerHTML =
+      M('<mi>R</mi><mo>=</mo>') + rMath +
+      ' · ' + M('<mi>α</mi><mo>=</mo><mn>' + Math.round(tr.alphaDeg) + '</mn><mo>°</mo>') +
+      ' · ' + M('<mi>Δ</mi><mi>t</mi><mo>=</mo>') + '<strong>' + timeMath + '</strong>';
 
-    ctx.fillStyle = '#7d5c46';
-    ctx.beginPath(); ctx.arc(mx(tr.xc), my(tr.yc), 4.5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillText("O'", mx(tr.xc) - 6, my(tr.yc) - 8);
-    if (tr.xc > 0.14) {
-      ctx.font = '600 10.5px "SF Mono", ui-monospace, monospace';
-      ctx.fillText('x_c=' + tr.xc.toFixed(2) + 'd', mx(tr.xc * 0.5) - 24, my(tr.yc) - 5);
-    }
-    ctx.fillText('R=' + tr.R.toFixed(2) + 'd', mx(tr.xc + tr.R * 0.5) - 22, my(tr.yc) + 14);
-
-    ctx.fillStyle = tr.hitsRight ? '#b43e2a' : '#3f536e';
-    ctx.beginPath(); ctx.arc(mx(tr.exitX), my(tr.exitY), 5.5, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = '#fdfbf7'; ctx.lineWidth = 1.6; ctx.stroke();
-
-    // Update stats & dynamic rubric highlights
-    stR.textContent = tr.R.toFixed(2) + ' d';
-    stA.textContent = Math.round(tr.alphaDeg) + '°';
-    stXmax.textContent = tr.xmax.toFixed(2) + ' d' + (tr.isTangent ? ' (切!)' : '');
-    stTime.textContent = Math.round(tr.degSweep) + '° · ' + tr.timeT.toFixed(2) + 'T';
-    modelPill.textContent = st.model === 'scale' ? '放缩圆' : '旋转圆';
-
-    rb1.className = 'cv-rubric-step' + (st.sceneIdx === 0 ? ' is-active' : '');
-    rb2.className = 'cv-rubric-step' + (showWrongGap ? ' is-warn' : st.sceneIdx === 1 || tr.isTangent ? ' is-active' : '');
-    rb3.className = 'cv-rubric-step' + (st.sceneIdx === 2 ? ' is-active' : '');
-    rb4.className = 'cv-rubric-step' + (st.sceneIdx === 3 || st.model === 'rotate' ? ' is-active' : '');
-
-    rb2Body.textContent = showWrongGap
-      ? '红笔扣分：x_c=0.25d，R=0.50d 仅到 0.75d！必须列 R(1+sin30°)=d ⇒ R_c=2d/3。'
-      : '当前 x_c=' + tr.xc.toFixed(2) + 'd，最右端 x_max=' + tr.xmax.toFixed(2) + 'd（相切需 R=2d/3）。';
-    rb3Body.textContent = tr.hitsRight
-      ? '已穿右界：当前偏转 ' + Math.round(tr.degSweep) + '°，时间 ' + tr.timeT.toFixed(2) + 'T（速率越大越短）。'
-      : '折返左界：偏转角恒为 ' + Math.round(tr.degSweep) + '°，时间恒为 ' + tr.timeT.toFixed(2) + 'T！';
-
-    subtitleEl.innerHTML = '<span class="cv-subtitle-scene">' + st.captionTitle + '</span>' + st.captionBody;
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
     timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
     timeline.value = t.toFixed(2);
-    rSlider.value = clamp(tr.R, 0.28, 1.25).toFixed(2);
-    aSlider.value = String(Math.round(clamp(tr.alphaDeg, -88, 45)));
+    rSlider.value = clamp(tr.R, 0.28, 1.20).toFixed(2);
+    aSlider.value = Math.round(clamp(tr.alphaDeg, -84, 20));
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
 
-    badgeEl.textContent = interactiveOverride
-      ? '考场交互暂停态 · 已接管参数'
-      : playing
-        ? '播放中 · 应试代码微课'
-        : '高考应试代码微课 · 含押注断点';
-    playBtn.textContent = playing ? '❚❚ 暂停并动手调' : '▶ 播放应试微课';
-
-    modelBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.model === st.model ? 'true' : 'false'); });
-    chapterBtns.forEach(function (b, idx) {
-      if (idx === st.sceneIdx) b.setAttribute('aria-current', 'step');
-      else b.removeAttribute('aria-current');
-    });
+    for (var i = 0; i < stepEls.length; i++) {
+      stepEls[i].setAttribute('data-active', i === st.sceneIdx ? 'true' : 'false');
+    }
 
     if (window.notara && typeof window.notara.setState === 'function') {
+      var betNote = betResult === 'wrong'
+        ? '，学生在红笔押注中误选 2R=d（已标出 0.25d 缺口）'
+        : betResult === 'right'
+          ? '，学生在红笔押注中选对 R(1+sin30°)=d'
+          : '';
       window.notara.setState({
-        summary: '高考物理应试代码微课《有界磁场动态圆》停在 ' + formatTime(t) + '（' + (st.model === 'scale' ? '放缩圆' : '旋转圆') + '，R=' + tr.R.toFixed(2) + 'd，α=' + Math.round(tr.alphaDeg) + '°，x_max=' + tr.xmax.toFixed(2) + 'd，偏转角=' + Math.round(tr.degSweep) + '°）。',
-        params: { timestamp: formatTime(t), model: st.model, R_over_d: Number(tr.R.toFixed(2)), alphaDeg: Math.round(tr.alphaDeg), xmax: Number(tr.xmax.toFixed(2)), deflectionDeg: Math.round(tr.degSweep) }
-      });
+        summary: '高考物理应试微课《有界磁场动态圆》停在 ' + formatTime(t) + '（第 ' + (st.sceneIdx + 1) + ' 幕，' + (st.model === 'scale' ? '放缩圆' : '旋转圆') + '，R=' + tr.R.toFixed(2) + 'd，α=' + Math.round(tr.alphaDeg) + '°，偏转角=' + Math.round(tr.degSweep) + '°，用时=' + tr.timeT.toFixed(2) + 'T' + betNote + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          model: st.model,
+          R_over_d: Number(tr.R.toFixed(2)),
+          alphaDeg: Math.round(tr.alphaDeg),
+          deflectionDeg: Math.round(tr.degSweep),
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
     }
   }
 
@@ -821,22 +831,47 @@
     render();
   }
 
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showWrongGap = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object') {
+        if (detail.params.model === 'scale' || detail.params.model === 'rotate') {
+          manualModel = detail.params.model;
+          interactiveOverride = true;
+        }
+        if (typeof detail.params.R_over_d === 'number') {
+          manualR = clamp(detail.params.R_over_d, 0.28, 1.20);
+          interactiveOverride = true;
+        }
+        if (typeof detail.params.alphaDeg === 'number') {
+          manualAlpha = clamp(detail.params.alphaDeg, -84, 20);
+          interactiveOverride = true;
+        }
+      }
+      render();
+    });
+  }
+
   function tick(ts) {
     if (!playing) return;
     if (!lastTs) lastTs = ts;
     var prevT = t;
-    var dt = Math.min(0.08, (ts - lastTs) / 1000) * speed;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
     lastTs = ts;
     t += dt;
-
-    // Auto-trigger Red-Pen Examiner Bet at exact tangency frame t = 18.0s!
     if (!betFiredDuringPlay && prevT < 18.0 && t >= 18.0) {
       t = 18.0;
       betFiredDuringPlay = true;
       showBetCheckpoint();
       return;
     }
-
     if (t >= TOTAL) { t = TOTAL; playing = false; }
     render();
     if (playing) requestAnimationFrame(tick);
@@ -868,37 +903,13 @@
     render();
   });
 
-  speedBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      speed = Number(btn.dataset.speed) || 1;
-      speedBtns.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
-    });
-  });
-
-  chapterBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      t = Number(btn.dataset.jump) || 0;
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
       showWrongGap = false;
       interactiveOverride = false;
-      if (t === 12) {
-        t = 18.0;
-        showBetCheckpoint();
-      } else {
-        betOverlay.hidden = true;
-        render();
-      }
-    });
-  });
-
-  modelBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      playing = false;
+      t = Number(el.dataset.jump) || 0;
       betOverlay.hidden = true;
-      showWrongGap = false;
-      interactiveOverride = true;
-      manualModel = btn.dataset.model || 'scale';
-      if (manualModel === 'rotate') { manualR = 0.75; manualAlpha = -20; }
-      else { manualR = 2 / 3; manualAlpha = -30; }
       render();
     });
   });
@@ -908,6 +919,7 @@
     betOverlay.hidden = true;
     showWrongGap = false;
     interactiveOverride = true;
+    manualModel = 'scale';
     manualR = Number(rSlider.value) || 0.67;
     render();
   });
@@ -917,6 +929,7 @@
     betOverlay.hidden = true;
     showWrongGap = false;
     interactiveOverride = true;
+    manualModel = 'rotate';
     manualAlpha = Number(aSlider.value) || -30;
     render();
   });
@@ -942,23 +955,19 @@
   betBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
       var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
       betFeedback.hidden = false;
+      interactiveOverride = true;
+      manualModel = 'scale';
+      manualAlpha = -30;
       if (ans === 'wrong') {
-        interactiveOverride = true;
-        manualModel = 'scale';
         manualR = 0.50;
-        manualAlpha = -30;
         showWrongGap = true;
-        betFeedback.className = 'cv-bet-feedback cv-bet-feedback--wrong';
-        betFeedback.innerHTML = '<strong>阅卷红笔：-6 分！</strong>已把你的 R=0.50d 画上去了——斜射时圆心横坐标仅 0.25d，最远只到 0.75d，离右边界还差 0.25d！请改选 B 核对正确几何方程。';
+        betFeedback.innerHTML = '<strong>朱笔 −6 分：</strong>' + M('<mi>R</mi><mo>=</mo>' + frac('<mi>d</mi>', '<mn>2</mn>')) + ' 最远只到 ' + M('<mn>0.75</mn><mi>d</mi>') + '，空档 ' + M('<mn>0.25</mn><mi>d</mi>') + ' 未相切。';
       } else {
-        interactiveOverride = true;
-        manualModel = 'scale';
         manualR = 2 / 3;
-        manualAlpha = -30;
         showWrongGap = false;
-        betFeedback.className = 'cv-bet-feedback cv-bet-feedback--right';
-        betFeedback.innerHTML = '<strong>采分点拿下（+5 分）！</strong>斜射绝不能套 2R=d：必先画圆心横坐标 x_c=R·sin30°，再列 R(1+sin30°)=d ⇒ R_c=2d/3。点右上角「继续播放」看穿界时间腰斩！';
+        betFeedback.innerHTML = '<strong>拿下 +3 分：</strong>先找圆心横距 ' + M('<mi>R</mi><mi>sin</mi><mo>&#x2061;</mo><mn>30</mn><mo>°</mo>') + '，再得 ' + F_RC + ' = ' + F_2D3 + '。';
       }
       render();
     });
@@ -968,15 +977,17 @@
     playing = false;
     var st = computeState();
     var tr = st.traj;
-    var msg = '我在高考物理应试微课《有界磁场动态圆》第 ' + formatTime(t) + ' 暂停了（' + (st.model === 'scale' ? '放缩圆' : '旋转圆') + '，R=' + tr.R.toFixed(2) + 'd，α=' + Math.round(tr.alphaDeg) + '°，x_max=' + tr.xmax.toFixed(2) + 'd，偏转角=' + Math.round(tr.degSweep) + '°），请帮我用阅卷采分标准核对这一步的几何方程。';
+    var msg = '我在应试微课《有界磁场动态圆》第 ' + formatTime(t) + ' 暂停了（' + (st.model === 'scale' ? '放缩圆' : '旋转圆') + '，R=' + tr.R.toFixed(2) + 'd，α=' + Math.round(tr.alphaDeg) + '°，偏转角 ' + Math.round(tr.degSweep) + '°），请帮我核对这一步几何方程。';
     if (window.notara && typeof window.notara.quoteState === 'function') {
       window.notara.quoteState({
         summary: msg,
-        params: { timestamp: formatTime(t), model: st.model, R_over_d: Number(tr.R.toFixed(2)), alphaDeg: Math.round(tr.alphaDeg), xmax: Number(tr.xmax.toFixed(2)), deflectionDeg: Math.round(tr.degSweep) }
+        params: { timestamp: formatTime(t), model: st.model, R_over_d: Number(tr.R.toFixed(2)), alphaDeg: Math.round(tr.alphaDeg), deflectionDeg: Math.round(tr.degSweep) }
       });
-      toastEl.textContent = '已将当前临界帧（R=' + tr.R.toFixed(2) + 'd, α=' + Math.round(tr.alphaDeg) + '°）带入书房课堂草稿。';
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
     } else {
-      toastEl.textContent = '当前临界帧上下文已生成：' + msg;
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，R=' + tr.R.toFixed(2) + 'd）。';
     }
     render();
   });
