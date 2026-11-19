@@ -1,0 +1,52 @@
+{
+  "nodes": [
+    {
+      "id": "node-root",
+      "type": "text",
+      "x": 80,
+      "y": 40,
+      "width": 360,
+      "height": 150,
+      "color": "2",
+      "text": "### 核心命题：切线能否直接当作全局单侧不等式？\n\n差函数 $g(t) = f(t) - [f(t_0) + f'(t_0)(t-t_0)]$\n\n关键不在“切线”本身，而在 $g'(t) = f'(t) - f'(t_0)$ 在 $t_0$ 两侧是否真正变号。"
+    },
+    {
+      "id": "node-convex",
+      "type": "text",
+      "x": -130,
+      "y": 260,
+      "width": 340,
+      "height": 165,
+      "color": "5",
+      "text": "### 分支 A · 二阶导保号（凹凸性不变）\n\n代表：$f(t)=e^t$ 在 $t_0=0$ 切线 $y=1+t$。\n\n$f''(t)=e^t > 0$ 恒正 $\\implies g(t)$ 先减后增，在 $t=0$ 取最小值 $0$，恒有 $e^t \\ge 1+t$。"
+    },
+    {
+      "id": "node-inflection",
+      "type": "text",
+      "x": 290,
+      "y": 260,
+      "width": 340,
+      "height": 165,
+      "color": "1",
+      "text": "### 分支 B · 拐点处二阶导变号（单侧失效）\n\n反例：$f(t)=t^3$ 在 $t_0=0$ 切线 $y=0$。\n\n$f''(t)=6t$ 过原点变号 $\\implies g(t)=t^3$ 左负右正，图像直接穿过切线！"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1",
+      "fromNode": "node-root",
+      "fromSide": "bottom",
+      "toNode": "node-convex",
+      "toSide": "top",
+      "label": "f''(t) 保号"
+    },
+    {
+      "id": "edge-2",
+      "fromNode": "node-root",
+      "fromSide": "bottom",
+      "toNode": "node-inflection",
+      "toSide": "top",
+      "label": "f''(t) 变号"
+    }
+  ]
+}

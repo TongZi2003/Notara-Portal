@@ -22,6 +22,7 @@ import {
   showcaseScenes,
 } from './library.mjs';
 import { mark, showcaseFigure } from './plates.mjs';
+import { buildStaticOpenFeeds, OPEN_LABS_FEED_URL, OPEN_LABS_PACK_DEFS } from './open-feeds.mjs';
 import { generateParchmentPngBuffer } from './texture.mjs';
 
 const require = createRequire(import.meta.url);
@@ -61,10 +62,10 @@ function pageShell({ title, description, currentPath, body, appPage = false }) {
         <div class="wrap colophon-inner">
           <span>Notara · 以“人”为镜，可以明得失。</span>
           <div class="colophon-links">
+            <a href="/code-video/">代码视频微课</a>
+            <a href="/feeds/open-labs/catalog.json">公开连接器源 JSON</a>
             <a href="/letters/">三封公开信</a>
             <a href="/library/">资源市集与样卷</a>
-            <a href="/first-lesson/">指针步进实景</a>
-            <a href="/lessons/derivative-tangent/">切线与放缩实景</a>
             <a href="/guide/">本地文件与 BYOK 说明</a>
           </div>
         </div>
@@ -665,6 +666,65 @@ function renderGuide(currentPath = '/guide/') {
   });
 }
 
+function renderCodeVideoPage(catalogItems = []) {
+  const itemsHtml = OPEN_LABS_PACK_DEFS.map((def, idx) => {
+    const meta = catalogItems.find((c) => c.id === def.id);
+    const kb = meta ? `${Math.max(1, Math.round(meta.bundleBytes / 1024))} KB` : '~24 KB';
+    return `<section class="chapter" style="padding-top:${idx === 0 ? '24px' : '44px'};border-top:${idx === 0 ? '0' : '1px solid var(--rule)'};">
+      <div class="chapter-head chapter-head--wide" style="margin-bottom:20px;">
+        <p class="section-rubric">代码视频样板 0${idx + 1} · ${esc(def.subject)}</p>
+        <h2>${esc(def.title)}</h2>
+        <p>${esc(def.description)}</p>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:12.5px;color:var(--ink-muted);">
+          <span>整包大小（含导读 + 双卡 + 白板 + 动画脚本）：<strong>${esc(kb)}</strong></span>
+          <span>·</span>
+          <a href="/feeds/open-labs/bundles/${esc(def.id)}.notara-pack.json" style="color:var(--accent);text-decoration:underline;">查看真实 .notara-pack.json ↗</a>
+        </div>
+      </div>
+      <div style="border:1px solid var(--rule-strong);border-radius:14px;overflow:hidden;background:#fdfbf7;box-shadow:0 12px 32px rgba(44,39,34,0.06);">
+        <iframe
+          src="/code-video/demos/${esc(def.demoSlug)}.html"
+          title="${esc(def.title)}"
+          sandbox="allow-scripts"
+          style="display:block;width:100%;height:610px;border:0;background:#fdfbf7;"
+          loading="${idx === 0 ? 'eager' : 'lazy'}"
+        ></iframe>
+      </div>
+    </section>`;
+  }).join('');
+
+  const body = `
+    <div class="wrap">
+      <header class="page-header">
+        <p class="section-rubric">L1 真实公开连接器源 · 交互式代码视频</p>
+        <h1>随时按下暂停就能改参数的<span class="nowrap"> 20 KB 矢量代码微课。</span></h1>
+        <p>
+          下面两套开放微课包已直接打包为标准 <code>.notara-pack.json</code> 并挂载至公网开放连接器源。你可以在网页里直接点击播放、拖动时间轴、随时暂停伸手改参数；也可以把下方 <code>catalog.json</code> 地址贴进 Notara 桌面端「私人书房 → 连接器」，一键免登录订阅并无损合入你的本地学习集。
+        </p>
+        <div style="margin-top:18px;padding:12px 16px;border-radius:10px;border:1px solid var(--rule-strong);background:var(--paper-sheet);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div style="min-width:0;font-size:13px;">
+            <strong style="display:block;margin-bottom:3px;color:var(--ink);">公网开放连接器地址（免登录直连）：</strong>
+            <code style="word-break:break-all;color:var(--accent);">${esc(OPEN_LABS_FEED_URL)}</code>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a class="btn-quiet" href="/feeds/open-labs/catalog.json">查看原始 catalog.json ↗</a>
+            <a class="btn-primary" href="/library/">返回资源市集与样卷</a>
+          </div>
+        </div>
+      </header>
+
+      ${itemsHtml}
+    </div>
+  `;
+
+  return pageShell({
+    title: '交互式代码视频微课与公开连接器源 · Notara',
+    description: '体验 20 KB 60fps 矢量交互代码视频微课，并获取 Notara 真实公网开放连接器源 catalog.json。',
+    currentPath: '/code-video/',
+    body,
+  });
+}
+
 function render404Page() {
   const body = `
     <section class="hero" style="padding-top:96px;padding-bottom:96px;">
@@ -790,6 +850,9 @@ for (const png of await readdir(avatarSrcDir)) {
 // 4. Generate seamless 640x640 Retina raking-light parchment relief texture (#ece7dc base)
 await writeFile(join(distDir, 'assets/parchment-tile.png'), generateParchmentPngBuffer(640));
 
+// 4b. Build real static Open Market Feeds (`/feeds/open-labs/catalog.json` + `.notara-pack.json` + interactive code-video demos)
+const { catalogItems: openFeedItems } = await buildStaticOpenFeeds({ rootDir, distDir });
+
 // 5. Write portal CSS, study JS & all static HTML routes
 await writeFile(join(distDir, 'portal.css'), await readFile(join(rootDir, 'portal.css'), 'utf8'), 'utf8');
 await writeFile(join(distDir, 'study.mjs'), await readFile(join(rootDir, 'study.mjs'), 'utf8'), 'utf8');
@@ -801,8 +864,9 @@ await writeRoute('resources', renderLibraryPage('/resources/'));
 await writeRoute('letters', renderLettersPage());
 await writeRoute('guide', renderGuide('/guide/'));
 await writeRoute('install', renderGuide('/install/'));
+await writeRoute('code-video', renderCodeVideoPage(openFeedItems));
 
-const canonicalPaths = ['/', '/library/', '/resources/', '/letters/', '/guide/', '/install/'];
+const canonicalPaths = ['/', '/library/', '/resources/', '/code-video/', '/letters/', '/guide/', '/install/'];
 for (const lesson of lessons) {
   const lessonPath = `/lessons/${lesson.slug}/`;
   await writeRoute(join('lessons', lesson.slug), renderLessonPage(lesson, lessonPath));

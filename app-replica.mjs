@@ -1180,13 +1180,18 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
 
         <div class="market-subscribe-bar">
           <div class="market-sub-copy">
-            <strong>去中心化开放源协议（<code>.notara-pack</code> / <code>catalog.json</code>）：</strong>
-            <span>除官方精选外，任何高校社团、老师或学长托管的公开课程目录，粘贴地址即可一键订阅进你的私人书房。</span>
+            <strong>真实公网开放源已上线（<code>.notara-pack</code> / <code>catalog.json</code>）：</strong>
+            <span>桌面端直接粘贴 <code>https://learn.oh-my-student.com/feeds/open-labs/catalog.json</code> 即可免登录订阅公开「代码视频」微课源并无损合入本地图谱。</span>
           </div>
-          <a class="pa-sdoc-secondary-btn" href="${actionHref}" style="text-decoration:none;flex:none;">
-            <span>${actionLabel}</span>
-            ${icons.arrowRight}
-          </a>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;flex:none;">
+            <a class="pa-sdoc-secondary-btn" href="/code-video/" style="text-decoration:none;flex:none;">
+              <span>在线试玩 20 KB 代码视频</span>
+              ${icons.arrowRight}
+            </a>
+            <a class="pa-sdoc-ghost-btn pa-sdoc-ghost-btn--bordered" href="${actionHref}" style="text-decoration:none;flex:none;">
+              <span>${actionLabel}</span>
+            </a>
+          </div>
         </div>
       </div>
 
