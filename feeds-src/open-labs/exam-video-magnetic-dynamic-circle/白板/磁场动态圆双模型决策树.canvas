@@ -1,0 +1,52 @@
+{
+  "nodes": [
+    {
+      "id": "mag-root",
+      "type": "text",
+      "x": 90,
+      "y": 30,
+      "width": 370,
+      "height": 145,
+      "color": "2",
+      "text": "### 高考物理有界磁场动态圆：先判“谁在变”\n\n动力学核心永远是 $R = \\frac{mv}{qB}$ 与 $t = \\frac{\\Delta\\varphi}{2\\pi}T$。\n\n审题第一步立刻分流：变速率（放缩圆）还是变方向（旋转圆）？"
+    },
+    {
+      "id": "mag-scale",
+      "type": "text",
+      "x": -130,
+      "y": 240,
+      "width": 350,
+      "height": 185,
+      "color": "1",
+      "text": "### 分支 A · 方向定、速率变（放缩圆）\n\n圆心 $O'$ 沿垂直初速度的射线滑动。\n\n**相切临界防错**：必先算圆心横坐标 $x_c = R\\sin\\theta$，再列 $R(1+\\sin\\theta)=d$（绝不无脑套 $2R=d$！）。\n\n**时间陷阱**：穿右界瞬间圆心角从 $240^\\circ$ 骤跳到 $120^\\circ$。"
+    },
+    {
+      "id": "mag-rotate",
+      "type": "text",
+      "x": 290,
+      "y": 240,
+      "width": 350,
+      "height": 185,
+      "color": "5",
+      "text": "### 分支 B · 速率定、方向变（旋转圆）\n\n半径 $R$ 恒定，圆心 $O'$ 在以入射点 $O$ 为圆心、$R$ 为半径的圆上转。\n\n**打击亮带防错**：检查轨迹是否提前穿出右边界！当 $R=0.75d$ 时，有效范围是 $[-\\sqrt{2Rd-d^2}, +\\sqrt{2Rd-d^2}]$ 而非 $\\pm\\sqrt{4R^2-d^2}$。"
+    }
+  ],
+  "edges": [
+    {
+      "id": "mag-e1",
+      "fromNode": "mag-root",
+      "fromSide": "bottom",
+      "toNode": "mag-scale",
+      "toSide": "top",
+      "label": "速率变 → 放缩圆"
+    },
+    {
+      "id": "mag-e2",
+      "fromNode": "mag-root",
+      "fromSide": "bottom",
+      "toNode": "mag-rotate",
+      "toSide": "top",
+      "label": "方向变 → 旋转圆"
+    }
+  ]
+}

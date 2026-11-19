@@ -686,7 +686,7 @@ function renderCodeVideoPage(catalogItems = []) {
           src="/code-video/demos/${esc(def.demoSlug)}.html"
           title="${esc(def.title)}"
           sandbox="allow-scripts"
-          style="display:block;width:100%;height:610px;border:0;background:#fdfbf7;"
+          style="display:block;width:100%;height:${Number(def.demoHeight) || 610}px;border:0;background:#fdfbf7;"
           loading="${idx === 0 ? 'eager' : 'lazy'}"
         ></iframe>
       </div>

@@ -7,10 +7,52 @@ import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 
 export const OPEN_LABS_FEED_URL = 'https://learn.oh-my-student.com/feeds/open-labs/catalog.json';
+export const HS_PHYSICS_FEED_URL = 'https://learn.oh-my-student.com/feeds/hs-physics/catalog.json';
 export const HS_MATH_FEED_URL = 'https://learn.oh-my-student.com/feeds/hs-math/catalog.json';
 export const UNI_MATH_FEED_URL = 'https://learn.oh-my-student.com/feeds/uni-math/catalog.json';
 
 export const OPEN_LABS_PACK_DEFS = Object.freeze([
+  Object.freeze({
+    id: 'exam-video-magnetic-dynamic-circle',
+    version: '1.0.0',
+    updatedAt: '2026-11-19',
+    updateCadence: '高考应试示范源 · 含阅卷采分板与押注断点',
+    subjectKey: 'hs-physics-magnetic',
+    title: '应试代码微课 · 高考物理有界磁场动态圆临界实战',
+    stage: '高中',
+    subject: '高中物理 · 磁场压轴（放缩圆 × 旋转圆）',
+    entryPath: '00-代码微课-磁场动态圆应试导读.md',
+    description:
+      '硬核应试向 26 KB 矢量代码微课：动态扫屏放缩圆临界相切与旋转圆打击亮带，右侧实时同步高考阅卷 9 分采分板，并在“误写 2R=d”扣分陷阱处自动定格发起红笔押注。',
+    prerequisites: ['左手定则判断洛伦兹力方向、圆周运动向心力公式 qvB = mv²/R'],
+    chapters: [
+      '第 1–2 幕：放缩圆圆心轨线、R(1+sin30°)=d 临界相切与红笔押注排雷',
+      '第 3–4 幕：穿界运动时间腰斩跳变（240°→120°）与旋转圆右边界打击亮带',
+    ],
+    tags: ['高考应试', '代码视频', '高中物理', '磁场动态圆', '阅卷采分点'],
+    recommendedClub: {
+      defaultTeacherKey: 'teacher-demon',
+      defaultCompanionPreset: 'companion-deepseek',
+    },
+    accessTier: 'free',
+    creditCost: 0,
+    priceCny: 0,
+    requiresAccount: false,
+    demoHtmlRelPath: '可视化/磁场动态圆应试代码视频.html',
+    demoSlug: 'magnetic-dynamic-circle',
+    demoHeight: 685,
+    changelog: [
+      {
+        version: '1.0.0',
+        date: '2026-11-19',
+        tag: '首个高考硬核应试代码微课',
+        highlights: [
+          '左侧 60fps 放缩圆 / 旋转圆双模型矢量磁场画布，右侧实时同步高考 4 步阅卷采分板。',
+          '内置第 18 秒临界相切强制「阅卷红笔押注」断点：点错 2R=d 当场画出 0.25d 缺口并红笔扣分演示。',
+        ],
+      },
+    ],
+  }),
   Object.freeze({
     id: 'code-video-secant-to-tangent',
     version: '1.0.0',
@@ -213,17 +255,39 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
   await writeFile(join(feedOutDir, 'catalog.json'), `${JSON.stringify(catalogPayload, null, 2)}\n`, 'utf8');
 
   // Subject-focused static feeds pointing to the same canonical bundles via relative URLs
+  const hsPhysicsFeedDir = join(distDir, 'feeds', 'hs-physics');
   const hsFeedDir = join(distDir, 'feeds', 'hs-math');
   const uniFeedDir = join(distDir, 'feeds', 'uni-math');
+  await mkdir(hsPhysicsFeedDir, { recursive: true });
   await mkdir(hsFeedDir, { recursive: true });
   await mkdir(uniFeedDir, { recursive: true });
 
+  const hsPhysicsItems = catalogItems
+    .filter((it) => it.id === 'exam-video-magnetic-dynamic-circle')
+    .map((it) => ({ ...it, bundleUrl: `../open-labs/bundles/${it.id}.notara-pack.json` }));
   const hsItems = catalogItems
     .filter((it) => it.id === 'code-video-secant-to-tangent')
     .map((it) => ({ ...it, bundleUrl: `../open-labs/bundles/${it.id}.notara-pack.json` }));
   const uniItems = catalogItems
     .filter((it) => it.id === 'code-video-eigen-geometry')
     .map((it) => ({ ...it, bundleUrl: `../open-labs/bundles/${it.id}.notara-pack.json` }));
+
+  await writeFile(
+    join(hsPhysicsFeedDir, 'catalog.json'),
+    `${JSON.stringify(
+      {
+        schemaVersion: 'notara-catalog/v1',
+        id: 'notara-hs-physics-feed',
+        label: '高中物理压轴应试代码微课源',
+        author: 'Notara 官方公开教研站',
+        description: '聚焦高考物理磁场动态圆（放缩圆/旋转圆）、临界相切与阅卷采分点排雷的硬核应试代码视频微课源。',
+        items: hsPhysicsItems,
+      },
+      null,
+      2
+    )}\n`,
+    'utf8'
+  );
 
   await writeFile(
     join(hsFeedDir, 'catalog.json'),
@@ -273,6 +337,19 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
         catalogUrl: OPEN_LABS_FEED_URL,
         packCountHint: catalogItems.length,
         tags: ['真实公网源', '代码视频', '免登录', '零覆盖 Merge'],
+      },
+      {
+        id: 'notara-hs-physics-feed',
+        label: '高中物理压轴应试代码微课源',
+        author: 'Notara 官方公开教研站',
+        stage: '高中',
+        subject: '物理 · 磁场动态圆与阅卷采分',
+        updateCadence: '按高考高频压轴模型持续增补',
+        description:
+          '内置放缩圆与旋转圆双模型矢量动画、同步高考 9 分阅卷采分板与“2R=d 红笔押注”排雷断点。',
+        catalogUrl: HS_PHYSICS_FEED_URL,
+        packCountHint: hsPhysicsItems.length,
+        tags: ['高考物理', '应试代码视频', '红笔押注'],
       },
       {
         id: 'notara-hs-math-feed',
