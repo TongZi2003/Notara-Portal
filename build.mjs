@@ -43,6 +43,12 @@ const WIN_SHA256SUMS_URL =
 const WIN_RELEASE_PAGE_URL =
   'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/tag/v0.1.0-preview.7';
 const DESKTOP_ISSUES_URL = 'https://github.com/TongZi2003/Notara-Desktop-Releases/issues';
+const MAC_INSTALLER_VERSION = 'v0.1.0-preview.7';
+const MAC_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.7-arm64.dmg';
+const MAC_INSTALLER_SIZE_LABEL = '561 MB';
+const MAC_INSTALLER_SHA256 = '048afe013c2f06219b66f5ea8378bc61032f40552d87c1a35d9f016b1a81669e';
+const MAC_INSTALLER_URL =
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.7/Notara-PersonalAgent-0.1.0-preview.7-arm64.dmg';
 
 function pageShell({ title, description, currentPath, body, appPage = false }) {
   const isLibrary = currentPath === '/library/' || currentPath === '/resources/';
@@ -392,7 +398,7 @@ function renderHome() {
           </div>
           <div class="closing-actions">
             <a class="btn-primary" href="/first-lesson/">进入实景课堂试一课</a>
-            <a class="btn-quiet" href="/guide/#download">前往下载 Windows 内测版与上手说明 →</a>
+            <a class="btn-quiet" href="/guide/#download">前往下载 macOS / Windows 内测版 →</a>
             <span class="closing-spec">支持 macOS（Apple Silicon / Intel）与 Windows 10/11 · 本地开放文档</span>
           </div>
         </div>
@@ -637,14 +643,25 @@ function renderGuide(currentPath = '/guide/') {
             </div>
           </div>
 
-          <div class="download-card">
-            <span class="download-card-tag">macOS · Apple Silicon (M1–M4) &amp; Intel</span>
+          <div class="download-card download-card--featured">
+            <span class="download-card-tag">macOS · Apple Silicon (M1–M4) · 首轮内测开放下载</span>
             <h2>Notara 桌面端 for macOS</h2>
-            <p>支持 macOS 13 及以上系统。Apple Developer ID 公证 DMG 安装包正在准备公证签名分发；你可以先在浏览器免登录体验 1:1 真实课堂、卡片与白板。</p>
+            <p>支持 macOS 13 及以上（Apple Silicon M1–M4）。内置运行环境、PDF 渲染、离线公式字体与开放起步学习集；Intel Mac 用户可先免登录体验 <a href="/first-lesson/" style="color:var(--umber-deep);text-decoration:underline;">1:1 在线实景课堂</a>。</p>
             <div class="download-card-actions">
-              <a class="btn-quiet" href="/first-lesson/">先在线体验 1:1 实景课堂 →</a>
-              <a class="btn-quiet" href="/library/">浏览公开样卷 →</a>
-              <span style="font-size:0.78rem;color:var(--ink-muted);">v0.1.0-preview · 公证签名准备中</span>
+              <a class="btn-primary" href="${MAC_INSTALLER_URL}" rel="noopener" data-download-mac>下载 macOS 安装包（.dmg · ${MAC_INSTALLER_SIZE_LABEL}）</a>
+              <a class="btn-quiet" href="${WIN_RELEASE_PAGE_URL}" target="_blank" rel="noopener">版本说明与附件清单 ↗</a>
+            </div>
+            <div class="download-meta-box">
+              <div class="download-meta-file">
+                <span>当前内测版本：<strong>${MAC_INSTALLER_VERSION}</strong></span>
+                <code>${MAC_INSTALLER_FILENAME}</code>
+              </div>
+              <div class="download-sha-row">
+                <span class="download-sha-label">SHA-256</span>
+                <code class="download-sha-code">${MAC_INSTALLER_SHA256}</code>
+                <button type="button" class="download-copy-btn" data-copy-sha="${MAC_INSTALLER_SHA256}">复制 SHA-256</button>
+                <a class="download-sha-link" href="${WIN_SHA256SUMS_URL}" target="_blank" rel="noopener">SHA256SUMS.txt ↗</a>
+              </div>
             </div>
           </div>
         </div>
@@ -652,12 +669,12 @@ function renderGuide(currentPath = '/guide/') {
         <div class="install-notes-sheet">
           <div class="install-notes-head">
             <h3>内测安装与 BYOK 快速排障须知</h3>
-            <span>面向首轮 Windows x64 BYOK 内测用户</span>
+            <span>面向首轮 macOS (Apple Silicon) 与 Windows (x64) BYOK 内测用户</span>
           </div>
           <div class="install-notes-grid">
             <div class="install-note-item">
-              <h4>1. SmartScreen 首次启动提示</h4>
-              <p>内测预览版暂未绑定商业 EV 代码签名证书，Windows 若弹出「Windows 已保护你的电脑」，可先核对下方 SHA-256 或运行 <code>Get-FileHash .\${WIN_INSTALLER_FILENAME} -Algorithm SHA256</code> 校验完整，再点击「更多信息 → 仍要运行」。</p>
+              <h4>1. 首次启动系统安全放行（macOS / Windows）</h4>
+              <p><strong>macOS</strong>：将 <code>Notara.app</code> 拖入「应用程序」后，若提示“未打开 / 无法验证开发者”，在终端运行 <code>xattr -cr /Applications/Notara.app</code>（或到「系统设置 → 隐私与安全性」底部点「仍要打开」）即可启动。<br><strong>Windows</strong>：若弹出 SmartScreen「Windows 已保护你的电脑」，核对 SHA-256 后点击「更多信息 → 仍要运行」。</p>
             </div>
             <div class="install-note-item">
               <h4>2. 免注册 BYOK 与视觉模型提示</h4>
