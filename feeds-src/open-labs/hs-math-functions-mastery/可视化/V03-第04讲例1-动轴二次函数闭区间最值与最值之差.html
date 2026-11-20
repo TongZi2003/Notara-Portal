@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第04讲·例1 · 动轴二次函数闭区间最值与最值之差</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
+    overflow: hidden;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
+  }
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
+  }
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 306px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2b251f;
+  }
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sol-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.54;
+    cursor: pointer;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .sol-step:hover { opacity: 0.86; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #355070;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13px;
+    color: #25201b;
+    line-height: 1.62;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.2px;
+    color: #2b251f;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.58;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
+
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+  }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+    margin-top: 4px;
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 88px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #355070;
+  }
+  .mode-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.26);
+    background: transparent;
+    color: #6b5f52;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font: 500 11.5px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .mode-btn[aria-pressed="true"] {
+    border-color: #a83825;
+    color: #a83825;
+    background: rgba(168, 56, 37, 0.06);
+    font-weight: 600;
+  }
+
+  @media (max-width: 700px) {
+    .sheet-head { padding: 9px 14px; flex-wrap: wrap; }
+    .sheet-title { font-size: 14px; }
+    .sheet-live { font-size: 12px; }
+    .sheet-grid { grid-template-columns: 1.04fr 1fr; min-height: 318px; }
+    .sheet-left { padding: 10px 12px 11px; }
+    canvas { height: 248px; }
+    .sheet-note { font-size: 11.8px; line-height: 1.6; padding-top: 7px; }
+    .sheet-right { padding: 11px 13px 10px; }
+    .sol-steps { gap: 5px; }
+    .sol-step { padding: 4px 6px 4px 9px; }
+    .sol-step-top { font-size: 11.5px; margin-bottom: 1px; }
+    .sol-eq { font-size: 12px; line-height: 1.48; }
+    .sheet-foot { padding: 8px 14px; gap: 10px; }
+    .foot-transport { min-width: 170px; gap: 8px; }
+    .play-btn { padding: 4px 10px; font-size: 11.5px; }
+    .foot-params { gap: 8px; }
+    .param-pair input[type="range"] { width: 64px; }
+  }
+
+  @media (max-width: 470px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">第04讲·例1 · 动轴二次函数闭区间最值与最值之差</h1>
+    <div class="sheet-live" id="live-readout"></div>
+  </header>
+
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
+    </div>
+
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>分类标准与最值之差</h2>
+          <span class="sol-total mono">4 幕微课</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0" data-active="true">
+            <div class="sol-step-top"><span>（一）配方摆明三关键点</span><span class="sol-pts mono">00:04</span></div>
+            <div class="sol-eq"><math display="inline"><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup></math>，比较 <math display="inline"><mo>±</mo><mn>1</mn></math> 与顶点</div>
+          </li>
+          <li class="sol-step" data-jump="16" data-step="1">
+            <div class="sol-step-top"><span>（二）三段最小与两段最大</span><span class="sol-pts mono">00:16</span></div>
+            <div class="sol-eq"><math display="inline"><mi>m</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></math> 看端点 <math display="inline"><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn></math>；<math display="inline"><mi>M</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></math> 看中点 <math display="inline"><mn>0</mn></math> 分两段</div>
+          </li>
+          <li class="sol-step" data-jump="30" data-step="2">
+            <div class="sol-step-top"><span>（三）并集切四段算差</span><span class="sol-pts mono">00:30</span></div>
+            <div class="sol-eq">在 <math display="inline"><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false">]</mo></math> 取 <math display="inline"><msup><mrow><mo stretchy="false">(</mo><mi>a</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></math>，在 <math display="inline"><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></math> 取 <math display="inline"><msup><mrow><mo stretchy="false">(</mo><mi>a</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></math></div>
+          </li>
+          <li class="sol-step" data-jump="42" data-step="3">
+            <div class="sol-step-top"><span>（四）中点对称取最小 1</span><span class="sol-pts mono">00:42</span></div>
+            <div class="sol-eq"><math display="inline"><mi>a</mi><mo>=</mo><mn>0</mn></math> 时两端齐平为 <math display="inline"><mn>4</mn></math>，<math display="inline"><mi>g</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mo>=</mo><mn>4</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>1</mn></math></div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>易错自测 · 00:30</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <div style="font-size:12px;color:#3a332c;margin-bottom:4px;">求最值之差 <math display="inline"><mi>g</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo>=</mo><mi>M</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo>−</mo><mi>m</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></math> 时，区间 <math display="inline"><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></math> 应如何处理？</div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：因为顶点都在 <math display="inline"><mo stretchy="false">[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo></math> 内，<math display="inline"><mi>m</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></math> 不变，合并为一段即可</button>
+          <button type="button" class="bet-choice" data-bet="right">乙：必须在 <math display="inline"><mi>a</mi><mo>=</mo><mn>0</mn></math> 处再切一刀，因为 <math display="inline"><mi>M</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></math> 在中点 <math display="inline"><mn>0</mn></math> 处换边</button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
+      </div>
+
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">自测一下</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="4.0" aria-label="时间轴">
+      <span class="clock mono" id="clock">00:04 / 00:48</span>
+    </div>
+    <div class="foot-params">
+      <label class="param-pair" title="拖动对称轴 x = a">
+        <span>对称轴 <math display="inline"><mi>a</mi></math></span>
+        <input type="range" class="hairline-range" id="a-slider" data-param="axis_a" min="-1.80" max="1.80" step="0.02" value="-0.60">
+      </label>
+      <button type="button" class="mode-btn" id="preset-a0" aria-pressed="false">a = 0</button>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 48;
+
+  var playing = false;
+  var interactiveOverride = false;
+  var manualA = -0.60;
+  var betFiredDuringPlay = false;
+  var showWrongMerge = false;
+  var betResult = '';
+  var t = 4.0;
+  var lastTs = 0;
+
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+  var playBtn = document.getElementById('play-btn');
+  var timeline = document.getElementById('timeline');
+  var timeEl = document.getElementById('clock');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
+  var aSlider = document.getElementById('a-slider');
+  var presetA0 = document.getElementById('preset-a0');
+  var betOverlay = document.getElementById('bet-overlay');
+  var betFeedback = document.getElementById('bet-feedback');
+  var betSkip = document.getElementById('bet-skip');
+  var openBetBtn = document.getElementById('open-bet-btn');
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
+  var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function formatTime(sec) {
+    var s = Math.max(0, Math.floor(sec));
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function snapA(raw) {
+    var v = clamp(raw, -1.8, 1.8);
+    if (Math.abs(v) < 0.03) return 0;
+    if (Math.abs(v + 1) < 0.03) return -1;
+    if (Math.abs(v - 1) < 0.03) return 1;
+    return v;
+  }
+
+  function evalMetrics(a) {
+    var fL = 2 * a + 4;
+    var fR = 4 - 2 * a;
+    var fV = 3 - a * a;
+    var mVal, mX, MVal, MX, branch;
+    if (a <= -1) {
+      mVal = fL; mX = -1;
+    } else if (a < 1) {
+      mVal = fV; mX = a;
+    } else {
+      mVal = fR; mX = 1;
+    }
+    if (a <= 0) {
+      MVal = fR; MX = 1;
+    } else {
+      MVal = fL; MX = -1;
+    }
+    if (a <= -1) branch = '-4a';
+    else if (a <= 0) branch = '(a-1)^2';
+    else if (a < 1) branch = '(a+1)^2';
+    else branch = '4a';
+    return {
+      fL: fL, fR: fR, fV: fV,
+      mVal: mVal, mX: mX,
+      MVal: MVal, MX: MX,
+      gVal: MVal - mVal,
+      branch: branch
+    };
+  }
+
+  function evalG(a) {
+    if (a <= -1) return -4 * a;
+    if (a <= 0) return (a - 1) * (a - 1);
+    if (a < 1) return (a + 1) * (a + 1);
+    return 4 * a;
+  }
+
+  function computeState() {
+    var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
+    if (interactiveOverride) {
+      var aUse = snapA(manualA);
+      var met = evalMetrics(aUse);
+      var sc = Math.abs(aUse) < 0.01 ? 3 : Math.abs(aUse) < 1 ? 2 : 1;
+      return {
+        sceneIdx: sc,
+        a: aUse,
+        metrics: met,
+        noteHtml: Math.abs(aUse) < 0.01
+          ? '当 ' + M('<mi>a</mi><mo>=</mo><mn>0</mn>') + ' 时对称轴平分 ' + M('<mo stretchy="false">[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo>') + '，两端同高 ' + M('<mi>M</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mo>=</mo><mn>4</mn>') + '、顶点 ' + M('<mi>m</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mo>=</mo><mn>3</mn>') + '，最值之差取得全局最小 ' + M('<mn>1</mn>') + '。'
+          : '当前 ' + M('<mi>a</mi><mo>=</mo><mn>' + aUse.toFixed(2) + '</mn>') + '：最小值在 ' + M('<mi>x</mi><mo>=</mo><mn>' + met.mX.toFixed(2) + '</mn>') + ' 得 ' + met.mVal.toFixed(2) + '，最大值在 ' + M('<mi>x</mi><mo>=</mo><mn>' + met.MX.toFixed(0) + '</mn>') + ' 得 ' + met.MVal.toFixed(2) + '，最值之差 ' + M('<mi>g</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo>=</mo><mn>' + met.gVal.toFixed(2) + '</mn>') + '。'
+      };
+    }
+
+    if (sceneIdx === 0) {
+      // t=4 hits a = -0.60
+      var a0 = t <= 4 ? lerp(-1.5, -0.6, t / 4) : lerp(-0.6, 0.8, (t - 4) / 8);
+      a0 = snapA(a0);
+      return {
+        sceneIdx: 0,
+        a: a0,
+        metrics: evalMetrics(a0),
+        noteHtml: '开口向上的抛物线 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>3</mn><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup>') + ' 在闭区间 ' + M('<mo stretchy="false">[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo>') + ' 上离对称轴越近越低、越远越高。'
+      };
+    }
+
+    if (sceneIdx === 1) {
+      // Sweeps -1.55 -> 1.55 across all three m(a) regimes
+      var a1 = lerp(-1.55, 1.55, (t - 12) / 12);
+      a1 = snapA(a1);
+      return {
+        sceneIdx: 1,
+        a: a1,
+        metrics: evalMetrics(a1),
+        noteHtml: '分界对比：' + M('<mi>m</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo>') + ' 看顶点是否落入 ' + M('<mo stretchy="false">[</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo>') + '（分三段）；' + M('<mi>M</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo>') + ' 比两端点谁更远，只需看中点 ' + M('<mn>0</mn>') + '（分两段）。'
+      };
+    }
+
+    if (sceneIdx === 2) {
+      // Moves from -0.80 to +0.50 at t=30
+      var a2 = t <= 30 ? lerp(-0.80, 0.50, (t - 24) / 6) : lerp(0.50, -0.50, (t - 30) / 6);
+      a2 = snapA(a2);
+      return {
+        sceneIdx: 2,
+        a: a2,
+        metrics: evalMetrics(a2),
+        noteHtml: '将 ' + M('<mo>−</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn>') + ' 取并集拆成四段：过 ' + M('<mi>a</mi><mo>=</mo><mn>0</mn>') + ' 后最大值由 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo>') + ' 切换为 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo>') + '，最值之差由 ' + M('<msup><mrow><mo stretchy="false">(</mo><mi>a</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>') + ' 折成 ' + M('<msup><mrow><mo stretchy="false">(</mo><mi>a</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>') + '。'
+      };
+    }
+
+    var a3 = t <= 42 ? lerp(-0.50, 0.0, (t - 36) / 6) : 0.0;
+    a3 = snapA(a3);
+    return {
+      sceneIdx: 3,
+      a: a3,
+      metrics: evalMetrics(a3),
+      noteHtml: '各段衔接连续：' + M('<mi>a</mi><mo>=</mo><mn>0</mn>') + ' 处对称轴居于正中，两壁齐平 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mn>4</mn>') + '，最值之差 ' + M('<mi>g</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo>') + ' 取得唯一最小值 ' + M('<mn>1</mn>') + '。'
+    };
+  }
+
+  function setupCanvasSize() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var rect = canvas.getBoundingClientRect();
+    var cssW = Math.max(280, Math.round(rect.width || 440));
+    var cssH = Math.max(200, Math.round(rect.height || 306));
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: cssW, H: cssH };
+  }
+
+  function drawLabel(text, x, y, color, font, align, baseline) {
+    ctx.save();
+    ctx.font = font || '600 10.5px ui-monospace, Menlo, monospace';
+    ctx.textAlign = align || 'left';
+    ctx.textBaseline = baseline || 'alphabetic';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 3.2;
+    ctx.strokeStyle = '#faf6ee';
+    ctx.strokeText(text, x, y);
+    ctx.fillStyle = color || '#2c2722';
+    ctx.fillText(text, x, y);
+    ctx.restore();
+  }
+
+  function drawDot(x, y, r, fill, ring) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (ring) {
+      ctx.strokeStyle = ring;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+  }
+
+  function render() {
+    var st = computeState();
+    var met = st.metrics;
+    openBetBtn.textContent = betOverlay.hidden ? '自测一下' : '收起自测';
+    presetA0.setAttribute('aria-pressed', Math.abs(st.a) < 0.01 ? 'true' : 'false');
+
+    var size = setupCanvasSize();
+    var W = size.W, H = size.H;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, W, H);
+
+    var splitY = Math.round(H * 0.62);
+
+    // === TOP PLOT: Parabola f(x) = x^2 - 2ax + 3 on [-1, 1] ===
+    var txMin = -2.2, txMax = 2.2, tyMin = -0.6, tyMax = 8.1;
+    var padL = 28, padR = 24, padT = 12, topBottom = splitY - 12;
+    function tmx(x) { return padL + ((x - txMin) / (txMax - txMin)) * (W - padL - padR); }
+    function tmy(y) { return topBottom - ((y - tyMin) / (tyMax - tyMin)) * (topBottom - padT); }
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(padL - 4, padT - 4, W - padL - padR + 8, topBottom - padT + 8);
+    ctx.clip();
+
+    // Shaded interval strip [-1, 1]
+    ctx.fillStyle = 'rgba(53, 80, 112, 0.075)';
+    ctx.fillRect(tmx(-1), padT, tmx(1) - tmx(-1), topBottom - padT);
+
+    // Axes
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.35)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(tmx(txMin), tmy(0)); ctx.lineTo(tmx(txMax), tmy(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(tmx(0), padT); ctx.lineTo(tmx(0), topBottom); ctx.stroke();
+
+    // Interval boundaries -1, 1 and midpoint 0
+    [-1, 1].forEach(function (bx) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(53, 80, 112, 0.42)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(tmx(bx), padT); ctx.lineTo(tmx(bx), topBottom); ctx.stroke();
+      ctx.restore();
+      drawLabel(String(bx), tmx(bx), tmy(0) + 12, '#355070', '600 10px ui-monospace, Menlo, monospace', 'center');
+    });
+    drawLabel('0', tmx(0) + 5, tmy(0) + 12, '#6b5f52', '500 10px ui-monospace, Menlo, monospace');
+
+    // Sliding symmetry axis x = a
+    ctx.save();
+    ctx.strokeStyle = '#355070';
+    ctx.lineWidth = 1.4;
+    ctx.setLineDash([5, 3]);
+    ctx.beginPath(); ctx.moveTo(tmx(st.a), padT); ctx.lineTo(tmx(st.a), topBottom); ctx.stroke();
+    ctx.restore();
+    drawLabel('x=a', tmx(st.a) + 4, padT + 11, '#355070', '600 10px ui-monospace, Menlo, monospace');
+
+    // Full parabola (pale dashed outside [-1, 1])
+    ctx.save();
+    ctx.strokeStyle = 'rgba(168, 56, 37, 0.30)';
+    ctx.lineWidth = 1.4;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    for (var i = 0; i <= 140; i++) {
+      var x = txMin + ((txMax - txMin) * i) / 140;
+      var y = x * x - 2 * st.a * x + 3;
+      if (i === 0) ctx.moveTo(tmx(x), tmy(y));
+      else ctx.lineTo(tmx(x), tmy(y));
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // Active arc on [-1, 1] in thick vermilion
+    ctx.save();
+    ctx.strokeStyle = '#a83825';
+    ctx.lineWidth = 2.6;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    for (var j = 0; j <= 80; j++) {
+      var xr = -1 + (2 * j) / 80;
+      var yr = xr * xr - 2 * st.a * xr + 3;
+      if (j === 0) ctx.moveTo(tmx(xr), tmy(yr));
+      else ctx.lineTo(tmx(xr), tmy(yr));
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // Horizontal level lines for M(a) and m(a) to right bracket
+    var brX = tmx(1.32);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(168, 56, 37, 0.45)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([2, 2]);
+    ctx.beginPath(); ctx.moveTo(tmx(met.MX), tmy(met.MVal)); ctx.lineTo(brX, tmy(met.MVal)); ctx.stroke();
+    ctx.strokeStyle = 'rgba(53, 80, 112, 0.45)';
+    ctx.beginPath(); ctx.moveTo(tmx(met.mX), tmy(met.mVal)); ctx.lineTo(brX, tmy(met.mVal)); ctx.stroke();
+    ctx.restore();
+
+    // Vertical amplitude span bracket
+    ctx.save();
+    ctx.strokeStyle = '#a83825';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(brX - 3, tmy(met.MVal)); ctx.lineTo(brX + 3, tmy(met.MVal));
+    ctx.moveTo(brX, tmy(met.MVal)); ctx.lineTo(brX, tmy(met.mVal));
+    ctx.moveTo(brX - 3, tmy(met.mVal)); ctx.lineTo(brX + 3, tmy(met.mVal));
+    ctx.stroke();
+    ctx.restore();
+    drawLabel('g=' + met.gVal.toFixed(2), brX + 6, (tmy(met.MVal) + tmy(met.mVal)) * 0.5 + 3, '#a83825', '600 10.5px ui-monospace, Menlo, monospace');
+
+    // Endpoints & vertex markers
+    drawDot(tmx(-1), tmy(met.fL), 4.0, met.MX === -1 ? '#a83825' : '#355070', '#faf6ee');
+    drawDot(tmx(1), tmy(met.fR), 4.0, met.MX === 1 ? '#a83825' : '#355070', '#faf6ee');
+    drawDot(tmx(st.a), tmy(met.fV), 4.2, Math.abs(st.a) < 1 ? '#355070' : '#7c6f60', '#faf6ee');
+
+    drawLabel('M=' + met.MVal.toFixed(1), tmx(met.MX) + (met.MX < 0 ? -6 : 6), tmy(met.MVal) - 7, '#a83825', '600 10px ui-monospace, Menlo, monospace', met.MX < 0 ? 'right' : 'left');
+    drawLabel('m=' + met.mVal.toFixed(1), tmx(met.mX), tmy(met.mVal) + 14, '#355070', '600 10px ui-monospace, Menlo, monospace', 'center');
+
+    ctx.restore();
+
+    // === Divider ===
+    ctx.save();
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.22)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath(); ctx.moveTo(14, splitY); ctx.lineTo(W - 14, splitY); ctx.stroke();
+    ctx.restore();
+
+    // === BOTTOM PLOT: Piecewise Amplitude Difference g(a) ===
+    var bxMin = -1.85, bxMax = 1.85, byMin = 0, byMax = 7.8;
+    var bTop = splitY + 12, bBot = H - 18;
+    function bmx(a) { return padL + ((a - bxMin) / (bxMax - bxMin)) * (W - padL - padR); }
+    function bmy(g) { return bBot - ((g - byMin) / (byMax - byMin)) * (bBot - bTop); }
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.35)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(bmx(bxMin), bBot); ctx.lineTo(bmx(bxMax), bBot); ctx.stroke();
+
+    // Vertical partition markers a = -1, 0, 1
+    [-1, 0, 1].forEach(function (pa) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(53, 80, 112, 0.24)';
+      ctx.lineWidth = 0.9;
+      ctx.setLineDash([2, 2]);
+      ctx.beginPath(); ctx.moveTo(bmx(pa), bTop); ctx.lineTo(bmx(pa), bBot); ctx.stroke();
+      ctx.restore();
+      drawLabel(String(pa), bmx(pa), bBot + 12, '#6b5f52', '500 9.5px ui-monospace, Menlo, monospace', 'center');
+    });
+
+    // Plot piecewise g(a)
+    ctx.save();
+    ctx.strokeStyle = '#355070';
+    ctx.lineWidth = 2.0;
+    ctx.beginPath();
+    for (var k = 0; k <= 160; k++) {
+      var ak = bxMin + ((bxMax - bxMin) * k) / 160;
+      var gk = evalG(ak);
+      if (k === 0) ctx.moveTo(bmx(ak), bmy(gk));
+      else ctx.lineTo(bmx(ak), bmy(gk));
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // Wrong merged curve (a-1)^2 on (0, 1) if user picked wrong bet
+    if (showWrongMerge) {
+      ctx.save();
+      ctx.strokeStyle = '#a83825';
+      ctx.lineWidth = 1.6;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      for (var w = 0; w <= 40; w++) {
+        var aw = w / 40;
+        var gw = (aw - 1) * (aw - 1);
+        if (w === 0) ctx.moveTo(bmx(aw), bmy(gw));
+        else ctx.lineTo(bmx(aw), bmy(gw));
+      }
+      ctx.stroke();
+      ctx.restore();
+      drawLabel('漏切错线 (a-1)^2', bmx(0.62) + 8, bmy(0.14) - 6, '#a83825', '600 9.5px -apple-system, "PingFang SC", sans-serif');
+    }
+
+    // Highlight global minimum (0, 1) and live dot (a, g(a))
+    drawDot(bmx(0), bmy(1), 3.6, '#2c2722', '#faf6ee');
+    drawLabel('最小 (0,1)', bmx(0) + 7, bmy(1) + 4, '#2c2722', '600 9.5px ui-monospace, Menlo, monospace');
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(168, 56, 37, 0.45)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([2, 2]);
+    ctx.beginPath(); ctx.moveTo(bmx(st.a), bBot); ctx.lineTo(bmx(st.a), bmy(met.gVal)); ctx.stroke();
+    ctx.restore();
+    drawDot(bmx(st.a), bmy(met.gVal), 4.4, '#a83825', '#faf6ee');
+    drawLabel('g(a) 分段差值', bmx(0), bTop + 10, '#355070', '600 10px -apple-system, "PingFang SC", sans-serif', 'center');
+
+    ctx.restore();
+
+    liveEl.innerHTML = M('<mi>a</mi><mo>=</mo><mn>' + st.a.toFixed(2) + '</mn>') + ' · ' + M('<mi>g</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo>=</mo><strong>' + met.gVal.toFixed(2) + '</strong>');
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
+    timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
+    timeline.value = t.toFixed(2);
+    aSlider.value = clamp(st.a, -1.80, 1.80).toFixed(2);
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
+
+    for (var sIdx = 0; sIdx < stepEls.length; sIdx++) {
+      stepEls[sIdx].setAttribute('data-active', sIdx === st.sceneIdx ? 'true' : 'false');
+    }
+
+    if (window.notara && typeof window.notara.setState === 'function') {
+      var betNote = betResult === 'wrong'
+        ? '，学生在自测一下中误将(-1,1)合并为一段未在a=0处重切'
+        : betResult === 'right'
+          ? '，学生在自测一下中选对以a=0再切分四段'
+          : '';
+      window.notara.setState({
+        summary: '图解《第04讲·例1 ·动轴二次函数最值与最值之差》停在 ' + formatTime(t) + '（第 ' + (st.sceneIdx + 1) + ' 幕，a=' + st.a.toFixed(2) + '，m=' + met.mVal.toFixed(2) + '，M=' + met.MVal.toFixed(2) + '，g=' + met.gVal.toFixed(2) + betNote + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          axis_a: Number(st.a.toFixed(2)),
+          min_val: Number(met.mVal.toFixed(2)),
+          max_val: Number(met.MVal.toFixed(2)),
+          amplitude_g: Number(met.gVal.toFixed(2)),
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
+    }
+  }
+
+  function showBetCheckpoint() {
+    playing = false;
+    betOverlay.hidden = false;
+    betFeedback.hidden = true;
+    render();
+  }
+
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showWrongMerge = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object' && typeof detail.params.axis_a === 'number') {
+        manualA = clamp(detail.params.axis_a, -1.80, 1.80);
+        interactiveOverride = true;
+      }
+      render();
+    });
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    var prevT = t;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
+    lastTs = ts;
+    t += dt;
+    if (!betFiredDuringPlay && prevT < 30.0 && t >= 30.0) {
+      t = 30.0;
+      betFiredDuringPlay = true;
+      showBetCheckpoint();
+      return;
+    }
+    if (t >= TOTAL) { t = TOTAL; playing = false; }
+    render();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener('click', function () {
+    if (playing) {
+      playing = false;
+      var st = computeState();
+      manualA = st.a;
+      interactiveOverride = true;
+      render();
+    } else {
+      betOverlay.hidden = true;
+      showWrongMerge = false;
+      if (t >= TOTAL - 0.1) { t = 0; betFiredDuringPlay = false; }
+      interactiveOverride = false;
+      playing = true;
+      lastTs = 0;
+      render();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  timeline.addEventListener('input', function () {
+    t = Number(timeline.value) || 0;
+    betOverlay.hidden = true;
+    showWrongMerge = false;
+    interactiveOverride = false;
+    if (t < 29) betFiredDuringPlay = false;
+    render();
+  });
+
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
+      showWrongMerge = false;
+      interactiveOverride = false;
+      t = Number(el.dataset.jump) || 0;
+      betOverlay.hidden = true;
+      render();
+    });
+  });
+
+  aSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongMerge = false;
+    interactiveOverride = true;
+    manualA = clamp(Number(aSlider.value) || 0, -1.80, 1.80);
+    render();
+  });
+
+  presetA0.addEventListener('click', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongMerge = false;
+    interactiveOverride = true;
+    manualA = 0.0;
+    t = 42.0;
+    render();
+  });
+
+  openBetBtn.addEventListener('click', function () {
+    if (!betOverlay.hidden) {
+      betOverlay.hidden = true;
+      render();
+      return;
+    }
+    t = 30.0;
+    interactiveOverride = false;
+    showWrongMerge = false;
+    showBetCheckpoint();
+  });
+
+  betSkip.addEventListener('click', function () {
+    betOverlay.hidden = true;
+    showWrongMerge = false;
+    interactiveOverride = false;
+    if (t < 36) t = 36.0;
+    playing = true;
+    lastTs = 0;
+    render();
+    requestAnimationFrame(tick);
+  });
+
+  betBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
+      betFeedback.hidden = false;
+      interactiveOverride = true;
+      manualA = 0.50;
+      t = 30.0;
+      if (ans === 'wrong') {
+        showWrongMerge = true;
+        betFeedback.innerHTML = '<strong>易错提醒：</strong>虽然 ' + M('<mi>m</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo>') + ' 在 ' + M('<mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo>') + ' 内均为 ' + M('<mn>3</mn><mo>−</mo><msup><mi>a</mi><mn>2</mn></msup>') + '，但 ' + M('<mi>M</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo>') + ' 在中点 ' + M('<mn>0</mn>') + ' 处换边；如在 ' + M('<mi>a</mi><mo>=</mo><mn>0.5</mn>') + ' 沿用左式得 ' + M('<mn>0.25</mn>') + '，实际应为 ' + M('<mn>2.25</mn>') + '。';
+      } else {
+        showWrongMerge = false;
+        betFeedback.innerHTML = '<strong>判断准确：</strong>必须将 ' + M('<mi>m</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo>') + ' 与 ' + M('<mi>M</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo>') + ' 的分界点 ' + M('<mo stretchy="false">{</mo><mo>−</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">}</mo>') + ' 取并集分成四段，在 ' + M('<mi>a</mi><mo>=</mo><mn>0</mn>') + ' 处衔接取最小 ' + M('<mn>1</mn>') + '。';
+      }
+      render();
+    });
+  });
+
+  document.getElementById('quote-btn').addEventListener('click', function () {
+    playing = false;
+    var st = computeState();
+    var met = st.metrics;
+    var msg = '我在《第04讲·例1 动轴二次函数闭区间最值与最值之差》第 ' + formatTime(t) + ' 暂停（a=' + st.a.toFixed(2) + '，m=' + met.mVal.toFixed(2) + '，M=' + met.MVal.toFixed(2) + '，g=' + met.gVal.toFixed(2) + '），请带我核对四段分界衔接或出一道同类变式。';
+    if (window.notara && typeof window.notara.quoteState === 'function') {
+      window.notara.quoteState({
+        summary: msg,
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          axis_a: Number(st.a.toFixed(2)),
+          amplitude_g: Number(met.gVal.toFixed(2))
+        }
+      });
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
+    } else {
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，a=' + st.a.toFixed(2) + '）。';
+    }
+    render();
+  });
+
+  window.addEventListener('resize', render);
+  render();
+})();
+</script>
+</body>
+</html>

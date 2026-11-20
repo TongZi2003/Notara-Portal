@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第05讲·例1 · 含参二次方程开区间恰有一根分类</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
+    overflow: hidden;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
+  }
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
+  }
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 306px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2b251f;
+  }
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sol-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.54;
+    cursor: pointer;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .sol-step:hover { opacity: 0.86; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #355070;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13px;
+    color: #25201b;
+    line-height: 1.62;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.2px;
+    color: #2b251f;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.58;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
+
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+  }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+    margin-top: 4px;
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 80px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #355070;
+  }
+  .mode-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .mode-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.26);
+    background: transparent;
+    color: #6b5f52;
+    padding: 3px 6px;
+    border-radius: 3px;
+    font: 500 11px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .mode-btn[aria-pressed="true"] {
+    border-color: #a83825;
+    color: #a83825;
+    background: rgba(168, 56, 37, 0.06);
+    font-weight: 600;
+  }
+
+  @media (max-width: 700px) {
+    .sheet-head { padding: 9px 14px; flex-wrap: wrap; }
+    .sheet-title { font-size: 14px; }
+    .sheet-live { font-size: 12px; }
+    .sheet-grid { grid-template-columns: 1.04fr 1fr; min-height: 318px; }
+    .sheet-left { padding: 10px 12px 11px; }
+    canvas { height: 248px; }
+    .sheet-note { font-size: 11.8px; line-height: 1.6; padding-top: 7px; }
+    .sheet-right { padding: 11px 13px 10px; }
+    .sol-steps { gap: 5px; }
+    .sol-step { padding: 4px 6px 4px 9px; }
+    .sol-step-top { font-size: 11.5px; margin-bottom: 1px; }
+    .sol-eq { font-size: 12px; line-height: 1.48; }
+    .sheet-foot { padding: 8px 14px; gap: 10px; }
+    .foot-transport { min-width: 170px; gap: 8px; }
+    .play-btn { padding: 4px 10px; font-size: 11.5px; }
+    .foot-params { gap: 6px; }
+    .param-pair input[type="range"] { width: 58px; }
+  }
+
+  @media (max-width: 470px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">第05讲·例1 · 含参二次方程开区间恰有一根分类</h1>
+    <div class="sheet-live" id="live-readout"></div>
+  </header>
+
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
+    </div>
+
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>三大互斥情形与逐点核验</h2>
+          <span class="sol-total mono">4 幕微课</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0" data-active="true">
+            <div class="sol-step-top"><span>（一）情形一：端点异号穿界</span><span class="sol-pts mono">00:04</span></div>
+            <div class="sol-eq"><math display="inline"><mi>f</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mi>f</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo><mo>=</mo><mi>m</mi><mo stretchy="false">(</mo><mi>m</mi><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo><mo>&lt;</mo><mn>0</mn><mo>⇒</mo><mn>0</mn><mo>&lt;</mo><mi>m</mi><mo>&lt;</mo><mn>2</mn></math></div>
+          </li>
+          <li class="sol-step" data-jump="16" data-step="1">
+            <div class="sol-step-top"><span>（二）情形三：边界回代取舍</span><span class="sol-pts mono">00:16</span></div>
+            <div class="sol-eq"><math display="inline"><mi>m</mi><mo>=</mo><mn>0</mn></math> 另一根 <math display="inline"><mfrac><mn>5</mn><mn>2</mn></mfrac><mo>∉</mo><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></math>（舍）；<math display="inline"><mi>m</mi><mo>=</mo><mn>2</mn></math> 得 <math display="inline"><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>∈</mo><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></math>（留）</div>
+          </li>
+          <li class="sol-step" data-jump="30" data-step="2">
+            <div class="sol-step-top"><span>（三）情形二：同正内切单点</span><span class="sol-pts mono">00:30</span></div>
+            <div class="sol-eq"><math display="inline"><mi mathvariant="normal">Δ</mi><mo>=</mo><mn>25</mn><mo>−</mo><mn>8</mn><mi>m</mi><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>m</mi><mo>=</mo><mfrac><mn>25</mn><mn>8</mn></mfrac></math>，切点 <math display="inline"><mfrac><mn>5</mn><mn>4</mn></mfrac><mo>∈</mo><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></math></div>
+          </li>
+          <li class="sol-step" data-jump="42" data-step="3">
+            <div class="sol-step-top"><span>（四）互斥取并集定终解</span><span class="sol-pts mono">00:42</span></div>
+            <div class="sol-eq">并集得 <math display="inline"><mi>m</mi><mo>∈</mo><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">]</mo><mo>∪</mo><mrow><mo stretchy="false">{</mo><mfrac><mn>25</mn><mn>8</mn></mfrac><mo stretchy="false">}</mo></mrow></math></div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>易错自测 · 00:30</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <div style="font-size:12px;color:#3a332c;margin-bottom:4px;">若只写 <math display="inline"><mi>f</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mi>f</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo><mo>&lt;</mo><mn>0</mn></math> 得到 <math display="inline"><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></math> 就收笔，会漏掉什么？</div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：不会漏解，端点同号时抛物线在开区间内只能有 0 个或 2 个根</button>
+          <button type="button" class="bet-choice" data-bet="right">乙：会漏掉边界取等的 <math display="inline"><mi>m</mi><mo>=</mo><mn>2</mn></math> 与区间内相切孤立点 <math display="inline"><mi>m</mi><mo>=</mo><mfrac><mn>25</mn><mn>8</mn></mfrac></math></button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
+      </div>
+
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">自测一下</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="4.0" aria-label="时间轴">
+      <span class="clock mono" id="clock">00:04 / 00:48</span>
+    </div>
+    <div class="foot-params">
+      <label class="param-pair" title="拖动参数 m 扫描所有根分布情形">
+        <span>参数 <math display="inline"><mi>m</mi></math></span>
+        <input type="range" class="hairline-range" id="m-slider" data-param="param_m" min="-0.60" max="3.80" step="0.01" value="1.00">
+      </label>
+      <div class="mode-group" role="group" aria-label="临界点快捷">
+        <button type="button" class="mode-btn" id="btn-m0" aria-pressed="false">m=0</button>
+        <button type="button" class="mode-btn" id="btn-m2" aria-pressed="false">m=2</button>
+        <button type="button" class="mode-btn" id="btn-m258" aria-pressed="false">25/8</button>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 48;
+  var TANGENT_M = 25 / 8; // 3.125
+
+  var playing = false;
+  var interactiveOverride = false;
+  var manualM = 1.00;
+  var betFiredDuringPlay = false;
+  var showPitfallRing = false;
+  var betResult = '';
+  var t = 4.0;
+  var lastTs = 0;
+
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+  var playBtn = document.getElementById('play-btn');
+  var timeline = document.getElementById('timeline');
+  var timeEl = document.getElementById('clock');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
+  var mSlider = document.getElementById('m-slider');
+  var btnM0 = document.getElementById('btn-m0');
+  var btnM2 = document.getElementById('btn-m2');
+  var btnM258 = document.getElementById('btn-m258');
+  var betOverlay = document.getElementById('bet-overlay');
+  var betFeedback = document.getElementById('bet-feedback');
+  var betSkip = document.getElementById('bet-skip');
+  var openBetBtn = document.getElementById('open-bet-btn');
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
+  var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function frac(a, b) { return '<mfrac><mrow>' + a + '</mrow><mrow>' + b + '</mrow></mfrac>'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function formatTime(sec) {
+    var s = Math.max(0, Math.floor(sec));
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function snapM(raw) {
+    var v = clamp(raw, -0.60, 3.80);
+    if (Math.abs(v) < 0.03) return 0;
+    if (Math.abs(v - 2) < 0.03) return 2;
+    if (Math.abs(v - TANGENT_M) < 0.03) return TANGENT_M;
+    return v;
+  }
+
+  function evalRoots(m) {
+    var disc = 25 - 8 * m;
+    if (disc < -1e-6) return { all: [], inside: [], onBound: [], outside: [], disc: disc };
+    var roots;
+    if (Math.abs(disc) <= 1e-6) {
+      roots = [1.25];
+    } else {
+      var sq = Math.sqrt(disc);
+      roots = [(5 - sq) / 4, (5 + sq) / 4];
+    }
+    var inside = [], onBound = [], outside = [];
+    roots.forEach(function (r) {
+      if (Math.abs(r) < 1e-4 || Math.abs(r - 2) < 1e-4) onBound.push(r < 1 ? 0 : 2);
+      else if (r > 0 && r < 2) inside.push(r);
+      else outside.push(r);
+    });
+    return { all: roots, inside: inside, onBound: onBound, outside: outside, disc: disc };
+  }
+
+  function describeCase(m, info) {
+    if (Math.abs(m) < 1e-4) return '边界 m=0：x1=0 落界上，x2=5/2 在界外，(0,2) 内 0 根，舍去';
+    if (Math.abs(m - 2) < 1e-4) return '边界 m=2：x2=2 落界上，另一根 x1=1/2 仍在 (0,2) 内，保留';
+    if (Math.abs(m - TANGENT_M) < 1e-4) return '内切 m=25/8：判别式为 0，切点 x=5/4 落在 (0,2) 内，保留';
+    if (m > 0 && m < 2) return '情形一 0<m<2：f(0)>0 且 f(2)<0，恰一分支穿过 (0,2)';
+    if (m > 2 && m < TANGENT_M) return '区间 (2, 25/8)：两端同正且轴在内部，(0,2) 内共有 2 根';
+    if (m > TANGENT_M) return 'm > 25/8：判别式小于 0，与 x 轴无交点（0 根）';
+    return 'm < 0：两端同负，两根一左一右皆落于 (0,2) 之外（0 根）';
+  }
+
+  function computeState() {
+    var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
+    if (interactiveOverride) {
+      var mUse = snapM(manualM);
+      var info = evalRoots(mUse);
+      var sc = Math.abs(mUse - TANGENT_M) < 1e-4 ? 2 : (Math.abs(mUse) < 1e-4 || Math.abs(mUse - 2) < 1e-4) ? 1 : (mUse > 0 && mUse < 2 ? 0 : 3);
+      var mText = Math.abs(mUse - TANGENT_M) < 1e-4 ? frac('<mn>25</mn>', '<mn>8</mn>') : '<mn>' + mUse.toFixed(2) + '</mn>';
+      return {
+        sceneIdx: sc,
+        m: mUse,
+        info: info,
+        noteHtml: '当前 ' + M('<mi>m</mi><mo>=</mo>' + mText) + '：' + describeCase(mUse, info) + '（开区间内根数 ' + info.inside.length + '）。'
+      };
+    }
+
+    if (sceneIdx === 0) {
+      // t=4 hits m = 1.00
+      var m0 = t <= 4 ? lerp(0.35, 1.00, t / 4) : lerp(1.00, 1.65, (t - 4) / 8);
+      return {
+        sceneIdx: 0,
+        m: m0,
+        info: evalRoots(m0),
+        noteHtml: '情形一：' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mo>=</mo><mi>m</mi><mo>&gt;</mo><mn>0</mn>') + ' 与 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo><mo>=</mo><mi>m</mi><mo>−</mo><mn>2</mn><mo>&lt;</mo><mn>0</mn>') + ' 异号，抛物线在 ' + M('<mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo>') + ' 内必穿 ' + M('<mi>x</mi>') + ' 轴一次。'
+      };
+    }
+
+    if (sceneIdx === 1) {
+      // Visits m=0 (t=12..18) and m=2 (t=18..24)
+      var m1 = t < 18 ? 0.0 : 2.0;
+      return {
+        sceneIdx: 1,
+        m: m1,
+        info: evalRoots(m1),
+        noteHtml: t < 18
+          ? '边界回代一：' + M('<mi>m</mi><mo>=</mo><mn>0</mn>') + ' 时两根为 ' + M('<mn>0</mn>') + '（空心界点不计）与 ' + M(frac('<mn>5</mn>', '<mn>2</mn>') + '<mo>&gt;</mo><mn>2</mn>') + '，开区间内 0 根，必须舍去。'
+          : '边界回代二：' + M('<mi>m</mi><mo>=</mo><mn>2</mn>') + ' 时两根为 ' + M('<mn>2</mn>') + '（界点不计）与 ' + M(frac('<mn>1</mn>', '<mn>2</mn>') + '<mo>∈</mo><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo>') + '，开区间内恰 1 根，保留。'
+      };
+    }
+
+    if (sceneIdx === 2) {
+      // Sweeps 2.2 -> 25/8 at t=30 -> 3.55
+      var m2 = t <= 30 ? lerp(2.25, TANGENT_M, clamp((t - 24) / 6, 0, 1)) : lerp(TANGENT_M, 3.55, (t - 30) / 6);
+      m2 = snapM(m2);
+      return {
+        sceneIdx: 2,
+        m: m2,
+        info: evalRoots(m2),
+        noteHtml: '情形二：虽然两端点同正，但当 ' + M('<mi mathvariant="normal">Δ</mi><mo>=</mo><mn>25</mn><mo>−</mo><mn>8</mn><mi>m</mi><mo>=</mo><mn>0</mn>') + ' 即 ' + M('<mi>m</mi><mo>=</mo>' + frac('<mn>25</mn>', '<mn>8</mn>')) + ' 时，顶点 ' + M('<mi>x</mi><mo>=</mo>' + frac('<mn>5</mn>', '<mn>4</mn>')) + ' 恰好内切于 ' + M('<mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo>') + '。'
+      };
+    }
+
+    var m3 = lerp(-0.35, 3.50, (t - 36) / 12);
+    m3 = snapM(m3);
+    return {
+      sceneIdx: 3,
+      m: m3,
+      info: evalRoots(m3),
+      noteHtml: '把三种互斥情形合并：常规开区间 ' + M('<mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo>') + ' 补上右边界 ' + M('<mn>2</mn>') + ' 与相切点 ' + M(frac('<mn>25</mn>', '<mn>8</mn>')) + '，得完整解集 ' + M('<mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">]</mo><mo>∪</mo><mo stretchy="false">{</mo>' + frac('<mn>25</mn>', '<mn>8</mn>') + '<mo stretchy="false">}</mo>') + '。'
+    };
+  }
+
+  function setupCanvasSize() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var rect = canvas.getBoundingClientRect();
+    var cssW = Math.max(280, Math.round(rect.width || 440));
+    var cssH = Math.max(200, Math.round(rect.height || 306));
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: cssW, H: cssH };
+  }
+
+  function drawLabel(text, x, y, color, font, align, baseline) {
+    ctx.save();
+    ctx.font = font || '600 10.5px ui-monospace, Menlo, monospace';
+    ctx.textAlign = align || 'left';
+    ctx.textBaseline = baseline || 'alphabetic';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 3.2;
+    ctx.strokeStyle = '#faf6ee';
+    ctx.strokeText(text, x, y);
+    ctx.fillStyle = color || '#2c2722';
+    ctx.fillText(text, x, y);
+    ctx.restore();
+  }
+
+  function drawDot(x, y, r, fill, ring) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (ring) {
+      ctx.strokeStyle = ring;
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+    }
+  }
+
+  function render() {
+    var st = computeState();
+    var info = st.info;
+    openBetBtn.textContent = betOverlay.hidden ? '自测一下' : '收起自测';
+    btnM0.setAttribute('aria-pressed', Math.abs(st.m) < 1e-4 ? 'true' : 'false');
+    btnM2.setAttribute('aria-pressed', Math.abs(st.m - 2) < 1e-4 ? 'true' : 'false');
+    btnM258.setAttribute('aria-pressed', Math.abs(st.m - TANGENT_M) < 1e-4 ? 'true' : 'false');
+
+    var size = setupCanvasSize();
+    var W = size.W, H = size.H;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, W, H);
+
+    var splitY = Math.round(H * 0.72);
+    var padL = 28, padR = 20, padT = 12, plotBot = splitY - 10;
+    var xMin = -0.55, xMax = 2.85, yMin = -3.45, yMax = 3.85;
+
+    function mx(x) { return padL + ((x - xMin) / (xMax - xMin)) * (W - padL - padR); }
+    function my(y) { return plotBot - ((y - yMin) / (yMax - yMin)) * (plotBot - padT); }
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(padL - 4, padT - 4, W - padL - padR + 8, plotBot - padT + 8);
+    ctx.clip();
+
+    // Open interval strip (0, 2)
+    ctx.fillStyle = 'rgba(53, 80, 112, 0.065)';
+    ctx.fillRect(mx(0), padT, mx(2) - mx(0), plotBot - padT);
+
+    // Axes
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.42)';
+    ctx.lineWidth = 1.05;
+    ctx.beginPath(); ctx.moveTo(mx(xMin), my(0)); ctx.lineTo(mx(xMax), my(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mx(0), padT); ctx.lineTo(mx(0), plotBot); ctx.stroke();
+
+    // Boundary dashed line at x = 2 and symmetry axis at x = 5/4
+    ctx.save();
+    ctx.strokeStyle = 'rgba(53, 80, 112, 0.48)';
+    ctx.lineWidth = 1.1;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath(); ctx.moveTo(mx(2), padT); ctx.lineTo(mx(2), plotBot); ctx.stroke();
+    ctx.strokeStyle = 'rgba(125, 92, 70, 0.34)';
+    ctx.beginPath(); ctx.moveTo(mx(1.25), padT); ctx.lineTo(mx(1.25), plotBot); ctx.stroke();
+    ctx.restore();
+
+    drawLabel('0', mx(0) - 8, my(0) + 13, '#355070', '600 10px ui-monospace, Menlo, monospace');
+    drawLabel('2', mx(2) + 5, my(0) + 13, '#355070', '600 10px ui-monospace, Menlo, monospace');
+    drawLabel('轴 5/4', mx(1.25) + 4, padT + 11, '#7d5c46', '600 10px -apple-system, "PingFang SC", sans-serif');
+
+    // Plot parabola outside (0, 2) dashed pale, inside (0, 2) thick vermilion
+    function drawPolyArc(a0, a1, color, width, dash) {
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      if (dash) ctx.setLineDash(dash);
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      var pen = false;
+      for (var i = 0; i <= 90; i++) {
+        var x = a0 + ((a1 - a0) * i) / 90;
+        var y = 2 * x * x - 5 * x + st.m;
+        if (y < yMin - 0.5 || y > yMax + 0.5) { pen = false; continue; }
+        var px = mx(x), py = my(y);
+        if (!pen) { ctx.moveTo(px, py); pen = true; }
+        else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    drawPolyArc(xMin, 0, 'rgba(168, 56, 37, 0.32)', 1.5, [4, 4]);
+    drawPolyArc(2, xMax, 'rgba(168, 56, 37, 0.32)', 1.5, [4, 4]);
+    drawPolyArc(0, 2, '#a83825', 2.5, null);
+
+    // Open-interval endpoint circles at x = 0 and x = 2
+    var f0 = st.m;
+    var f2 = st.m - 2;
+    var f0Txt = Math.abs(st.m - TANGENT_M) < 1e-4 ? '25/8' : f0.toFixed(2);
+    var f2Txt = Math.abs(st.m - TANGENT_M) < 1e-4 ? '9/8' : f2.toFixed(2);
+    if (f0 >= yMin && f0 <= yMax) {
+      drawDot(mx(0), my(f0), 4.6, '#faf6ee', '#355070');
+      drawLabel('f(0)=' + f0Txt, mx(0) + 7, my(f0) - 7, '#355070', '600 10px ui-monospace, Menlo, monospace');
+    }
+    if (f2 >= yMin && f2 <= yMax) {
+      drawDot(mx(2), my(f2), 4.6, '#faf6ee', '#355070');
+      drawLabel('f(2)=' + f2Txt, mx(2) + 7, my(f2) + 12, '#355070', '600 10px ui-monospace, Menlo, monospace');
+    }
+
+    // Roots: inside (0, 2) solid vermilion, on boundary hollow with marker, outside muted
+    info.inside.forEach(function (rx) {
+      drawDot(mx(rx), my(0), 4.6, '#a83825', '#faf6ee');
+      if (showPitfallRing || Math.abs(st.m - TANGENT_M) < 1e-4) {
+        ctx.save();
+        ctx.strokeStyle = '#a83825';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(mx(rx), my(0), 9, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+      var rLbl = Math.abs(rx - 0.5) < 0.01 ? '1/2' : Math.abs(rx - 1.25) < 0.01 ? '切 5/4' : rx.toFixed(2);
+      drawLabel(rLbl, mx(rx), my(0) - 10, '#a83825', '600 10.5px ui-monospace, Menlo, monospace', 'center');
+    });
+
+    info.onBound.forEach(function (bx) {
+      drawDot(mx(bx), my(0), 5.0, '#faf6ee', '#a83825');
+      drawLabel('界点不计', mx(bx) + (bx === 0 ? 8 : -8), my(0) + 23, '#a83825', '600 9.5px -apple-system, "PingFang SC", sans-serif', bx === 0 ? 'left' : 'right');
+    });
+
+    info.outside.forEach(function (ox) {
+      if (ox >= xMin && ox <= xMax) {
+        drawDot(mx(ox), my(0), 3.6, '#7c6f60', '#faf6ee');
+        var oLbl = Math.abs(ox - 2.5) < 0.01 ? '5/2(界外)' : ox.toFixed(2) + '(外)';
+        drawLabel(oLbl, mx(ox), my(0) - 10, '#7c6f60', '500 9.5px ui-monospace, Menlo, monospace', 'center');
+      }
+    });
+
+    ctx.restore();
+
+    // === BOTTOM 1D PARAMETER RULER FOR m in (0, 2] U {25/8} ===
+    var rY = Math.round(splitY + (H - splitY) * 0.52);
+    var rmMin = -0.60, rmMax = 3.80;
+    function rmx(mVal) { return padL + 16 + ((mVal - rmMin) / (rmMax - rmMin)) * (W - padL - padR - 32); }
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.28)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(rmx(rmMin), rY); ctx.lineTo(rmx(rmMax), rY); ctx.stroke();
+
+    // Valid range (0, 2] in vermilion
+    ctx.strokeStyle = '#a83825';
+    ctx.lineWidth = 3.6;
+    ctx.beginPath(); ctx.moveTo(rmx(0), rY); ctx.lineTo(rmx(2), rY); ctx.stroke();
+
+    // Endpoint markers: 0 hollow, 2 solid, 25/8 isolated solid
+    drawDot(rmx(0), rY, 4.2, '#faf6ee', '#a83825');
+    drawDot(rmx(2), rY, 4.2, '#a83825', '#faf6ee');
+    drawDot(rmx(TANGENT_M), rY, 4.4, '#a83825', '#faf6ee');
+
+    if (showPitfallRing) {
+      ctx.save();
+      ctx.strokeStyle = '#a83825';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(rmx(2), rY, 8.5, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(rmx(TANGENT_M), rY, 8.5, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+    }
+
+    drawLabel('0', rmx(0), rY + 15, '#6b5f52', '600 10px ui-monospace, Menlo, monospace', 'center');
+    drawLabel('2', rmx(2), rY + 15, '#a83825', '600 10px ui-monospace, Menlo, monospace', 'center');
+    drawLabel('25/8', rmx(TANGENT_M), rY + 15, '#a83825', '600 10px ui-monospace, Menlo, monospace', 'center');
+    drawLabel('解集 m:', rmx(rmMin), rY - 12, '#6b5f52', '600 10px -apple-system, "PingFang SC", sans-serif');
+
+    // Live parameter pointer
+    var curX = rmx(clamp(st.m, rmMin, rmMax));
+    ctx.fillStyle = '#355070';
+    ctx.beginPath();
+    ctx.moveTo(curX, rY - 4);
+    ctx.lineTo(curX - 4.5, rY - 12);
+    ctx.lineTo(curX + 4.5, rY - 12);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    var isValid = info.inside.length === 1;
+    var mLbl = Math.abs(st.m - TANGENT_M) < 1e-4 ? '25/8' : st.m.toFixed(2);
+    liveEl.innerHTML = M('<mi>m</mi><mo>=</mo><mn>' + mLbl + '</mn>') + ' · 区间内 <strong>' + info.inside.length + ' 根</strong>' + (isValid ? '（合格）' : '');
+
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
+    timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
+    timeline.value = t.toFixed(2);
+    mSlider.value = clamp(st.m, -0.60, 3.80).toFixed(2);
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
+
+    for (var sIdx = 0; sIdx < stepEls.length; sIdx++) {
+      stepEls[sIdx].setAttribute('data-active', sIdx === st.sceneIdx ? 'true' : 'false');
+    }
+
+    if (window.notara && typeof window.notara.setState === 'function') {
+      var betNote = betResult === 'wrong'
+        ? '，学生在自测一下中误以为只需f(0)f(2)<0而漏掉m=2与25/8'
+        : betResult === 'right'
+          ? '，学生在自测一下中选对补回边界m=2与内切m=25/8'
+          : '';
+      window.notara.setState({
+        summary: '图解《第05讲·例1 ·开区间恰有一根三大互斥临界》停在 ' + formatTime(t) + '（第 ' + (st.sceneIdx + 1) + ' 幕，m=' + st.m.toFixed(3) + '，开区间(0,2)内根数=' + info.inside.length + betNote + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          param_m: Number(st.m.toFixed(3)),
+          roots_in_open_interval: info.inside.length,
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
+    }
+  }
+
+  function showBetCheckpoint() {
+    playing = false;
+    betOverlay.hidden = false;
+    betFeedback.hidden = true;
+    render();
+  }
+
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showPitfallRing = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object' && typeof detail.params.param_m === 'number') {
+        manualM = clamp(detail.params.param_m, -0.60, 3.80);
+        interactiveOverride = true;
+      }
+      render();
+    });
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    var prevT = t;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
+    lastTs = ts;
+    t += dt;
+    if (!betFiredDuringPlay && prevT < 30.0 && t >= 30.0) {
+      t = 30.0;
+      betFiredDuringPlay = true;
+      showBetCheckpoint();
+      return;
+    }
+    if (t >= TOTAL) { t = TOTAL; playing = false; }
+    render();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener('click', function () {
+    if (playing) {
+      playing = false;
+      var st = computeState();
+      manualM = st.m;
+      interactiveOverride = true;
+      render();
+    } else {
+      betOverlay.hidden = true;
+      showPitfallRing = false;
+      if (t >= TOTAL - 0.1) { t = 0; betFiredDuringPlay = false; }
+      interactiveOverride = false;
+      playing = true;
+      lastTs = 0;
+      render();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  timeline.addEventListener('input', function () {
+    t = Number(timeline.value) || 0;
+    betOverlay.hidden = true;
+    showPitfallRing = false;
+    interactiveOverride = false;
+    if (t < 29) betFiredDuringPlay = false;
+    render();
+  });
+
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
+      showPitfallRing = false;
+      interactiveOverride = false;
+      t = Number(el.dataset.jump) || 0;
+      betOverlay.hidden = true;
+      render();
+    });
+  });
+
+  mSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showPitfallRing = false;
+    interactiveOverride = true;
+    manualM = clamp(Number(mSlider.value) || 0, -0.60, 3.80);
+    render();
+  });
+
+  btnM0.addEventListener('click', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showPitfallRing = false;
+    interactiveOverride = true;
+    manualM = 0.0;
+    t = 16.0;
+    render();
+  });
+
+  btnM2.addEventListener('click', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showPitfallRing = false;
+    interactiveOverride = true;
+    manualM = 2.0;
+    t = 20.0;
+    render();
+  });
+
+  btnM258.addEventListener('click', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showPitfallRing = false;
+    interactiveOverride = true;
+    manualM = TANGENT_M;
+    t = 30.0;
+    render();
+  });
+
+  openBetBtn.addEventListener('click', function () {
+    if (!betOverlay.hidden) {
+      betOverlay.hidden = true;
+      render();
+      return;
+    }
+    t = 30.0;
+    interactiveOverride = false;
+    showPitfallRing = false;
+    showBetCheckpoint();
+  });
+
+  betSkip.addEventListener('click', function () {
+    betOverlay.hidden = true;
+    showPitfallRing = false;
+    interactiveOverride = false;
+    if (t < 36) t = 36.0;
+    playing = true;
+    lastTs = 0;
+    render();
+    requestAnimationFrame(tick);
+  });
+
+  betBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
+      betFeedback.hidden = false;
+      interactiveOverride = true;
+      manualM = TANGENT_M;
+      t = 30.0;
+      if (ans === 'wrong') {
+        showPitfallRing = true;
+        betFeedback.innerHTML = '<strong>易错提醒：</strong>图上此刻 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mo>&gt;</mo><mn>0</mn>') + ' 且 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo><mo>&gt;</mo><mn>0</mn>') + ' 同正，但顶点恰在 ' + M('<mi>x</mi><mo>=</mo>' + frac('<mn>5</mn>', '<mn>4</mn>')) + ' 相切于 ' + M('<mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo>') + ' 内；另有 ' + M('<mi>m</mi><mo>=</mo><mn>2</mn>') + ' 时一根踩界、一根在内，二者皆合格。';
+      } else {
+        showPitfallRing = false;
+        betFeedback.innerHTML = '<strong>判断准确：</strong>开区间恰有一根必须写全“异号穿界、区间内切、边界回代”三大互斥情形，缺一不可，最终结果为 ' + M('<mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">]</mo><mo>∪</mo><mo stretchy="false">{</mo>' + frac('<mn>25</mn>', '<mn>8</mn>') + '<mo stretchy="false">}</mo>') + '。';
+      }
+      render();
+    });
+  });
+
+  document.getElementById('quote-btn').addEventListener('click', function () {
+    playing = false;
+    var st = computeState();
+    var mText = Math.abs(st.m - TANGENT_M) < 1e-4 ? '25/8' : st.m.toFixed(2);
+    var msg = '我在《第05讲·例1 开区间恰有一根三大互斥临界》第 ' + formatTime(t) + ' 暂停（m=' + mText + '，开区间(0,2)内根数=' + st.info.inside.length + '），请带我核对边界或出一道闭区间对比题。';
+    if (window.notara && typeof window.notara.quoteState === 'function') {
+      window.notara.quoteState({
+        summary: msg,
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          param_m: Number(st.m.toFixed(3)),
+          roots_in_open_interval: st.info.inside.length
+        }
+      });
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
+    } else {
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，m=' + mText + '）。';
+    }
+    render();
+  });
+
+  window.addEventListener('resize', render);
+  render();
+})();
+</script>
+</body>
+</html>

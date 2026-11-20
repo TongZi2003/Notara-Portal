@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第08讲·例1 · 偶函数单调性与绝对值距离转化</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
+    overflow: hidden;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
+  }
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
+  }
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 296px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2b251f;
+  }
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sol-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.54;
+    cursor: pointer;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .sol-step:hover { opacity: 0.86; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #355070;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13.2px;
+    color: #25201b;
+    line-height: 1.62;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.2px;
+    color: #2b251f;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.58;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
+
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+  }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+    margin-top: 4px;
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 104px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #355070;
+  }
+
+  @media (max-width: 700px) {
+    .sheet-head { padding: 9px 14px; }
+    .sheet-title { font-size: 14px; }
+    .sheet-live { font-size: 12px; }
+    .sheet-grid { grid-template-columns: 1.04fr 1fr; min-height: 318px; }
+    .sheet-left { padding: 10px 12px 11px; }
+    canvas { height: 242px; }
+    .sheet-note { font-size: 11.8px; line-height: 1.6; padding-top: 7px; }
+    .sheet-right { padding: 11px 13px 10px; }
+    .sol-steps { gap: 5px; }
+    .sol-step { padding: 4px 6px 4px 9px; }
+    .sol-step-top { font-size: 11.5px; margin-bottom: 1px; }
+    .sol-eq { font-size: 12px; line-height: 1.48; }
+    .sheet-foot { padding: 8px 14px; gap: 10px; }
+    .foot-transport { min-width: 170px; gap: 8px; }
+    .play-btn { padding: 4px 10px; font-size: 11.5px; }
+    .foot-params { gap: 9px; }
+    .param-pair input[type="range"] { width: 72px; }
+  }
+
+  @media (max-width: 470px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">第08讲·例1 · 偶函数单调性与绝对值距离转化</h1>
+    <div class="sheet-live" id="live-readout"></div>
+  </header>
+
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
+    </div>
+
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>双层联动推演</h2>
+          <span class="sol-total mono">选 B · 4 幕</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0" data-active="true">
+            <div class="sol-step-top"><span>（一）先锁真数定义域</span><span class="sol-pts mono">00:04</span></div>
+            <div class="sol-eq"><math display="inline"><mi>x</mi><mo>−</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn><mo stretchy="false">&#x21D2;</mo><mi>x</mi><mo>&gt;</mo><mn>1</mn></math>，右侧化 <math display="inline"><mn>0</mn><mo>=</mo><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math></div>
+          </li>
+          <li class="sol-step" data-jump="16" data-step="1">
+            <div class="sol-step-top"><span>（二）偶函数绝对值拉回正半轴</span><span class="sol-pts mono">00:16</span></div>
+            <div class="sol-eq"><math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo stretchy="false">)</mo></mrow><mo>&gt;</mo><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math>，在 <math display="inline"><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mo>+</mo><mi>&#x221E;</mi><mo stretchy="false">)</mo></mrow></math> 递减得 <math display="inline"><mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>&lt;</mo><mn>1</mn></math></div>
+          </li>
+          <li class="sol-step" data-jump="30" data-step="2">
+            <div class="sol-step-top"><span>（三）排雷：不可漏掉左翼对称界</span><span class="sol-pts mono">00:30</span></div>
+            <div class="sol-eq"><math display="inline"><mo>−</mo><mn>1</mn><mo>&lt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>&#x2061;</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mo>&lt;</mo><mn>1</mn></math>，防漏左界而错选 C</div>
+          </li>
+          <li class="sol-step" data-jump="42" data-step="3">
+            <div class="sol-step-top"><span>（四）底数 1/2 反向脱对数定集</span><span class="sol-pts mono">00:42</span></div>
+            <div class="sol-eq"><math display="inline"><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>&lt;</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>&lt;</mo><mn>2</mn><mo stretchy="false">&#x21D2;</mo><mi>x</mi><mo>&#x2208;</mo><mrow><mo stretchy="false">(</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>,</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></math>（选 B）</div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>易错自测 · 00:30</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <div style="font-size:12px;color:#3a332c;margin-bottom:4px;">由偶函数 <math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow><mo>&gt;</mo><mn>0</mn><mo>=</mo><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math> 且在 <math display="inline"><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mo>+</mo><mi>&#x221E;</mi><mo stretchy="false">)</mo></mrow></math> 递减，脱去 <math display="inline"><mi>f</mi></math> 得：</div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：<math display="inline"><mi>u</mi><mo>&lt;</mo><mn>1</mn></math>，直接解 <math display="inline"><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>&#x2061;</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mo>&lt;</mo><mn>1</mn></math> 选 <math display="inline"><mrow><mo stretchy="false">(</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>,</mo><mo>+</mo><mi>&#x221E;</mi><mo stretchy="false">)</mo></mrow></math></button>
+          <button type="button" class="bet-choice" data-bet="right">乙：<math display="inline"><mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>&lt;</mo><mn>1</mn></math> 即 <math display="inline"><mo>−</mo><mn>1</mn><mo>&lt;</mo><mi>u</mi><mo>&lt;</mo><mn>1</mn></math>，底数 <math display="inline"><mfrac><mn>1</mn><mn>2</mn></mfrac></math> 再反号选 <math display="inline"><mrow><mo stretchy="false">(</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>,</mo><mn>3</mn><mo stretchy="false">)</mo></mrow></math></button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
+      </div>
+
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">自测一下</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="4.0" aria-label="时间轴">
+      <span class="clock mono" id="clock">00:04 / 00:48</span>
+    </div>
+    <div class="foot-params">
+      <label class="param-pair" title="拖动自变量 x，上下同步观察 u=log_{1/2}(x-1) 与偶函数 f(u)">
+        <span>自变量 <math display="inline"><mi>x</mi></math></span>
+        <input type="range" class="hairline-range" id="x-slider" data-param="probe_x" min="1.05" max="4.50" step="0.05" value="2.00">
+      </label>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 48;
+  var playing = false;
+  var interactiveOverride = false;
+  var betFiredDuringPlay = false;
+  var showTrapHighlight = false;
+  var betResult = '';
+  var t = 4.0;
+  var manualX = 2.00;
+  var lastTs = 0;
+
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+  var playBtn = document.getElementById('play-btn');
+  var timeline = document.getElementById('timeline');
+  var timeEl = document.getElementById('clock');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
+  var xSlider = document.getElementById('x-slider');
+  var betOverlay = document.getElementById('bet-overlay');
+  var betFeedback = document.getElementById('bet-feedback');
+  var betSkip = document.getElementById('bet-skip');
+  var openBetBtn = document.getElementById('open-bet-btn');
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
+  var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function frac(a, b) { return '<mfrac><mrow>' + a + '</mrow><mrow>' + b + '</mrow></mfrac>'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function formatTime(sec) {
+    var s = Math.max(0, Math.floor(sec));
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function uOfX(x) {
+    return Math.log(x - 1) / Math.log(0.5);
+  }
+  function fEven(u) {
+    return 2 / (1 + u * u) - 1;
+  }
+
+  function computeState() {
+    var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
+    var xVal;
+    var noteHtml;
+
+    if (interactiveOverride) {
+      xVal = manualX;
+      var u0 = uOfX(xVal);
+      var fu0 = fEven(u0);
+      var inWin = xVal > 1.5 && xVal < 3.0;
+      if (inWin) {
+        noteHtml = '当前 ' + M('<mi>x</mi><mo>=</mo><mn>' + xVal.toFixed(2) + '</mn>') + ' 落在解集 ' + M('<mrow><mo stretchy="false">(</mo>' + frac('<mn>3</mn>', '<mn>2</mn>') + '<mo>,</mo><mn>3</mn><mo stretchy="false">)</mo></mrow>') + ' 内：' + M('<mi>u</mi><mo>=</mo><mn>' + u0.toFixed(2) + '</mn>') + '，满足 ' + M('<mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>&lt;</mo><mn>1</mn>') + '，从而 ' + M('<mi>f</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow><mo>&gt;</mo><mn>0</mn>') + '。';
+      } else if (xVal >= 3.0) {
+        noteHtml = '<strong>踩中 C 坑：</strong>' + M('<mi>x</mi><mo>=</mo><mn>' + xVal.toFixed(2) + '</mn><mo>≥</mo><mn>3</mn>') + ' 时 ' + M('<mi>u</mi><mo>=</mo><mn>' + u0.toFixed(2) + '</mn><mo>≤</mo><mo>−</mo><mn>1</mn>') + '，虽然 ' + M('<mi>u</mi><mo>&lt;</mo><mn>1</mn>') + '，但 ' + M('<mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>=</mo><mn>' + Math.abs(u0).toFixed(2) + '</mn><mo>≥</mo><mn>1</mn>') + ' 令 ' + M('<mi>f</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow><mo>≤</mo><mn>0</mn>') + '。';
+      } else {
+        noteHtml = '当 ' + M('<mn>1</mn><mo>&lt;</mo><mi>x</mi><mo>=</mo><mn>' + xVal.toFixed(2) + '</mn><mo>≤</mo>' + frac('<mn>3</mn>', '<mn>2</mn>')) + '，' + M('<mi>u</mi><mo>=</mo><mn>' + u0.toFixed(2) + '</mn><mo>≥</mo><mn>1</mn>') + '，外层 ' + M('<mi>f</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow><mo>≤</mo><mn>0</mn>') + ' 不满足不等式。';
+      }
+      return { sceneIdx: sceneIdx, x: xVal, u: u0, fu: fu0, noteHtml: noteHtml };
+    }
+
+    if (sceneIdx === 0) {
+      xVal = t <= 6 ? lerp(1.75, 2.00, clamp(t / 4, 0, 1)) : lerp(2.00, 2.50, (t - 6) / 6);
+      noteHtml = '先由真数得 ' + M('<mi>x</mi><mo>−</mo><mn>1</mn><mo>&gt;</mo><mn>0</mn><mo stretchy="false">&#x21D2;</mo><mi>x</mi><mo>&gt;</mo><mn>1</mn>') + '；再将右侧 ' + M('<mn>0</mn>') + ' 改写为 ' + M('<mi>f</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + '，把不等式化成 ' + M('<mi>f</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow><mo>&gt;</mo><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + '。';
+    } else if (sceneIdx === 1) {
+      if (t <= 16) xVal = lerp(2.50, 1.40, (t - 12) / 4);
+      else if (t <= 20) xVal = lerp(1.40, 2.80, (t - 16) / 4);
+      else xVal = lerp(2.80, 2.00, (t - 20) / 4);
+      noteHtml = '利用偶函数 ' + M('<mi>f</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>f</mi><mrow><mo stretchy="false">(</mo><mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo stretchy="false">)</mo></mrow>') + ' 将两翼同归入 ' + M('<mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mo>+</mo><mi>&#x221E;</mi><mo stretchy="false">)</mo></mrow>') + '，按单调递减脱壳得 ' + M('<mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>&lt;</mo><mn>1</mn>') + '。';
+    } else if (sceneIdx === 2) {
+      xVal = t <= 30 ? lerp(2.40, 3.60, clamp((t - 24) / 6, 0, 1)) : lerp(3.60, 3.20, (t - 30) / 6);
+      noteHtml = '<strong>防漏左翼：</strong>若只写 ' + M('<mi>u</mi><mo>&lt;</mo><mn>1</mn>') + ' 而漏掉 ' + M('<mi>u</mi><mo>&gt;</mo><mo>−</mo><mn>1</mn>') + '，在 ' + M('<mi>x</mi><mo>=</mo><mn>' + xVal.toFixed(2) + '</mn>') + ' 处对称折返到 ' + M('<mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>&gt;</mo><mn>1</mn>') + ' 使 ' + M('<mi>f</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow><mo>&lt;</mo><mn>0</mn>') + '。';
+    } else {
+      xVal = lerp(1.55, 2.95, clamp((t - 36) / 10, 0, 1));
+      noteHtml = '再解 ' + M('<msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>&#x2061;</mo><mn>2</mn><mo>&lt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>&#x2061;</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mo>&lt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>&#x2061;</mo><mfrac><mn>1</mn><mn>2</mn></mfrac>') + '，底数 ' + M('<mfrac><mn>1</mn><mn>2</mn></mfrac>') + ' 递减反号得 ' + M('<mi>x</mi><mo>&#x2208;</mo><mrow><mo stretchy="false">(</mo>' + frac('<mn>3</mn>', '<mn>2</mn>') + '<mo>,</mo><mn>3</mn><mo stretchy="false">)</mo></mrow>') + '（选 <strong>B</strong>）。';
+    }
+
+    var uVal = uOfX(xVal);
+    return { sceneIdx: sceneIdx, x: xVal, u: uVal, fu: fEven(uVal), noteHtml: noteHtml };
+  }
+
+  function setupCanvasSize() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var rect = canvas.getBoundingClientRect();
+    var cssW = Math.max(280, Math.round(rect.width || 440));
+    var cssH = Math.max(200, Math.round(rect.height || 296));
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: cssW, H: cssH };
+  }
+
+  function boxMap(x0, y0, x1, y1, dXMin, dXMax, dYMin, dYMax) {
+    var uw = (x1 - x0) / (dXMax - dXMin);
+    var uh = (y1 - y0) / (dYMax - dYMin);
+    return {
+      mx: function (x) { return x0 + (x - dXMin) * uw; },
+      my: function (y) { return y0 + (dYMax - y) * uh; }
+    };
+  }
+
+  function drawLabel(text, x, y, color, font, align, baseline) {
+    ctx.save();
+    if (font) ctx.font = font;
+    ctx.textAlign = align || 'left';
+    ctx.textBaseline = baseline || 'alphabetic';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#faf6ee';
+    ctx.strokeText(text, x, y);
+    ctx.fillStyle = color || '#2c2722';
+    ctx.fillText(text, x, y);
+    ctx.restore();
+  }
+
+  function drawDot(x, y, r, fill, ring, hollow) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    if (hollow) {
+      ctx.fillStyle = '#faf6ee';
+      ctx.fill();
+      ctx.strokeStyle = fill;
+      ctx.lineWidth = 1.9;
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = fill;
+      ctx.fill();
+      if (ring) {
+        ctx.strokeStyle = ring;
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
+  function plotFn(fn, a, b, steps, T, color, width, dash) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    if (dash) ctx.setLineDash(dash);
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    for (var i = 0; i <= steps; i++) {
+      var v = a + ((b - a) * i) / steps;
+      var py = T.my(fn(v));
+      if (i === 0) ctx.moveTo(T.mx(v), py);
+      else ctx.lineTo(T.mx(v), py);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function render() {
+    var st = computeState();
+    openBetBtn.textContent = betOverlay.hidden ? '自测一下' : '收起自测';
+    var size = setupCanvasSize();
+    var W = size.W, H = size.H;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, W, H);
+
+    var padL = 30, padR = 16;
+    var topY0 = 12, topY1 = Math.round(H * 0.45);
+    var botY0 = topY1 + 18, botY1 = H - 20;
+
+    // Divider between upper (u -> f(u)) and lower (x -> u) layers
+    ctx.save();
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.18)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(padL, topY1 + 9); ctx.lineTo(W - padR, topY1 + 9); ctx.stroke();
+    ctx.restore();
+
+    // ==================== TOP PANEL: f(u) ====================
+    var uMin = -2.35, uMax = 2.35, fMin = -0.78, fMax = 1.42;
+    var TU = boxMap(padL, topY0, W - padR, topY1, uMin, uMax, fMin, fMax);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(padL, topY0, W - padL - padR, topY1 - topY0);
+    ctx.clip();
+
+    // Winning band |u| < 1
+    ctx.fillStyle = 'rgba(168, 56, 37, 0.065)';
+    ctx.fillRect(TU.mx(-1), topY0, TU.mx(1) - TU.mx(-1), TU.my(0) - topY0);
+
+    // Trap tail u <= -1 when inspecting C trap
+    if (showTrapHighlight || st.sceneIdx === 2) {
+      ctx.fillStyle = 'rgba(53, 80, 112, 0.06)';
+      ctx.fillRect(TU.mx(uMin), TU.my(0), TU.mx(-1) - TU.mx(uMin), topY1 - TU.my(0));
+    }
+
+    // Axes for f(u)
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.42)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(TU.mx(uMin), TU.my(0)); ctx.lineTo(TU.mx(uMax), TU.my(0));
+    ctx.moveTo(TU.mx(0), topY0); ctx.lineTo(TU.mx(0), topY1);
+    ctx.stroke();
+
+    // Vertical guides u = -1, u = 1
+    [-1, 1].forEach(function (uv) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(168, 56, 37, 0.45)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(TU.mx(uv), topY0 + 6); ctx.lineTo(TU.mx(uv), topY1); ctx.stroke();
+      ctx.restore();
+    });
+
+    // Plot even function f(u)
+    plotFn(fEven, uMin, -1.0, 50, TU, '#355070', 2.0);
+    plotFn(fEven, -1.0, 1.0, 60, TU, '#a83825', 2.5);
+    plotFn(fEven, 1.0, uMax, 50, TU, '#355070', 2.0);
+
+    // Hollow threshold points (-1, 0) and (1, 0)
+    drawDot(TU.mx(-1), TU.my(0), 3.8, '#a83825', '#faf6ee', true);
+    drawDot(TU.mx(1), TU.my(0), 3.8, '#a83825', '#faf6ee', true);
+
+    // Active u and symmetric |u| on top plot
+    var uClamped = clamp(st.u, uMin + 0.06, uMax - 0.06);
+    var absClamped = clamp(Math.abs(st.u), 0, uMax - 0.06);
+    var fuDisp = fEven(st.u);
+    var winU = Math.abs(st.u) < 1;
+
+    if (st.u < -0.08) {
+      // Dashed horizontal symmetry tether u <-> |u|
+      ctx.save();
+      ctx.strokeStyle = 'rgba(176, 125, 43, 0.78)';
+      ctx.lineWidth = 1.25;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(TU.mx(uClamped), TU.my(fuDisp));
+      ctx.lineTo(TU.mx(absClamped), TU.my(fuDisp));
+      ctx.stroke();
+      ctx.restore();
+      drawDot(TU.mx(absClamped), TU.my(fuDisp), 3.5, '#b07d2b', '#faf6ee');
+      drawLabel('|u|', TU.mx(absClamped) + 5, TU.my(fuDisp) - 5, '#b07d2b', '600 10.5px ui-monospace, Menlo, monospace');
+    }
+
+    drawDot(TU.mx(uClamped), TU.my(fuDisp), 4.4, winU ? '#a83825' : '#355070', '#faf6ee');
+    if (showTrapHighlight && st.u <= -1) {
+      ctx.strokeStyle = '#a83825';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(TU.mx(uClamped), TU.my(fuDisp), 8.5, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    drawLabel('上层：偶函数 f(u)（在 [0,+∞) 递减）', padL + 4, topY0 + 13, '#2b251f', '600 10.5px -apple-system, "PingFang SC", sans-serif');
+    drawLabel('|u|<1 ⇔ f(u)>0', W - padR - 4, topY0 + 13, '#a83825', '600 10.5px -apple-system, "PingFang SC", sans-serif', 'right');
+    drawLabel('-1', TU.mx(-1) - 11, TU.my(0) + 12, '#a83825', '600 10.5px ui-monospace, Menlo, monospace');
+    drawLabel('1', TU.mx(1) + 5, TU.my(0) + 12, '#a83825', '600 10.5px ui-monospace, Menlo, monospace');
+    drawLabel('u=' + st.u.toFixed(2), clamp(TU.mx(uClamped), padL + 26, W - padR - 46), TU.my(fuDisp) - 8, winU ? '#a83825' : '#355070', '600 10.5px ui-monospace, Menlo, monospace', 'center');
+    ctx.restore();
+
+    // ==================== BOTTOM PANEL: u = log_{1/2}(x-1) ====================
+    var xMin = 0.65, xMax = 4.55, uBotMin = -1.65, uBotMax = 1.85;
+    var TX = boxMap(padL, botY0, W - padR, botY1, xMin, xMax, uBotMin, uBotMax);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(padL, botY0, W - padL - padR, botY1 - botY0);
+    ctx.clip();
+
+    // Domain forbidden region x <= 1
+    ctx.fillStyle = 'rgba(168, 56, 37, 0.08)';
+    ctx.fillRect(TX.mx(xMin), botY0, TX.mx(1) - TX.mx(xMin), botY1 - botY0);
+
+    // Strip -1 < u < 1
+    ctx.fillStyle = 'rgba(53, 80, 112, 0.065)';
+    ctx.fillRect(TX.mx(1), TX.my(1), TX.mx(xMax) - TX.mx(1), TX.my(-1) - TX.my(1));
+
+    // Horizontal threshold lines u = 1 and u = -1
+    [1, -1].forEach(function (uv) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(168, 56, 37, 0.45)';
+      ctx.lineWidth = 1.05;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath(); ctx.moveTo(TX.mx(1), TX.my(uv)); ctx.lineTo(TX.mx(xMax), TX.my(uv)); ctx.stroke();
+      ctx.restore();
+      drawLabel('u=' + uv, TX.mx(xMin) + 4, TX.my(uv) + 4, '#a83825', '600 10px ui-monospace, Menlo, monospace');
+    });
+
+    // Vertical wall x = 1
+    ctx.save();
+    ctx.strokeStyle = 'rgba(168, 56, 37, 0.52)';
+    ctx.lineWidth = 1.2;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath(); ctx.moveTo(TX.mx(1), botY0); ctx.lineTo(TX.mx(1), botY1); ctx.stroke();
+    ctx.restore();
+
+    // x-axis (u = 0)
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.48)';
+    ctx.lineWidth = 1.1;
+    ctx.beginPath(); ctx.moveTo(TX.mx(xMin), TX.my(0)); ctx.lineTo(TX.mx(xMax), TX.my(0)); ctx.stroke();
+
+    // Vertical drops from (1.5, 1) and (3, -1) down to number line
+    ctx.save();
+    ctx.strokeStyle = 'rgba(168, 56, 37, 0.55)';
+    ctx.lineWidth = 1.1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(TX.mx(1.5), TX.my(1)); ctx.lineTo(TX.mx(1.5), botY1 - 4);
+    ctx.moveTo(TX.mx(3.0), TX.my(-1)); ctx.lineTo(TX.mx(3.0), botY1 - 4);
+    ctx.stroke();
+    ctx.restore();
+
+    // Plot u = log_{1/2}(x-1)
+    plotFn(uOfX, 1.26, 1.50, 24, TX, '#355070', 2.0);
+    plotFn(uOfX, 1.50, 3.00, 50, TX, '#a83825', 2.6);
+    plotFn(uOfX, 3.00, xMax, 40, TX, '#355070', 2.0);
+
+    // Intersection dots at (1.5, 1) and (3, -1)
+    drawDot(TX.mx(1.5), TX.my(1), 3.8, '#a83825', '#faf6ee', true);
+    drawDot(TX.mx(3.0), TX.my(-1), 3.8, '#a83825', '#faf6ee', true);
+
+    // Active point (x, u(x))
+    var uPlot = clamp(st.u, uBotMin + 0.08, uBotMax - 0.08);
+    drawDot(TX.mx(st.x), TX.my(uPlot), 4.4, winU ? '#a83825' : '#355070', '#faf6ee');
+
+    // Bottom solution interval bar on number line at botY1 - 6
+    var nlY = botY1 - 6;
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.36)';
+    ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(TX.mx(1), nlY); ctx.lineTo(TX.mx(xMax), nlY); ctx.stroke();
+
+    ctx.strokeStyle = '#a83825';
+    ctx.lineWidth = 3.2;
+    ctx.beginPath(); ctx.moveTo(TX.mx(1.5), nlY); ctx.lineTo(TX.mx(3.0), nlY); ctx.stroke();
+
+    drawDot(TX.mx(1.0), nlY, 3.4, '#6f6254', '#faf6ee', true);
+    drawDot(TX.mx(1.5), nlY, 3.8, '#a83825', '#faf6ee', true);
+    drawDot(TX.mx(3.0), nlY, 3.8, '#a83825', '#faf6ee', true);
+    drawDot(TX.mx(st.x), nlY, 4.0, winU ? '#a83825' : '#355070', '#faf6ee');
+
+    drawLabel('下层：u = log_{1/2}(x-1) 递减反号对应 x 数轴', W - padR - 4, botY0 + 13, '#2b251f', '600 10.5px -apple-system, "PingFang SC", sans-serif', 'right');
+    drawLabel('禁区', TX.mx(0.68), botY0 + 14, '#a83825', '600 10px -apple-system, "PingFang SC", sans-serif');
+
+    ctx.restore();
+
+    // Bottom axis labels below botY1
+    drawLabel('1', TX.mx(1.0), botY1 + 12, '#6f6254', '600 10.5px ui-monospace, Menlo, monospace', 'center');
+    drawLabel('3/2', TX.mx(1.5), botY1 + 12, '#a83825', '600 10.5px ui-monospace, Menlo, monospace', 'center');
+    drawLabel('3', TX.mx(3.0), botY1 + 12, '#a83825', '600 10.5px ui-monospace, Menlo, monospace', 'center');
+    drawLabel('x', W - padR - 4, botY1 + 12, '#6b5f52', 'italic 11.5px Georgia, serif', 'right');
+
+    // Bridge tag between upper & lower
+    drawLabel('↕ 联动代换 u = log_{1/2}(x-1)', W - padR - 2, topY1 + 12, '#355070', '600 10.5px -apple-system, "PingFang SC", sans-serif', 'right');
+
+    // DOM updates
+    liveEl.innerHTML = M('<mi>x</mi><mo>=</mo><mn>' + st.x.toFixed(2) + '</mn>') +
+      ' · ' + M('<mi>u</mi><mo>=</mo><mn>' + st.u.toFixed(2) + '</mn>') +
+      ' · <strong>' + (winU ? M('<mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>&lt;</mo><mn>1</mn>') : M('<mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>≥</mo><mn>1</mn>')) + '</strong>';
+
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
+    timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
+    timeline.value = t.toFixed(2);
+    xSlider.value = clamp(st.x, 1.05, 4.50).toFixed(2);
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
+
+    for (var i = 0; i < stepEls.length; i++) {
+      stepEls[i].setAttribute('data-active', i === st.sceneIdx ? 'true' : 'false');
+    }
+
+    if (window.notara && typeof window.notara.setState === 'function') {
+      window.notara.setState({
+        summary: '第08讲·例1 微课停在 ' + formatTime(t) + '（第 ' + (st.sceneIdx + 1) + ' 幕，x=' + st.x.toFixed(2) + '，u=' + st.u.toFixed(2) + '，|u|<1=' + winU + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          probe_x: Number(st.x.toFixed(2)),
+          inner_u: Number(st.u.toFixed(2)),
+          inSolution: winU,
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
+    }
+  }
+
+  function showBetCheckpoint() {
+    playing = false;
+    betOverlay.hidden = false;
+    betFeedback.hidden = true;
+    render();
+  }
+
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showTrapHighlight = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object') {
+        if (typeof detail.params.probe_x === 'number') {
+          manualX = clamp(detail.params.probe_x, 1.05, 4.50);
+          interactiveOverride = true;
+        }
+      }
+      render();
+    });
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    var prevT = t;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
+    lastTs = ts;
+    t += dt;
+    if (!betFiredDuringPlay && prevT < 30.0 && t >= 30.0) {
+      t = 30.0;
+      betFiredDuringPlay = true;
+      showBetCheckpoint();
+      return;
+    }
+    if (t >= TOTAL) { t = TOTAL; playing = false; }
+    render();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener('click', function () {
+    if (playing) {
+      playing = false;
+      manualX = computeState().x;
+      interactiveOverride = true;
+      render();
+    } else {
+      betOverlay.hidden = true;
+      showTrapHighlight = false;
+      if (t >= TOTAL - 0.1) { t = 0; betFiredDuringPlay = false; }
+      interactiveOverride = false;
+      playing = true;
+      lastTs = 0;
+      render();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  timeline.addEventListener('input', function () {
+    t = Number(timeline.value) || 0;
+    betOverlay.hidden = true;
+    showTrapHighlight = false;
+    interactiveOverride = false;
+    if (t < 29) betFiredDuringPlay = false;
+    render();
+  });
+
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
+      showTrapHighlight = false;
+      interactiveOverride = false;
+      t = Number(el.dataset.jump) || 0;
+      betOverlay.hidden = true;
+      render();
+    });
+  });
+
+  xSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showTrapHighlight = false;
+    interactiveOverride = true;
+    manualX = clamp(Number(xSlider.value) || 2.0, 1.05, 4.50);
+    render();
+  });
+
+  openBetBtn.addEventListener('click', function () {
+    if (!betOverlay.hidden) {
+      betOverlay.hidden = true;
+      render();
+      return;
+    }
+    t = 30.0;
+    interactiveOverride = false;
+    showTrapHighlight = false;
+    showBetCheckpoint();
+  });
+
+  betSkip.addEventListener('click', function () {
+    betOverlay.hidden = true;
+    betFiredDuringPlay = true;
+    showTrapHighlight = false;
+    interactiveOverride = false;
+    if (t < 30.2) t = 30.2;
+    playing = true;
+    lastTs = 0;
+    render();
+    requestAnimationFrame(tick);
+  });
+
+  betBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
+      betFeedback.hidden = false;
+      interactiveOverride = true;
+      t = 30.0;
+      if (ans === 'wrong') {
+        manualX = 3.60;
+        showTrapHighlight = true;
+        betFeedback.innerHTML = '<strong>易错提醒：</strong>取 ' + M('<mi>x</mi><mo>=</mo><mn>3.60</mn>') + ' 得 ' + M('<mi>u</mi><mo>≈</mo><mo>−</mo><mn>1.38</mn><mo>&lt;</mo><mn>1</mn>') + '，折返正半轴后 ' + M('<mrow><mo stretchy="false">|</mo><mi>u</mi><mo stretchy="false">|</mo></mrow><mo>=</mo><mn>1.38</mn><mo>&gt;</mo><mn>1</mn>') + '，故 ' + M('<mi>f</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow><mo>&lt;</mo><mn>0</mn>') + '，C 错。';
+      } else {
+        manualX = 2.00;
+        showTrapHighlight = false;
+        betFeedback.innerHTML = '<strong>判断准确：</strong>' + M('<mo>−</mo><mn>1</mn><mo>&lt;</mo><msub><mi>log</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo>&#x2061;</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mo>&lt;</mo><mn>1</mn>') + ' 两端再按底数 ' + M('<mfrac><mn>1</mn><mn>2</mn></mfrac>') + ' 反向，解集为 ' + M('<mrow><mo stretchy="false">(</mo>' + frac('<mn>3</mn>', '<mn>2</mn>') + '<mo>,</mo><mn>3</mn><mo stretchy="false">)</mo></mrow>') + '（选 B）。';
+      }
+      render();
+    });
+  });
+
+  document.getElementById('quote-btn').addEventListener('click', function () {
+    playing = false;
+    var st = computeState();
+    var msg = '我在图解《第08讲·例1 偶函数单调脱壳与绝对值化归》第 ' + formatTime(t) + ' 暂停了（x=' + st.x.toFixed(2) + '，u=' + st.u.toFixed(2) + '），请带我核对为什么必须加绝对值保留 -1 < u < 1 与底数 1/2 二次反号。';
+    if (window.notara && typeof window.notara.quoteState === 'function') {
+      window.notara.quoteState({
+        summary: msg,
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          probe_x: Number(st.x.toFixed(2)),
+          inner_u: Number(st.u.toFixed(2))
+        }
+      });
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
+    } else {
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，x=' + st.x.toFixed(2) + '）。';
+    }
+    render();
+  });
+
+  window.addEventListener('resize', render);
+  render();
+})();
+</script>
+</body>
+</html>

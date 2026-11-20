@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第16讲·例2 · 同底指数与对数函数公共点个数变化</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
+    overflow: hidden;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
+  }
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
+  }
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 296px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2b251f;
+  }
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sol-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.54;
+    cursor: pointer;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .sol-step:hover { opacity: 0.86; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #355070;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13.2px;
+    color: #25201b;
+    line-height: 1.62;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.2px;
+    color: #2b251f;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.58;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
+
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+  }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+    margin-top: 4px;
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 74px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #355070;
+  }
+  .preset-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .preset-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.26);
+    background: #faf6ee;
+    color: #5b4f43;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font: 500 11px/1.25 ui-monospace, Menlo, monospace;
+    cursor: pointer;
+  }
+  .preset-btn:hover {
+    border-color: #a83825;
+    color: #a83825;
+  }
+  .preset-btn[data-active="true"] {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.08);
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  @media (max-width: 700px) {
+    .sheet-head { padding: 9px 14px; }
+    .sheet-title { font-size: 14px; }
+    .sheet-live { font-size: 12px; }
+    .sheet-grid { grid-template-columns: 1.04fr 1fr; min-height: 318px; }
+    .sheet-left { padding: 10px 12px 11px; }
+    canvas { height: 242px; }
+    .sheet-note { font-size: 11.8px; line-height: 1.6; padding-top: 7px; }
+    .sheet-right { padding: 11px 13px 10px; }
+    .sol-steps { gap: 5px; }
+    .sol-step { padding: 4px 6px 4px 9px; }
+    .sol-step-top { font-size: 11.5px; margin-bottom: 1px; }
+    .sol-eq { font-size: 12px; line-height: 1.48; }
+    .sheet-foot { padding: 8px 14px; gap: 10px; }
+    .foot-transport { min-width: 170px; gap: 8px; }
+    .play-btn { padding: 4px 10px; font-size: 11.5px; }
+    .foot-params { gap: 7px; }
+    .param-pair input[type="range"] { width: 52px; }
+  }
+
+  @media (max-width: 470px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">第16讲·例2 · 同底指数与对数函数公共点个数变化</h1>
+    <div class="sheet-live" id="live-readout"></div>
+  </header>
+
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
+    </div>
+
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>双反例击穿辨析</h2>
+          <span class="sol-total mono">第16讲·例2</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0" data-active="true">
+            <div class="sol-step-top"><span>（一）判 A：<math display="inline"><mi>a</mi><mo>=</mo><mn>2</mn></math> 时恒有 <math display="inline"><msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><mi>x</mi></math></span><span class="sol-pts mono">00:04</span></div>
+            <div class="sol-eq"><math display="inline"><mi>a</mi><mo>&gt;</mo><mn>1</mn></math> 递增，交点必在 <math display="inline"><mi>y</mi><mo>=</mo><mi>x</mi></math>；而 <math display="inline"><msup><mn>2</mn><mi>n</mi></msup><mo>≥</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>&gt;</mo><mi>x</mi></math>，无公共点</div>
+          </li>
+          <li class="sol-step" data-jump="16" data-step="1">
+            <div class="sol-step-top"><span>（二）破 B：<math display="inline"><mi>a</mi><mo>=</mo><msqrt><mn>2</mn></msqrt></math> 至少 2 交点</span><span class="sol-pts mono">00:16</span></div>
+            <div class="sol-eq"><math display="inline"><mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></math>、<math display="inline"><mrow><mo stretchy="false">(</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo stretchy="false">)</mo></mrow></math> 同落两曲线（<math display="inline"><msup><mrow><mo stretchy="false">(</mo><msqrt><mn>2</mn></msqrt><mo stretchy="false">)</mo></mrow><mn>3</mn></msup><mo>&lt;</mo><mn>3</mn></math> 穿下复穿）</div>
+          </li>
+          <li class="sol-step" data-jump="30" data-step="2">
+            <div class="sol-step-top"><span>（三）破 C：<math display="inline"><mi>a</mi><mo>=</mo><mfrac><mn>1</mn><mn>16</mn></mfrac></math> 对称裂 3 交点</span><span class="sol-pts mono">00:30</span></div>
+            <div class="sol-eq">递减可偏离 y=x：<math display="inline"><mrow><mo stretchy="false">(</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false">)</mo></mrow></math>、<math display="inline"><mrow><mo stretchy="false">(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo stretchy="false">)</mo></mrow></math> 与对角 <math display="inline"><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow></math></div>
+          </li>
+          <li class="sol-step" data-jump="44" data-step="3">
+            <div class="sol-step-top"><span>（四）多选定论：选 A、D</span><span class="sol-pts mono">00:44</span></div>
+            <div class="sol-eq">递增反函数交点必在对角；递减可长出对角线外双根</div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>易错自测 · 00:30</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <div style="font-size:12px;color:#3a332c;margin-bottom:4px;">互为反函数的 <math display="inline"><mi>y</mi><mo>=</mo><msup><mi>a</mi><mi>x</mi></msup></math> 与 <math display="inline"><mi>y</mi><mo>=</mo><msub><mi>log</mi><mi>a</mi></msub><mo>&#x2061;</mo><mi>x</mi></math> 关于 <math display="inline"><mi>y</mi><mo>=</mo><mi>x</mi></math> 对称，其公共点位置满足：</div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：只要关于 <math display="inline"><mi>y</mi><mo>=</mo><mi>x</mi></math> 对称，所有公共点就必定全落在直线 <math display="inline"><mi>y</mi><mo>=</mo><mi>x</mi></math> 上（选 C）</button>
+          <button type="button" class="bet-choice" data-bet="right">乙：仅严格递增时全在 <math display="inline"><mi>y</mi><mo>=</mo><mi>x</mi></math> 上；<math display="inline"><mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> 递减时如 <math display="inline"><mi>a</mi><mo>=</mo><mfrac><mn>1</mn><mn>16</mn></mfrac></math> 有 3 个交点（选 D）</button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
+      </div>
+
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">自测一下</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="4.0" aria-label="时间轴">
+      <span class="clock mono" id="time-readout"><span id="clock">00:04 / 00:48</span></span>
+    </div>
+    <div class="foot-params">
+      <label class="param-pair" title="拖动底数 a 验证 a=2、a=√2 与 a=1/16 交点分裂">
+        <span>底数 <math display="inline"><mi>a</mi></math></span>
+        <input type="range" class="hairline-range" id="a-slider" data-param="base_a" min="0.04" max="2.50" step="0.005" value="2.00">
+      </label>
+      <div class="preset-group" role="group" aria-label="关键底数快跳">
+        <button type="button" class="preset-btn" data-preset="0.0625">1/16</button>
+        <button type="button" class="preset-btn" data-preset="1.41421356">√2</button>
+        <button type="button" class="preset-btn" data-preset="2.0">2</button>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 48;
+  var SQRT2 = Math.SQRT2;
+  var INV16 = 0.0625;
+
+  var playing = false;
+  var interactiveOverride = false;
+  var betFiredDuringPlay = false;
+  var showWrongRings = false;
+  var betResult = '';
+  var t = 4.0;
+  var manualA = 2.0;
+  var lastTs = 0;
+
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+  var playBtn = document.getElementById('play-btn');
+  var timeline = document.getElementById('timeline');
+  var timeEl = document.getElementById('clock');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
+  var aSlider = document.getElementById('a-slider');
+  var betOverlay = document.getElementById('bet-overlay');
+  var betFeedback = document.getElementById('bet-feedback');
+  var betSkip = document.getElementById('bet-skip');
+  var openBetBtn = document.getElementById('open-bet-btn');
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
+  var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+  var presetBtns = Array.prototype.slice.call(document.querySelectorAll('[data-preset]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function frac(a, b) { return '<mfrac><mrow>' + a + '</mrow><mrow>' + b + '</mrow></mfrac>'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function smoothstep(u) { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); }
+  function formatTime(sec) {
+    var s = Math.max(0, Math.floor(sec));
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function sanitizeBase(raw) {
+    var v = clamp(Number(raw) || 2.0, 0.04, 2.50);
+    if (Math.abs(v - INV16) < 0.006) return INV16;
+    if (Math.abs(v - SQRT2) < 0.015) return SQRT2;
+    if (Math.abs(v - 2.0) < 0.015) return 2.0;
+    if (v > 0.96 && v < 1.04) v = v < 1.0 ? 0.95 : 1.05;
+    return v;
+  }
+
+  function solveDiagonalRoots(a) {
+    if (a <= 0 || Math.abs(a - 1) < 1e-4) return [];
+    if (a < 1) {
+      // Zero-existence theorem on h(x) = a^x - x on [0, 1]: h(0)=1>0, h(1)=a-1<0
+      var lo = 0.0, hi = 1.0;
+      for (var i = 0; i < 50; i++) {
+        var mid = 0.5 * (lo + hi);
+        if (Math.pow(a, mid) - mid > 0) lo = mid;
+        else hi = mid;
+      }
+      var x0 = 0.5 * (lo + hi);
+      return [{ x: x0, y: x0, diagonal: true }];
+    }
+
+    // For a > 1, sample h(x) = a^x - x across [1, 120] to detect sign changes purely numerically
+    if (Math.abs(a - SQRT2) < 1e-4) {
+      return [
+        { x: 2, y: 2, diagonal: true },
+        { x: 4, y: 4, diagonal: true }
+      ];
+    }
+    var roots = [];
+    var prevX = 1.0;
+    var prevH = Math.pow(a, prevX) - prevX;
+    var minX = prevX, minH = prevH;
+    var steps = 900;
+    for (var k = 1; k <= steps; k++) {
+      var curX = 1.0 + Math.pow(k / steps, 2) * 119.0;
+      var curH = Math.pow(a, curX) - curX;
+      if (curH < minH) { minH = curH; minX = curX; }
+      if (prevH * curH <= 0 && roots.length < 2) {
+        var aLo = prevX, aHi = curX, hLo = prevH;
+        for (var b = 0; b < 46; b++) {
+          var m = 0.5 * (aLo + aHi);
+          var hm = Math.pow(a, m) - m;
+          if (hLo * hm <= 0) aHi = m;
+          else { aLo = m; hLo = hm; }
+        }
+        var rx = 0.5 * (aLo + aHi);
+        roots.push({ x: rx, y: rx, diagonal: true });
+      }
+      prevX = curX;
+      prevH = curH;
+    }
+    if (roots.length === 0 && Math.abs(minH) < 0.008) {
+      roots.push({ x: minX, y: minX, diagonal: true });
+    }
+    return roots;
+  }
+
+  function solveExpLogIntersections(a) {
+    var diag = solveDiagonalRoots(a);
+    if (a >= 1) return diag;
+    var x0 = diag[0].x;
+    if (Math.abs(a - INV16) < 1e-4) {
+      return [
+        { x: 0.25, y: 0.5, diagonal: false },
+        { x: x0, y: x0, diagonal: true },
+        { x: 0.5, y: 0.25, diagonal: false }
+      ];
+    }
+    // Scan F(u) = a^(a^u) - u on (0.002, x0 - 0.002) for negative excursion
+    var minU = 0.002, minF = 1e9;
+    var nScan = 220;
+    for (var i = 0; i <= nScan; i++) {
+      var u = 0.002 + ((x0 - 0.004) * i) / nScan;
+      var fu = Math.pow(a, Math.pow(a, u)) - u;
+      if (fu < minF) { minF = fu; minU = u; }
+    }
+    if (minF > -1e-5) return diag;
+    var lo = 0.002, hi = minU;
+    for (var j = 0; j < 54; j++) {
+      var mid = 0.5 * (lo + hi);
+      var fm = Math.pow(a, Math.pow(a, mid)) - mid;
+      if (fm > 0) lo = mid;
+      else hi = mid;
+    }
+    var uRoot = 0.5 * (lo + hi);
+    var vRoot = Math.pow(a, uRoot);
+    return [
+      { x: uRoot, y: vRoot, diagonal: false },
+      { x: x0, y: x0, diagonal: true },
+      { x: vRoot, y: uRoot, diagonal: false }
+    ];
+  }
+
+  function baseLabel(a) {
+    if (Math.abs(a - INV16) < 0.002) return frac('<mn>1</mn>', '<mn>16</mn>');
+    if (Math.abs(a - SQRT2) < 0.006) return '<msqrt><mn>2</mn></msqrt>';
+    return '<mn>' + a.toFixed(a < 0.2 ? 3 : 2) + '</mn>';
+  }
+
+  function computeState() {
+    var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
+    if (interactiveOverride) {
+      var rMan = solveExpLogIntersections(manualA);
+      var noteMan;
+      if (Math.abs(manualA - 2.0) < 0.008) {
+        noteMan = '取 ' + M('<mi>a</mi><mo>=</mo><mn>2</mn>') + '：对一切实数有 ' + M('<msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><mi>x</mi>') + '，故两曲线 <strong>0 个公共点</strong>（选项 A 正确）。';
+      } else if (Math.abs(manualA - SQRT2) < 0.008) {
+        noteMan = '取反例 ' + M('<mi>a</mi><mo>=</mo><msqrt><mn>2</mn></msqrt>') + '：代入 ' + M('<mi>x</mi><mo>=</mo><mn>2</mn><mo>,</mo><mn>4</mn>') + ' 得精准交点 ' + M('<mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow>') + ' 与 ' + M('<mrow><mo stretchy="false">(</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo stretchy="false">)</mo></mrow>') + '（击穿 B）。';
+      } else if (Math.abs(manualA - INV16) < 0.002) {
+        noteMan = '取反例 ' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>1</mn>', '<mn>16</mn>')) + '：对称裂出 ' + M('<mrow><mo stretchy="false">(</mo>' + frac('<mn>1</mn>', '<mn>4</mn>') + '<mo>,</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo stretchy="false">)</mo></mrow>') + '、' + M('<mrow><mo stretchy="false">(</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo>,</mo>' + frac('<mn>1</mn>', '<mn>4</mn>') + '<mo stretchy="false">)</mo></mrow>') + ' 与对角点 ' + M('<mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow>') + ' 共 3 交点（击穿 C）。';
+      } else if (manualA > 1) {
+        noteMan = '递增区间 ' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(2) + '</mn><mo>&gt;</mo><mn>1</mn>') + '：反证法保证若有交点必全在 ' + M('<mi>y</mi><mo>=</mo><mi>x</mi>') + ' 上，当前交点数 ' + rMan.length + '。';
+      } else {
+        noteMan = '递减区间 ' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(3) + '</mn><mo>&lt;</mo><mn>1</mn>') + '：反证法不产生矛盾，当前交点数 <strong>' + rMan.length + '</strong>。';
+      }
+      return {
+        sceneIdx: Math.abs(manualA - INV16) < 0.05 ? 2 : (manualA < 1.65 && manualA > 1 ? 1 : 0),
+        a: manualA,
+        roots: rMan,
+        zoomQuad1: manualA < 0.25,
+        showSqrt2Witness: Math.abs(manualA - SQRT2) < 0.015,
+        noteHtml: noteMan
+      };
+    }
+
+    if (sceneIdx === 0) {
+      var a0 = 2.0;
+      return {
+        sceneIdx: 0,
+        a: a0,
+        roots: solveExpLogIntersections(a0),
+        zoomQuad1: false,
+        showSqrt2Witness: false,
+        noteHtml: '取 ' + M('<mi>a</mi><mo>=</mo><mn>2</mn>') + '：' + M('<mi>x</mi><mo>≤</mo><mn>0</mn>') + ' 时 ' + M('<msup><mn>2</mn><mi>x</mi></msup><mo>&gt;</mo><mn>0</mn><mo>≥</mo><mi>x</mi>') + '；' + M('<mi>x</mi><mo>≥</mo><mn>1</mn>') + ' 取整 ' + M('<mi>n</mi><mo>≤</mo><mi>x</mi><mo>&lt;</mo><mi>n</mi><mo>+</mo><mn>1</mn>') + ' 得 ' + M('<msup><mn>2</mn><mi>x</mi></msup><mo>≥</mo><msup><mn>2</mn><mi>n</mi></msup><mo>≥</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>&gt;</mo><mi>x</mi>') + '，故无公共点（<strong>A 正确</strong>）。'
+      };
+    }
+
+    if (sceneIdx === 1) {
+      // Smoothly drops from 2.00 -> sqrt(2) at t=16, holds around sqrt(2)
+      var a1 = t <= 16 ? lerp(2.0, SQRT2, smoothstep((t - 12) / 4)) : SQRT2;
+      return {
+        sceneIdx: 1,
+        a: a1,
+        roots: solveExpLogIntersections(a1),
+        zoomQuad1: false,
+        showSqrt2Witness: Math.abs(a1 - SQRT2) < 0.02,
+        noteHtml: Math.abs(a1 - SQRT2) < 0.02
+          ? '代入反例 ' + M('<mi>a</mi><mo>=</mo><msqrt><mn>2</mn></msqrt>') + '：验算 ' + M('<msup><mrow><mo stretchy="false">(</mo><msqrt><mn>2</mn></msqrt><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>2</mn>') + '、' + M('<msup><mrow><mo stretchy="false">(</mo><msqrt><mn>2</mn></msqrt><mo stretchy="false">)</mo></mrow><mn>4</mn></msup><mo>=</mo><mn>4</mn>') + '（中间 ' + M('<mi>x</mi><mo>=</mo><mn>3</mn>') + ' 处 ' + M('<mn>2</mn><msqrt><mn>2</mn></msqrt><mo>&lt;</mo><mn>3</mn>') + '），至少有 2 个交点（<strong>B 错误</strong>）。'
+          : '随着 ' + M('<mi>a</mi><mo>&gt;</mo><mn>1</mn>') + ' 减小，' + M('<mi>y</mi><mo>=</mo><msup><mi>a</mi><mi>x</mi></msup>') + ' 下沉穿过 ' + M('<mi>y</mi><mo>=</mo><mi>x</mi>') + '，在对角线上截出 2 个交点。'
+      };
+    }
+
+    if (sceneIdx === 2) {
+      // Sweeps a down from 0.24 -> 1/16 at t=30
+      var a2 = t <= 30 ? lerp(0.24, INV16, smoothstep((t - 24) / 6)) : INV16;
+      return {
+        sceneIdx: 2,
+        a: a2,
+        roots: solveExpLogIntersections(a2),
+        zoomQuad1: true,
+        showSqrt2Witness: false,
+        noteHtml: Math.abs(a2 - INV16) < 0.008
+          ? '取 ' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>1</mn>', '<mn>16</mn>')) + '：直接代算得 ' + M('<mrow><mo stretchy="false">(</mo>' + frac('<mn>1</mn>', '<mn>4</mn>') + '<mo>,</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo stretchy="false">)</mo></mrow>') + ' 与 ' + M('<mrow><mo stretchy="false">(</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo>,</mo>' + frac('<mn>1</mn>', '<mn>4</mn>') + '<mo stretchy="false">)</mo></mrow>') + ' 对角线外双交点，连同对角零点共 <strong>3 交点</strong>（C 错，D 对）。'
+          : '当 ' + M('<mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn>') + ' 同减时，' + M('<mi>u</mi><mo>&lt;</mo><mi>v</mi><mo>⇒</mo><msup><mi>a</mi><mi>u</mi></msup><mo>&gt;</mo><msup><mi>a</mi><mi>v</mi></msup>') + ' 不矛盾，逐渐出现不在 y=x 上的对称交点。'
+      };
+    }
+
+    var showD1 = t < 42;
+    var a3 = showD1 ? SQRT2 : INV16;
+    return {
+      sceneIdx: 3,
+      a: a3,
+      roots: solveExpLogIntersections(a3),
+      zoomQuad1: !showD1,
+      showSqrt2Witness: showD1,
+      noteHtml: '总结：' + M('<mi>a</mi><mo>=</mo><mn>2</mn>') + ' 无交点（A 对）；' + M('<mi>a</mi><mo>=</mo><msqrt><mn>2</mn></msqrt>') + ' 交于 ' + M('<mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mo>,</mo><mrow><mo stretchy="false">(</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo stretchy="false">)</mo></mrow>') + '（破 B）；' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>1</mn>', '<mn>16</mn>')) + ' 裂出 3 交点（破 C 证 D）。正解 <strong>A、D</strong>。'
+    };
+  }
+
+  function setupCanvasSize() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var rect = canvas.getBoundingClientRect();
+    var cssW = Math.max(280, Math.round(rect.width || 440));
+    var cssH = Math.max(200, Math.round(rect.height || 296));
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: cssW, H: cssH };
+  }
+
+  function makeTransform(W, H, xMin, xMax, yMin, yMax) {
+    var padL = 26, padR = 16, padT = 16, padB = 20;
+    var uw = (W - padL - padR) / (xMax - xMin);
+    var uh = (H - padT - padB) / (yMax - yMin);
+    var u = Math.min(uw, uh);
+    var cx = padL + (W - padL - padR - u * (xMax - xMin)) * 0.5;
+    var cy = padT + (H - padT - padB - u * (yMax - yMin)) * 0.5;
+    return {
+      u: u,
+      mx: function (x) { return cx + (x - xMin) * u; },
+      my: function (y) { return cy + (yMax - y) * u; }
+    };
+  }
+
+  function drawDot(x, y, r, fill, ring) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (ring) {
+      ctx.strokeStyle = ring;
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+    }
+  }
+
+  function plotCurve(fn, t0, t1, steps, T, xMin, xMax, yMin, yMax, color, width, dash) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    if (dash) ctx.setLineDash(dash);
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    var pen = false;
+    for (var i = 0; i <= steps; i++) {
+      var u = t0 + ((t1 - t0) * i) / steps;
+      var pt = fn(u);
+      if (!pt || !isFinite(pt.x) || !isFinite(pt.y)) { pen = false; continue; }
+      if (pt.x < xMin - 0.15 || pt.x > xMax + 0.15 || pt.y < yMin - 0.25 || pt.y > yMax + 0.25) {
+        pen = false;
+        continue;
+      }
+      var px = T.mx(pt.x), py = T.my(pt.y);
+      if (!pen) { ctx.moveTo(px, py); pen = true; }
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawScene(st, W, H) {
+    var xMin, xMax, yMin, yMax, gridStep;
+    if (st.zoomQuad1) {
+      xMin = -0.14; xMax = 1.18; yMin = -0.12; yMax = 1.06; gridStep = 0.25;
+    } else if (st.a > 1 && st.a <= 1.65) {
+      xMin = -0.8; xMax = 4.9; yMin = -0.8; yMax = 4.8; gridStep = 1.0;
+    } else {
+      xMin = -1.5; xMax = 3.6; yMin = -1.2; yMax = 3.7; gridStep = 1.0;
+    }
+
+    var T = makeTransform(W, H, xMin, xMax, yMin, yMax);
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(T.mx(xMin) - 4, T.my(yMax) - 4, T.mx(xMax) - T.mx(xMin) + 8, T.my(yMin) - T.my(yMax) + 8);
+    ctx.clip();
+
+    // Grid
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.08)';
+    ctx.lineWidth = 0.7;
+    var k;
+    for (k = Math.ceil(xMin / gridStep) * gridStep; k <= xMax; k += gridStep) {
+      if (Math.abs(k) < 1e-4) continue;
+      ctx.beginPath(); ctx.moveTo(T.mx(k), T.my(yMin)); ctx.lineTo(T.mx(k), T.my(yMax)); ctx.stroke();
+    }
+    for (k = Math.ceil(yMin / gridStep) * gridStep; k <= yMax; k += gridStep) {
+      if (Math.abs(k) < 1e-4) continue;
+      ctx.beginPath(); ctx.moveTo(T.mx(xMin), T.my(k)); ctx.lineTo(T.mx(xMax), T.my(k)); ctx.stroke();
+    }
+
+    // Axes
+    var ox = T.mx(0), oy = T.my(0);
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.42)';
+    ctx.lineWidth = 1.05;
+    if (oy >= 8 && oy <= H - 8) {
+      ctx.beginPath(); ctx.moveTo(T.mx(xMin), oy); ctx.lineTo(T.mx(xMax), oy); ctx.stroke();
+      ctx.fillStyle = '#6b5f52';
+      ctx.font = 'italic 12px Georgia, serif';
+      ctx.fillText('x', T.mx(xMax) - 9, oy - 5);
+    }
+    if (ox >= 8 && ox <= W - 8) {
+      ctx.beginPath(); ctx.moveTo(ox, T.my(yMin)); ctx.lineTo(ox, T.my(yMax)); ctx.stroke();
+      ctx.fillStyle = '#6b5f52';
+      ctx.font = 'italic 12px Georgia, serif';
+      ctx.fillText('y', ox + 6, T.my(yMax) + 11);
+    }
+
+    // Mirror y = x
+    var diagLo = Math.max(xMin, yMin);
+    var diagHi = Math.min(xMax, yMax);
+    plotCurve(function (x) { return { x: x, y: x }; }, diagLo, diagHi, 2, T, xMin, xMax, yMin, yMax, 'rgba(125, 92, 70, 0.62)', 1.25, [5, 4]);
+
+    var lnA = Math.log(st.a);
+    // y = a^x (vermilion)
+    plotCurve(function (x) { return { x: x, y: Math.pow(st.a, x) }; }, xMin, xMax, 200, T, xMin, xMax, yMin, yMax, '#a83825', 2.25);
+    // y = log_a(x) (indigo)
+    plotCurve(function (x) { return x <= 0.002 ? null : { x: x, y: Math.log(x) / lnA }; }, 0.003, xMax, 220, T, xMin, xMax, yMin, yMax, '#355070', 2.25);
+
+    if (!st.zoomQuad1) {
+      drawDot(T.mx(0), T.my(1), 3.4, '#a83825', '#faf6ee');
+      drawDot(T.mx(1), T.my(0), 3.4, '#355070', '#faf6ee');
+      ctx.font = '500 10px ui-monospace, Menlo, monospace';
+      ctx.fillStyle = '#a83825';
+      ctx.fillText('(0,1)', T.mx(0) - 34, T.my(1) - 6);
+      ctx.fillStyle = '#355070';
+      ctx.fillText('(1,0)', T.mx(1) + 5, T.my(0) + 13);
+
+      // Witness point x=3 for a = sqrt(2) showing (sqrt(2))^3 = 2sqrt(2) < 3
+      if (st.showSqrt2Witness) {
+        var y3 = Math.pow(SQRT2, 3);
+        ctx.save();
+        ctx.strokeStyle = 'rgba(176, 125, 43, 0.55)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 2]);
+        ctx.beginPath(); ctx.moveTo(T.mx(3), T.my(3)); ctx.lineTo(T.mx(3), T.my(y3)); ctx.stroke();
+        ctx.restore();
+        drawDot(T.mx(3), T.my(y3), 3.3, '#b07d2b', '#faf6ee');
+        ctx.fillStyle = '#b07d2b';
+        ctx.font = '600 10px ui-monospace, Menlo, monospace';
+        ctx.fillText('x=3: 2√2<3', T.mx(3) + 6, T.my(y3) + 10);
+      }
+
+      // Witness gap markers for a = 2
+      if (Math.abs(st.a - 2.0) < 0.02) {
+        [1, 2].forEach(function (xv) {
+          var yv = Math.pow(2, xv);
+          ctx.save();
+          ctx.strokeStyle = 'rgba(125, 92, 70, 0.35)';
+          ctx.lineWidth = 0.9;
+          ctx.setLineDash([2, 2]);
+          ctx.beginPath(); ctx.moveTo(T.mx(xv), T.my(xv)); ctx.lineTo(T.mx(xv), T.my(yv)); ctx.stroke();
+          ctx.restore();
+          drawDot(T.mx(xv), T.my(yv), 3.2, '#a83825', '#faf6ee');
+        });
+      }
+    } else {
+      ctx.fillStyle = '#6f6254';
+      ctx.font = '10.5px ui-monospace, Menlo, monospace';
+      [0.25, 0.5, 1.0].forEach(function (v) {
+        var lbl = v === 0.25 ? '1/4' : v === 0.5 ? '1/2' : '1';
+        ctx.fillText(lbl, T.mx(v) - 7, T.my(0) + 13);
+        ctx.fillText(lbl, T.mx(0) - 21, T.my(v) + 4);
+      });
+    }
+
+    var roots = st.roots || [];
+    if (roots.length === 3) {
+      var r0 = roots[0], r2 = roots[2];
+      ctx.save();
+      ctx.strokeStyle = 'rgba(168, 56, 37, 0.55)';
+      ctx.lineWidth = 1.1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(T.mx(r0.x), T.my(r0.y)); ctx.lineTo(T.mx(r2.x), T.my(r2.y)); ctx.stroke();
+      ctx.restore();
+    }
+
+    roots.forEach(function (rt) {
+      if (rt.x < xMin || rt.x > xMax || rt.y < yMin || rt.y > yMax) return;
+      if (rt.diagonal) {
+        drawDot(T.mx(rt.x), T.my(rt.y), 4.2, '#2c2722', '#faf6ee');
+        if (st.showSqrt2Witness && (Math.abs(rt.x - 2) < 0.05 || Math.abs(rt.x - 4) < 0.05)) {
+          ctx.fillStyle = '#a83825';
+          ctx.font = '600 10.5px ui-monospace, Menlo, monospace';
+          var ptLbl = '(' + Math.round(rt.x) + ', ' + Math.round(rt.y) + ')';
+          if (Math.abs(rt.x - 4) < 0.05) {
+            ctx.fillText(ptLbl, T.mx(rt.x) - 42, T.my(rt.y) - 9);
+          } else {
+            ctx.fillText(ptLbl, T.mx(rt.x) - 34, T.my(rt.y) - 8);
+          }
+        } else if (st.zoomQuad1) {
+          ctx.fillStyle = '#2c2722';
+          ctx.font = '600 10px ui-monospace, Menlo, monospace';
+          ctx.fillText('(x0, x0)', T.mx(rt.x) + 7, T.my(rt.y) + 4);
+        }
+      } else {
+        drawDot(T.mx(rt.x), T.my(rt.y), 4.5, '#a83825', '#faf6ee');
+        if (showWrongRings || st.zoomQuad1) {
+          ctx.save();
+          ctx.strokeStyle = '#a83825';
+          ctx.lineWidth = showWrongRings ? 1.7 : 1.1;
+          ctx.beginPath();
+          ctx.arc(T.mx(rt.x), T.my(rt.y), showWrongRings ? 9.5 : 7.5, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+        }
+        ctx.fillStyle = '#a83825';
+        ctx.font = '600 11px ui-monospace, Menlo, monospace';
+        var near16 = Math.abs(st.a - INV16) < 0.004;
+        var lbl = near16
+          ? (rt.x < rt.y ? '(1/4, 1/2)' : '(1/2, 1/4)')
+          : '(' + rt.x.toFixed(2) + ', ' + rt.y.toFixed(2) + ')';
+        var dx = rt.x < rt.y ? 9 : 8;
+        var dy = rt.x < rt.y ? -7 : 14;
+        ctx.fillText(lbl, T.mx(rt.x) + dx, T.my(rt.y) + dy);
+      }
+    });
+
+    if (showWrongRings && roots.length === 3) {
+      ctx.fillStyle = '#a83825';
+      ctx.font = '600 11.5px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('y=x 两侧对称多 2 交点', T.mx(0.42), T.my(0.72));
+    }
+
+    ctx.restore();
+
+    // Legend top-left (empty sky area away from (4,4))
+    ctx.save();
+    ctx.fillStyle = 'rgba(250, 246, 238, 0.90)';
+    ctx.fillRect(10, 10, 74, 48);
+    ctx.font = '600 10.5px Georgia, "Noto Serif SC", serif';
+    ctx.fillStyle = '#a83825';
+    ctx.fillText('y = a^x', 15, 23);
+    ctx.fillStyle = '#355070';
+    ctx.fillText('y = log_a x', 15, 38);
+    ctx.fillStyle = '#7d5c46';
+    ctx.fillText('y = x', 15, 53);
+    ctx.restore();
+  }
+
+  function render() {
+    var st = computeState();
+    openBetBtn.textContent = betOverlay.hidden ? '自测一下' : '收起自测';
+    var size = setupCanvasSize();
+    ctx.clearRect(0, 0, size.W, size.H);
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, size.W, size.H);
+
+    drawScene(st, size.W, size.H);
+
+    var nRoots = st.roots.length;
+    liveEl.innerHTML = M('<mi>a</mi><mo>=</mo>' + baseLabel(st.a)) + ' · 公共点 <strong>' + nRoots + '</strong> 个';
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
+    timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
+    timeline.value = t.toFixed(2);
+    aSlider.value = clamp(st.a, 0.04, 2.50).toFixed(3);
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
+
+    for (var i = 0; i < stepEls.length; i++) {
+      stepEls[i].setAttribute('data-active', i === st.sceneIdx ? 'true' : 'false');
+    }
+    presetBtns.forEach(function (btn) {
+      var pv = Number(btn.dataset.preset);
+      btn.setAttribute('data-active', Math.abs(st.a - pv) < 0.01 ? 'true' : 'false');
+    });
+
+    if (window.notara && typeof window.notara.setState === 'function') {
+      window.notara.setState({
+        summary: '图解《第16讲·例2 指数对数反函数交点反例》停在 ' + formatTime(t) + '（第 ' + (st.sceneIdx + 1) + ' 步，底数 a=' + st.a.toFixed(4) + '，公共点数=' + nRoots + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          base_a: Number(st.a.toFixed(4)),
+          intersections: nRoots,
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
+    }
+  }
+
+  function showBetCheckpoint() {
+    playing = false;
+    betOverlay.hidden = false;
+    betFeedback.hidden = true;
+    render();
+  }
+
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object') {
+        if (typeof detail.params.base_a === 'number') {
+          manualA = sanitizeBase(detail.params.base_a);
+          interactiveOverride = true;
+        }
+      }
+      render();
+    });
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    var prevT = t;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
+    lastTs = ts;
+    t += dt;
+    if (!betFiredDuringPlay && prevT < 30.0 && t >= 30.0) {
+      t = 30.0;
+      betFiredDuringPlay = true;
+      showBetCheckpoint();
+      return;
+    }
+    if (t >= TOTAL) { t = TOTAL; playing = false; }
+    render();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener('click', function () {
+    if (playing) {
+      playing = false;
+      interactiveOverride = true;
+      manualA = computeState().a;
+      render();
+    } else {
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      if (t >= TOTAL - 0.1) { t = 0; betFiredDuringPlay = false; }
+      interactiveOverride = false;
+      playing = true;
+      lastTs = 0;
+      render();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  timeline.addEventListener('input', function () {
+    t = Number(timeline.value) || 0;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = false;
+    if (t < 29) betFiredDuringPlay = false;
+    render();
+  });
+
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
+      showWrongRings = false;
+      interactiveOverride = false;
+      t = Number(el.dataset.jump) || 0;
+      betOverlay.hidden = true;
+      render();
+    });
+  });
+
+  aSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = true;
+    manualA = sanitizeBase(aSlider.value);
+    render();
+  });
+
+  presetBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      playing = false;
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      interactiveOverride = true;
+      manualA = Number(btn.dataset.preset);
+      render();
+    });
+  });
+
+  openBetBtn.addEventListener('click', function () {
+    if (!betOverlay.hidden) {
+      betOverlay.hidden = true;
+      render();
+      return;
+    }
+    t = 30.0;
+    interactiveOverride = false;
+    showWrongRings = false;
+    showBetCheckpoint();
+  });
+
+  betSkip.addEventListener('click', function () {
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = false;
+    if (t < 36) t = 36.0;
+    playing = true;
+    lastTs = 0;
+    render();
+    requestAnimationFrame(tick);
+  });
+
+  betBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
+      betFeedback.hidden = false;
+      interactiveOverride = true;
+      manualA = INV16;
+      t = 30.0;
+      if (ans === 'wrong') {
+        showWrongRings = true;
+        betFeedback.innerHTML = '<strong>易错提醒：</strong>对称只保证对角线外的不等坐标交点成对出现，不能保证全在 ' + M('<mi>y</mi><mo>=</mo><mi>x</mi>') + ' 上。取 ' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>1</mn>', '<mn>16</mn>')) + '，' + M('<mrow><mo stretchy="false">(</mo>' + frac('<mn>1</mn>', '<mn>4</mn>') + '<mo>,</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo stretchy="false">)</mo></mrow>') + ' 与 ' + M('<mrow><mo stretchy="false">(</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo>,</mo>' + frac('<mn>1</mn>', '<mn>4</mn>') + '<mo stretchy="false">)</mo></mrow>') + ' 均同时落在两曲线上，共 3 个交点。';
+      } else {
+        showWrongRings = false;
+        betFeedback.innerHTML = '<strong>判断准确：</strong>' + M('<mi>a</mi><mo>&gt;</mo><mn>1</mn>') + ' 严增时反证法保证交点必在 ' + M('<mi>y</mi><mo>=</mo><mi>x</mi>') + ' 上（如 ' + M('<mi>a</mi><mo>=</mo><msqrt><mn>2</mn></msqrt>') + ' 交于 ' + M('<mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mo>,</mo><mrow><mo stretchy="false">(</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo stretchy="false">)</mo></mrow>') + '）；' + M('<mn>0</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn>') + ' 严减时 ' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>1</mn>', '<mn>16</mn>')) + ' 裂出 3 个交点。';
+      }
+      render();
+    });
+  });
+
+  document.getElementById('quote-btn').addEventListener('click', function () {
+    playing = false;
+    var st = computeState();
+    var msg = '我在图解《第16讲·例2 指数与对数反函数交点》第 ' + formatTime(t) + ' 暂停了（底数 a=' + st.a.toFixed(4) + '，公共点 ' + st.roots.length + ' 个），请带我核对为什么递增只能交在 y=x 而递减在 a=1/16 会裂出 3 个交点。';
+    if (window.notara && typeof window.notara.quoteState === 'function') {
+      window.notara.quoteState({
+        summary: msg,
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          base_a: Number(st.a.toFixed(4)),
+          intersections: st.roots.length
+        }
+      });
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
+    } else {
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，a=' + st.a.toFixed(4) + '）。';
+    }
+    render();
+  });
+
+  window.addEventListener('resize', render);
+  render();
+})();
+</script>
+</body>
+</html>

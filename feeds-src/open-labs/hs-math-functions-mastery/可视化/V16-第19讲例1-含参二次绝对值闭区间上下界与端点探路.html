@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第19讲·例1 · 含参二次绝对值闭区间上下界与端点探路</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
+    overflow: hidden;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
+  }
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
+  }
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 296px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2b251f;
+  }
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sol-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.54;
+    cursor: pointer;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .sol-step:hover { opacity: 0.86; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #355070;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13.2px;
+    color: #25201b;
+    line-height: 1.62;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.2px;
+    color: #2b251f;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.58;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
+
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+  }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+    margin-top: 4px;
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 78px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #355070;
+  }
+  .mode-tabs {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .mode-tab {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.26);
+    background: transparent;
+    color: #6b5f52;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font: 500 11.5px/1.3 inherit;
+    cursor: pointer;
+  }
+  .mode-tab[data-active="true"] {
+    border-color: #a83825;
+    color: #a83825;
+    background: rgba(168, 56, 37, 0.06);
+  }
+
+  @media (max-width: 700px) {
+    .sheet-head { padding: 9px 14px; }
+    .sheet-title { font-size: 14px; }
+    .sheet-live { font-size: 12px; }
+    .sheet-grid { grid-template-columns: 1.04fr 1fr; min-height: 318px; }
+    .sheet-left { padding: 10px 12px 11px; }
+    canvas { height: 242px; }
+    .sheet-note { font-size: 11.8px; line-height: 1.6; padding-top: 7px; }
+    .sheet-right { padding: 11px 13px 10px; }
+    .sol-steps { gap: 5px; }
+    .sol-step { padding: 4px 6px 4px 9px; }
+    .sol-step-top { font-size: 11.5px; margin-bottom: 1px; }
+    .sol-eq { font-size: 12px; line-height: 1.48; }
+    .sheet-foot { padding: 8px 14px; gap: 10px; }
+    .foot-transport { min-width: 170px; gap: 8px; }
+    .play-btn { padding: 4px 10px; font-size: 11.5px; }
+    .foot-params { gap: 8px; flex-wrap: wrap; }
+    .param-pair input[type="range"] { width: 58px; }
+  }
+
+  @media (max-width: 470px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">第19讲·例1 · 含参二次绝对值闭区间上下界与端点探路</h1>
+    <div class="sheet-live" id="live-readout"></div>
+  </header>
+
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
+    </div>
+
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>必要探路与充分回代</h2>
+          <span class="sol-total mono">4 幕微课</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0" data-active="true">
+            <div class="sol-step-top"><span>（一）第(1)问下界：代 x = 0 直接先定</span><span class="sol-pts mono">00:04</span></div>
+            <div class="sol-eq"><math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>a</mi><mo>&#x2265;</mo><mn>1</mn></math>，回代 <math display="inline"><mrow><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>x</mi><mo>|</mo></mrow><mo>+</mo><mi>a</mi><mo>&#x2265;</mo><mi>a</mi><mo>&#x2265;</mo><mn>1</mn><mo>&#x21D2;</mo><mrow><mo stretchy="false">[</mo><mn>1</mn><mo>,</mo><mo>+</mo><mo>&#x221E;</mo><mo stretchy="false">)</mo></mrow></math></div>
+          </li>
+          <li class="sol-step" data-jump="16" data-step="1">
+            <div class="sol-step-top"><span>（二）第(2)问上界：双端点缩入候选框</span><span class="sol-pts mono">00:16</span></div>
+            <div class="sol-eq"><math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>a</mi><mo>&#x2264;</mo><mn>4</mn></math> 与 <math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mo>=</mo><mrow><mo>|</mo><mn>4</mn><mo>−</mo><mn>2</mn><mi>a</mi><mo>|</mo></mrow><mo>+</mo><mi>a</mi><mo>&#x2264;</mo><mn>4</mn><mo>&#x21D2;</mo><mi>a</mi><mo>&#x2208;</mo><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo stretchy="false">]</mo></mrow></math></div>
+          </li>
+          <li class="sol-step" data-jump="30" data-step="2">
+            <div class="sol-step-top"><span>（三）易错提醒：a = 8/3 拱顶冲破天花板</span><span class="sol-pts mono">00:30</span></div>
+            <div class="sol-eq"><math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><mo>,</mo><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mo>&#x2264;</mo><mn>4</mn></math> 全过，但内部顶点 <math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mo stretchy="false">)</mo></mrow><mo>=</mo><mfrac><mn>40</mn><mn>9</mn></mfrac><mo>&gt;</mo><mn>4</mn></math></div>
+          </li>
+          <li class="sol-step" data-jump="44" data-step="3">
+            <div class="sol-step-top"><span>（四）充分性压住顶点得精确答案</span><span class="sol-pts mono">00:44</span></div>
+            <div class="sol-eq"><math display="inline"><mfrac><msup><mi>a</mi><mn>2</mn></msup><mn>4</mn></mfrac><mo>+</mo><mi>a</mi><mo>&#x2264;</mo><mn>4</mn><mo>&#x21D2;</mo><mi>a</mi><mo>&#x2208;</mo><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn><mo stretchy="false">]</mo></mrow></math></div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>易错自测 · 00:30</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <div style="font-size:12px;color:#3a332c;margin-bottom:4px;">第 (2) 问由端点 <math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><mo>&#x2264;</mo><mn>4</mn></math> 与 <math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mo>&#x2264;</mo><mn>4</mn></math> 探得 <math display="inline"><mn>0</mn><mo>&#x2264;</mo><mi>a</mi><mo>&#x2264;</mo><mfrac><mn>8</mn><mn>3</mn></mfrac></math>，最终结论是否为 <math display="inline"><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mfrac><mn>8</mn><mn>3</mn></mfrac><mo stretchy="false">]</mo></mrow></math>：</div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：是，两个闭区间端点都不超过 4，中间曲线自然不会超过 4</button>
+          <button type="button" class="bet-choice" data-bet="right">乙：不是，内部顶点 <math display="inline"><mi>x</mi><mo>=</mo><mfrac><mi>a</mi><mn>2</mn></mfrac></math> 向上拱起，在 <math display="inline"><mi>a</mi><mo>=</mo><mfrac><mn>8</mn><mn>3</mn></mfrac></math> 时 <math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mfrac><mn>4</mn><mn>3</mn></mfrac><mo stretchy="false">)</mo></mrow><mo>=</mo><mfrac><mn>40</mn><mn>9</mn></mfrac><mo>&gt;</mo><mn>4</mn></math>，须回代收紧至 <math display="inline"><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn><mo stretchy="false">]</mo></mrow></math></button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
+      </div>
+
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">自测一下</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="4.0" aria-label="时间轴">
+      <span class="clock mono" id="clock"><span id="time-readout">00:04 / 00:48</span></span>
+    </div>
+    <div class="foot-params">
+      <span class="mode-tabs" role="group" aria-label="切换设问">
+        <button type="button" class="mode-tab" id="tab-part1" data-active="true">第(1)问 f≥1</button>
+        <button type="button" class="mode-tab" id="tab-part2" data-active="false">第(2)问 f≤4</button>
+      </span>
+      <label class="param-pair" title="拖动参数 a 验证端点探路与拱顶充分回代">
+        <span>参数 <math display="inline"><mi>a</mi></math></span>
+        <input type="range" class="hairline-range" id="a-slider" data-param="a" min="-1.00" max="5.00" step="0.02" value="1.50">
+      </label>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 48;
+  var PEAK_LIMIT = 2 * Math.sqrt(5) - 2; // ~2.472136
+  var END_LIMIT = 8 / 3;                 // ~2.666667
+
+  var playing = false;
+  var interactiveOverride = false;
+  var manualMode = 'part1'; // 'part1' | 'part2'
+  var betFiredDuringPlay = false;
+  var showWrongRings = false;
+  var betResult = '';
+  var t = 4.0;
+  var manualA = 1.50;
+  var lastTs = 0;
+
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+  var playBtn = document.getElementById('play-btn');
+  var timeline = document.getElementById('timeline');
+  var timeEl = document.getElementById('time-readout');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
+  var aSlider = document.getElementById('a-slider');
+  var tabPart1 = document.getElementById('tab-part1');
+  var tabPart2 = document.getElementById('tab-part2');
+  var betOverlay = document.getElementById('bet-overlay');
+  var betFeedback = document.getElementById('bet-feedback');
+  var betSkip = document.getElementById('bet-skip');
+  var openBetBtn = document.getElementById('open-bet-btn');
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
+  var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function frac(a, b) { return '<mfrac><mrow>' + a + '</mrow><mrow>' + b + '</mrow></mfrac>'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function formatTime(sec) {
+    var s = Math.max(0, Math.floor(sec));
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function evalF(x, a) {
+    return Math.abs(x * x - a * x) + a;
+  }
+
+  function analyze(a, mode) {
+    var f0 = a;
+    var f2 = Math.abs(4 - 2 * a) + a;
+    var hasPeak = a > 0 && a < 4;
+    var xPeak = hasPeak ? a * 0.5 : (a <= 0 ? 2 : 2);
+    var fPeak = hasPeak ? (a * a) / 4 + a : Math.max(f0, f2);
+    var maxOn02 = Math.max(f0, f2, a > 0 && a <= 4 ? (a * a) / 4 + a : f2);
+    var minOn02 = a < 0 ? f0 : (a <= 2 ? a : Math.min(f0, f2));
+
+    var endpointsPass = mode === 'part1'
+      ? (f0 >= 1 - 1e-6 && f2 >= 1 - 1e-6)
+      : (f0 <= 4 + 1e-6 && f2 <= 4 + 1e-6);
+    var fullPass = mode === 'part1'
+      ? (minOn02 >= 1 - 1e-6)
+      : (maxOn02 <= 4 + 1e-6);
+    var inTrap = mode === 'part2' && endpointsPass && !fullPass;
+
+    return {
+      f0: f0,
+      f2: f2,
+      hasPeak: hasPeak,
+      xPeak: xPeak,
+      fPeak: fPeak,
+      maxOn02: maxOn02,
+      minOn02: minOn02,
+      endpointsPass: endpointsPass,
+      fullPass: fullPass,
+      inTrap: inTrap
+    };
+  }
+
+  function computeState() {
+    var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
+    if (interactiveOverride) {
+      var info = analyze(manualA, manualMode);
+      var note;
+      if (manualMode === 'part1') {
+        note = info.fullPass
+          ? '第(1)问 ' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(2) + '</mn>&#x2265;<mn>1</mn>') + '：绝对值非负直接托底，全段保持在 ' + M('<mi>y</mi><mo>=</mo><mn>1</mn>') + ' 上方。'
+          : '第(1)问 ' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(2) + '</mn><mo>&lt;</mo><mn>1</mn>') + '：左端点 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mo>=</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn>') + ' 已经跌破下界，一招排掉。';
+      } else if (info.inTrap) {
+        note = '假解陷阱 ' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(2) + '</mn>&#x2208;<mrow><mo stretchy="false">(</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn><mo>,</mo>' + frac('<mn>8</mn>', '<mn>3</mn>') + '<mo stretchy="false">]</mo></mrow>') + '：双端点 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mo>,</mo><mi>f</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo><mo>&#x2264;</mo><mn>4</mn>') + ' 全过，但拱顶 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mfrac><mi>a</mi><mn>2</mn></mfrac><mo stretchy="false">)</mo><mo>=</mo><mn>' + info.fPeak.toFixed(2) + '</mn><mo>&gt;</mo><mn>4</mn>') + ' 冲破天花板。';
+      } else if (info.fullPass) {
+        note = '第(2)问合格 ' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(2) + '</mn>&#x2208;<mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn><mo stretchy="false">]</mo></mrow>') + '：端点与拱顶最大高度 ' + M('<mn>' + info.maxOn02.toFixed(2) + '</mn>&#x2264;<mn>4</mn>') + '，整段安全留在顶线下。';
+      } else {
+        note = '第(2)问超界（' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(2) + '</mn>') + '）：已有端点或顶点突破天花板 ' + M('<mi>y</mi><mo>=</mo><mn>4</mn>') + '。';
+      }
+      return { sceneIdx: manualMode === 'part1' ? 0 : (info.inTrap ? 2 : 3), mode: manualMode, a: manualA, info: info, noteHtml: note };
+    }
+
+    if (sceneIdx === 0) {
+      var a0 = t <= 4 ? lerp(0.30, 1.40, t / 4) : lerp(1.40, 2.20, (t - 4) / 8);
+      return {
+        sceneIdx: 0,
+        mode: 'part1',
+        a: a0,
+        info: analyze(a0, 'part1'),
+        noteHtml: '第(1)问拿 ' + M('<mi>x</mi><mo>=</mo><mn>0</mn>') + ' 探路得 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mo>=</mo><mi>a</mi><mo>&#x2265;</mo><mn>1</mn>') + '；代回原式因 ' + M('<mrow><mo>|</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>a</mi><mi>x</mi><mo>|</mo></mrow><mo>&#x2265;</mo><mn>0</mn>') + '，整段必不低于 ' + M('<mi>a</mi><mo>&#x2265;</mo><mn>1</mn>') + '，直接锁定 ' + M('<mrow><mo stretchy="false">[</mo><mn>1</mn><mo>,</mo><mo>+</mo><mo>&#x221E;</mo><mo stretchy="false">)</mo></mrow>') + '。'
+      };
+    }
+
+    if (sceneIdx === 1) {
+      var a1 = lerp(-0.5, 2.6667, clamp((t - 12) / 10, 0, 1));
+      return {
+        sceneIdx: 1,
+        mode: 'part2',
+        a: a1,
+        info: analyze(a1, 'part2'),
+        noteHtml: '第(2)问先用两根支柱探路：' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mo>&#x2264;</mo><mn>4</mn>') + ' 与 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo><mo>=</mo><mrow><mo>|</mo><mn>4</mn><mo>−</mo><mn>2</mn><mi>a</mi><mo>|</mo></mrow><mo>+</mo><mi>a</mi><mo>&#x2264;</mo><mn>4</mn>') + '，瞬间把未知范围缩进 ' + M('<mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo>' + frac('<mn>8</mn>', '<mn>3</mn>') + '<mo stretchy="false">]</mo></mrow>') + '。'
+      };
+    }
+
+    if (sceneIdx === 2) {
+      // Dwell on 8/3 around t=30
+      var a2 = t <= 30 ? lerp(2.35, END_LIMIT, clamp((t - 24) / 4, 0, 1)) : lerp(END_LIMIT, 2.92, (t - 30) / 6);
+      return {
+        sceneIdx: 2,
+        mode: 'part2',
+        a: a2,
+        info: analyze(a2, 'part2'),
+        noteHtml: '探路只得必要框：在 ' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>8</mn>', '<mn>3</mn>')) + ' 处左右两端都小于等于 4，但中段抛物线拱顶 ' + M('<mi>f</mi><mo stretchy="false">(</mo>' + frac('<mn>4</mn>', '<mn>3</mn>') + '<mo stretchy="false">)</mo><mo>=</mo>' + frac('<mn>40</mn>', '<mn>9</mn>') + '<mo>&gt;</mo><mn>4</mn>') + ' 暗自冲顶。'
+      };
+    }
+
+    var a3 = t <= 42 ? lerp(END_LIMIT, PEAK_LIMIT, clamp((t - 36) / 5, 0, 1)) : lerp(PEAK_LIMIT, 1.25, (t - 42) / 6);
+    return {
+      sceneIdx: 3,
+      mode: 'part2',
+      a: a3,
+      info: analyze(a3, 'part2'),
+      noteHtml: '强行压住拱顶峰值 ' + M('<mi>f</mi><mo stretchy="false">(</mo>' + frac('<mi>a</mi>', '<mn>2</mn>') + '<mo stretchy="false">)</mo><mo>=</mo>' + frac('<msup><mi>a</mi><mn>2</mn></msup>', '<mn>4</mn>') + '<mo>+</mo><mi>a</mi><mo>&#x2264;</mo><mn>4</mn>') + '，将假解区削掉，精准定格 ' + M('<mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn><mo stretchy="false">]</mo></mrow>') + '。'
+    };
+  }
+
+  function setupCanvasSize() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var rect = canvas.getBoundingClientRect();
+    var cssW = Math.max(280, Math.round(rect.width || 440));
+    var cssH = Math.max(200, Math.round(rect.height || 296));
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: cssW, H: cssH };
+  }
+
+  function makeRectTransform(left, top, width, height, xMin, xMax, yMin, yMax) {
+    return {
+      mx: function (x) { return left + ((x - xMin) / (xMax - xMin)) * width; },
+      my: function (y) { return top + ((yMax - y) / (yMax - yMin)) * height; }
+    };
+  }
+
+  function drawDot(x, y, r, fill, ring) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (ring) {
+      ctx.strokeStyle = ring;
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+    }
+  }
+
+  function renderScene(st, W, H) {
+    var rightPanelW = clamp(Math.round(W * 0.36), 120, 162);
+    var plotL = 22, plotT = 18, plotW = W - rightPanelW - plotL - 12, plotH = H - plotT - 24;
+    var xMin = -0.35, xMax = 2.35, yMin = -1.2, yMax = 5.4;
+    var T = makeRectTransform(plotL, plotT, plotW, plotH, xMin, xMax, yMin, yMax);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(plotL - 4, plotT - 4, plotW + 8, plotH + 8);
+    ctx.clip();
+
+    // Closed domain [0, 2] background band
+    ctx.fillStyle = 'rgba(125, 92, 70, 0.045)';
+    ctx.fillRect(T.mx(0), plotT, T.mx(2) - T.mx(0), plotH);
+
+    // Forbidden zone tint
+    if (st.mode === 'part1') {
+      ctx.fillStyle = 'rgba(53, 80, 112, 0.06)';
+      ctx.fillRect(plotL, T.my(1), plotW, plotT + plotH - T.my(1));
+    } else {
+      ctx.fillStyle = 'rgba(168, 56, 37, 0.06)';
+      ctx.fillRect(plotL, plotT, plotW, T.my(4) - plotT);
+    }
+
+    // Domain vertical walls x = 0, x = 2
+    [0, 2].forEach(function (xv) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(92, 76, 58, 0.34)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(T.mx(xv), plotT); ctx.lineTo(T.mx(xv), plotT + plotH); ctx.stroke();
+      ctx.restore();
+    });
+
+    // Axes
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.44)';
+    ctx.lineWidth = 1.05;
+    ctx.beginPath(); ctx.moveTo(plotL, T.my(0)); ctx.lineTo(plotL + plotW, T.my(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(T.mx(0), plotT); ctx.lineTo(T.mx(0), plotT + plotH); ctx.stroke();
+
+    ctx.fillStyle = '#6b5f52';
+    ctx.font = '500 10px ui-monospace, Menlo, monospace';
+    ctx.fillText('0', T.mx(0) - 9, T.my(0) + 12);
+    ctx.fillText('2', T.mx(2) - 3, T.my(0) + 12);
+    ctx.fillText('1', T.mx(0) - 10, T.my(1) + 4);
+    ctx.fillText('4', T.mx(0) - 10, T.my(4) + 4);
+
+    // Bound lines y = 1 and y = 4
+    ctx.save();
+    ctx.strokeStyle = st.mode === 'part1' ? '#355070' : 'rgba(53, 80, 112, 0.32)';
+    ctx.lineWidth = st.mode === 'part1' ? 1.9 : 1.0;
+    ctx.setLineDash([5, 3]);
+    ctx.beginPath(); ctx.moveTo(plotL, T.my(1)); ctx.lineTo(plotL + plotW, T.my(1)); ctx.stroke();
+
+    ctx.strokeStyle = st.mode === 'part2' ? '#a83825' : 'rgba(168, 56, 37, 0.32)';
+    ctx.lineWidth = st.mode === 'part2' ? 1.9 : 1.0;
+    ctx.setLineDash([5, 3]);
+    ctx.beginPath(); ctx.moveTo(plotL, T.my(4)); ctx.lineTo(plotL + plotW, T.my(4)); ctx.stroke();
+    ctx.restore();
+
+    ctx.fillStyle = st.mode === 'part1' ? '#355070' : 'rgba(53, 80, 112, 0.55)';
+    ctx.font = '600 10px ui-monospace, Menlo, monospace';
+    ctx.fillText('下界 y=1', plotL + plotW - 52, T.my(1) + 12);
+    ctx.fillStyle = st.mode === 'part2' ? '#a83825' : 'rgba(168, 56, 37, 0.55)';
+    ctx.fillText('上界 y=4', plotL + plotW - 52, T.my(4) - 5);
+
+    // Highlight violation fill on [0, 2]
+    ctx.save();
+    ctx.fillStyle = 'rgba(168, 56, 37, 0.22)';
+    var nSeg = 100;
+    for (var s = 0; s < nSeg; s++) {
+      var xa = (2 * s) / nSeg;
+      var xb = (2 * (s + 1)) / nSeg;
+      var ya = evalF(xa, st.a);
+      var yb = evalF(xb, st.a);
+      if (st.mode === 'part1' && (ya < 1 || yb < 1)) {
+        var topA = Math.min(1, ya), topB = Math.min(1, yb);
+        ctx.beginPath();
+        ctx.moveTo(T.mx(xa), T.my(1));
+        ctx.lineTo(T.mx(xa), T.my(topA));
+        ctx.lineTo(T.mx(xb), T.my(topB));
+        ctx.lineTo(T.mx(xb), T.my(1));
+        ctx.closePath();
+        ctx.fill();
+      } else if (st.mode === 'part2' && (ya > 4 || yb > 4)) {
+        var hiA = Math.max(4, ya), hiB = Math.max(4, yb);
+        ctx.beginPath();
+        ctx.moveTo(T.mx(xa), T.my(4));
+        ctx.lineTo(T.mx(xa), T.my(hiA));
+        ctx.lineTo(T.mx(xb), T.my(hiB));
+        ctx.lineTo(T.mx(xb), T.my(4));
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+    ctx.restore();
+
+    // Ghost curve outside [0, 2]
+    ctx.save();
+    ctx.strokeStyle = 'rgba(44, 39, 34, 0.26)';
+    ctx.lineWidth = 1.25;
+    ctx.setLineDash([3, 3]);
+    [[-0.35, 0], [2, 2.35]].forEach(function (seg) {
+      ctx.beginPath();
+      for (var k = 0; k <= 30; k++) {
+        var gx = seg[0] + (seg[1] - seg[0]) * (k / 30);
+        var gy = evalF(gx, st.a);
+        if (k === 0) ctx.moveTo(T.mx(gx), T.my(gy));
+        else ctx.lineTo(T.mx(gx), T.my(gy));
+      }
+      ctx.stroke();
+    });
+    ctx.restore();
+
+    // Active curve on [0, 2]
+    ctx.save();
+    ctx.strokeStyle = '#2c2722';
+    ctx.lineWidth = 2.4;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    for (var i = 0; i <= 120; i++) {
+      var cx = (2 * i) / 120;
+      var cy = evalF(cx, st.a);
+      if (i === 0) ctx.moveTo(T.mx(cx), T.my(cy));
+      else ctx.lineTo(T.mx(cx), T.my(cy));
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // Key points: f(0), f(2), and peak f(a/2) if inside (0, 2)
+    var f0Col = (st.mode === 'part1' && st.info.f0 < 1) || (st.mode === 'part2' && st.info.f0 > 4) ? '#a83825' : '#355070';
+    var f2Col = (st.mode === 'part1' && st.info.f2 < 1) || (st.mode === 'part2' && st.info.f2 > 4) ? '#a83825' : '#355070';
+    drawDot(T.mx(0), T.my(st.info.f0), 4.0, f0Col, '#faf6ee');
+    drawDot(T.mx(2), T.my(st.info.f2), 4.0, f2Col, '#faf6ee');
+
+    ctx.font = '600 9.5px ui-monospace, Menlo, monospace';
+    ctx.fillStyle = f0Col;
+    ctx.fillText('f(0)=' + st.info.f0.toFixed(2), T.mx(0) + 5, T.my(st.info.f0) + 13);
+    ctx.fillStyle = f2Col;
+    ctx.textAlign = 'right';
+    ctx.fillText('f(2)=' + st.info.f2.toFixed(2), T.mx(2) - 4, T.my(st.info.f2) + (st.info.f2 > 4.6 ? 12 : -7));
+    ctx.textAlign = 'left';
+
+    if (st.info.hasPeak) {
+      var pkFail = st.mode === 'part2' && st.info.fPeak > 4 + 1e-4;
+      var pkCol = pkFail ? '#a83825' : '#b07d2b';
+      drawDot(T.mx(st.info.xPeak), T.my(st.info.fPeak), 4.5, pkCol, '#faf6ee');
+      ctx.fillStyle = pkCol;
+      ctx.textAlign = 'center';
+      ctx.fillText('峰 ' + st.info.fPeak.toFixed(2), T.mx(st.info.xPeak) + 8, T.my(st.info.fPeak) - 9);
+      ctx.textAlign = 'left';
+
+      if (showWrongRings && pkFail) {
+        ctx.save();
+        ctx.strokeStyle = '#a83825';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath(); ctx.arc(T.mx(st.info.xPeak), T.my(st.info.fPeak), 9.5, 0, Math.PI * 2); ctx.stroke();
+        ctx.restore();
+        ctx.fillStyle = '#a83825';
+        ctx.font = '700 10.5px -apple-system, "PingFang SC", sans-serif';
+        ctx.fillText('内部冲破 4', T.mx(st.info.xPeak) - 24, T.my(st.info.fPeak) - 20);
+      }
+    }
+    ctx.restore();
+
+    // Right Panel: Checkpoint Monitor + Necessity vs Sufficiency Parameter Bar
+    var rx = W - rightPanelW - 6, rw = rightPanelW;
+    ctx.save();
+    ctx.fillStyle = '#f9f5ec';
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.22)';
+    ctx.lineWidth = 1;
+    ctx.fillRect(rx, 14, rw, H - 24);
+    ctx.strokeRect(rx, 14, rw, H - 24);
+
+    ctx.fillStyle = '#2b251f';
+    ctx.font = '700 10px -apple-system, "PingFang SC", sans-serif';
+    ctx.fillText(st.mode === 'part1' ? '第(1)问 探路与回代' : '第(2)问 探路/压顶', rx + 6, 30);
+
+    var checks = st.mode === 'part1'
+      ? [
+          { lbl: 'f(0)≥1', val: st.info.f0.toFixed(2), ok: st.info.f0 >= 1 - 1e-6 },
+          { lbl: 'f(2)≥1', val: st.info.f2.toFixed(2), ok: st.info.f2 >= 1 - 1e-6 },
+          { lbl: '最小', val: st.info.minOn02.toFixed(2), ok: st.info.fullPass }
+        ]
+      : [
+          { lbl: 'f(0)≤4', val: st.info.f0.toFixed(2), ok: st.info.f0 <= 4 + 1e-6 },
+          { lbl: 'f(2)≤4', val: st.info.f2.toFixed(2), ok: st.info.f2 <= 4 + 1e-6 },
+          { lbl: '峰≤4', val: st.info.fPeak.toFixed(2), ok: st.info.fullPass }
+        ];
+
+    checks.forEach(function (ck, idx) {
+      var cy = 50 + idx * 24;
+      ctx.fillStyle = ck.ok ? '#355070' : '#a83825';
+      ctx.font = '600 9.5px ui-monospace, Menlo, monospace';
+      ctx.fillText(ck.lbl, rx + 6, cy);
+      ctx.textAlign = 'right';
+      ctx.fillText(ck.val + (ck.ok ? ' ✓' : ' ×'), rx + rw - 6, cy);
+      ctx.textAlign = 'left';
+    });
+
+    // Parameter bar comparing intervals at bottom of right panel
+    var barTop = 132;
+    var axMin = -0.6, axMax = 3.4;
+    function ax(v) {
+      return rx + 10 + ((clamp(v, axMin, axMax) - axMin) / (axMax - axMin)) * (rw - 20);
+    }
+
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.35)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(rx + 8, barTop + 56); ctx.lineTo(rx + rw - 8, barTop + 56); ctx.stroke();
+
+    if (st.mode === 'part1') {
+      ctx.fillStyle = '#355070';
+      ctx.font = '600 9.5px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('满足范围 [1, +∞)', rx + 8, barTop + 14);
+      ctx.fillStyle = 'rgba(53, 80, 112, 0.28)';
+      ctx.fillRect(ax(1), barTop + 26, ax(3.4) - ax(1), 10);
+      ctx.strokeStyle = '#355070';
+      ctx.strokeRect(ax(1), barTop + 26, ax(3.4) - ax(1), 10);
+      drawDot(ax(st.a), barTop + 56, 4.2, st.info.fullPass ? '#355070' : '#a83825', '#faf6ee');
+    } else {
+      ctx.fillStyle = '#6f6254';
+      ctx.font = '600 9.5px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('探路框 [0, 8/3]', rx + 8, barTop + 10);
+      ctx.strokeStyle = '#7d5c46';
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(ax(0), barTop + 15, ax(END_LIMIT) - ax(0), 9);
+
+      // Trap sliver (2*sqrt(5)-2, 8/3]
+      ctx.fillStyle = 'rgba(168, 56, 37, 0.25)';
+      ctx.fillRect(ax(PEAK_LIMIT), barTop + 15, ax(END_LIMIT) - ax(PEAK_LIMIT), 9);
+
+      ctx.fillStyle = '#355070';
+      ctx.fillText('压顶框 [0, 2√5-2]', rx + 8, barTop + 39);
+      ctx.fillStyle = 'rgba(53, 80, 112, 0.30)';
+      ctx.fillRect(ax(0), barTop + 44, ax(PEAK_LIMIT) - ax(0), 9);
+      ctx.strokeStyle = '#355070';
+      ctx.strokeRect(ax(0), barTop + 44, ax(PEAK_LIMIT) - ax(0), 9);
+
+      // Marker on parameter axis
+      drawDot(ax(st.a), barTop + 56, 4.2, st.info.fullPass ? '#355070' : '#a83825', '#faf6ee');
+      ctx.fillStyle = '#a83825';
+      ctx.font = '500 9px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('红段=端点过但峰超', rx + 8, H - 18);
+    }
+
+    ctx.fillStyle = '#6f6254';
+    ctx.font = '500 9px ui-monospace, Menlo, monospace';
+    ctx.fillText('0', ax(0) - 2, barTop + 70);
+    ctx.fillText('2.47', ax(PEAK_LIMIT) - 12, barTop + 70);
+    ctx.restore();
+  }
+
+  function render() {
+    var st = computeState();
+    openBetBtn.textContent = betOverlay.hidden ? '自测一下' : '收起自测';
+    tabPart1.setAttribute('data-active', st.mode === 'part1' ? 'true' : 'false');
+    tabPart2.setAttribute('data-active', st.mode === 'part2' ? 'true' : 'false');
+
+    var size = setupCanvasSize();
+    ctx.clearRect(0, 0, size.W, size.H);
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, size.W, size.H);
+
+    renderScene(st, size.W, size.H);
+
+    var stateLbl = st.info.fullPass
+      ? '<strong>全区间成立</strong>'
+      : st.info.inTrap
+        ? '<strong>假解陷阱: 峰顶超 4</strong>'
+        : '<strong>端点已越界</strong>';
+    liveEl.innerHTML = M('<mi>a</mi><mo>=</mo><mn>' + st.a.toFixed(2) + '</mn>') + ' · ' + (st.mode === 'part1' ? '下界 ≥1' : '上界 ≤4') + ' · ' + stateLbl;
+
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
+    timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
+    timeline.value = t.toFixed(2);
+    aSlider.value = clamp(st.a, -1.00, 5.00).toFixed(2);
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
+
+    for (var i = 0; i < stepEls.length; i++) {
+      stepEls[i].setAttribute('data-active', i === st.sceneIdx ? 'true' : 'false');
+    }
+
+    if (window.notara && typeof window.notara.setState === 'function') {
+      window.notara.setState({
+        summary: '图解《第19讲·例1 含参绝对值闭区间上下界》停在 ' + formatTime(t) + '（模式=' + st.mode + '，a=' + st.a.toFixed(2) + '，全区间成立=' + st.info.fullPass + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          mode: st.mode,
+          a: Number(st.a.toFixed(2)),
+          pass: st.info.fullPass,
+          inTrap: st.info.inTrap,
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
+    }
+  }
+
+  function showBetCheckpoint() {
+    playing = false;
+    betOverlay.hidden = false;
+    betFeedback.hidden = true;
+    render();
+  }
+
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object') {
+        if (detail.params.mode === 'part1' || detail.params.mode === 'part2') {
+          manualMode = detail.params.mode;
+          interactiveOverride = true;
+        }
+        if (typeof detail.params.a === 'number') {
+          manualA = clamp(detail.params.a, -1.00, 5.00);
+          interactiveOverride = true;
+        }
+      }
+      render();
+    });
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    var prevT = t;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
+    lastTs = ts;
+    t += dt;
+    if (!betFiredDuringPlay && prevT < 30.0 && t >= 30.0) {
+      t = 30.0;
+      betFiredDuringPlay = true;
+      showBetCheckpoint();
+      return;
+    }
+    if (t >= TOTAL) { t = TOTAL; playing = false; }
+    render();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener('click', function () {
+    if (playing) {
+      playing = false;
+      var cur = computeState();
+      interactiveOverride = true;
+      manualMode = cur.mode;
+      manualA = cur.a;
+      render();
+    } else {
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      if (t >= TOTAL - 0.1) { t = 0; betFiredDuringPlay = false; }
+      interactiveOverride = false;
+      playing = true;
+      lastTs = 0;
+      render();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  timeline.addEventListener('input', function () {
+    t = Number(timeline.value) || 0;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = false;
+    if (t < 29) betFiredDuringPlay = false;
+    render();
+  });
+
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
+      showWrongRings = false;
+      interactiveOverride = false;
+      t = Number(el.dataset.jump) || 0;
+      betOverlay.hidden = true;
+      render();
+    });
+  });
+
+  tabPart1.addEventListener('click', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = true;
+    manualMode = 'part1';
+    render();
+  });
+
+  tabPart2.addEventListener('click', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = true;
+    manualMode = 'part2';
+    render();
+  });
+
+  aSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = true;
+    manualA = clamp(Number(aSlider.value) || 1.50, -1.00, 5.00);
+    render();
+  });
+
+  openBetBtn.addEventListener('click', function () {
+    if (!betOverlay.hidden) {
+      betOverlay.hidden = true;
+      render();
+      return;
+    }
+    t = 30.0;
+    interactiveOverride = true;
+    manualMode = 'part2';
+    manualA = END_LIMIT;
+    showWrongRings = false;
+    showBetCheckpoint();
+  });
+
+  betSkip.addEventListener('click', function () {
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = false;
+    if (t < 36) t = 36.0;
+    playing = true;
+    lastTs = 0;
+    render();
+    requestAnimationFrame(tick);
+  });
+
+  betBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
+      betFeedback.hidden = false;
+      interactiveOverride = true;
+      manualMode = 'part2';
+      t = 30.0;
+      if (ans === 'wrong') {
+        manualA = END_LIMIT;
+        showWrongRings = true;
+        betFeedback.innerHTML = '<strong>易错提醒：</strong>看图上红色圈出的顶点：' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>8</mn>', '<mn>3</mn>')) + ' 时端点 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>0</mn><mo stretchy="false">)</mo><mo>=</mo>' + frac('<mn>8</mn>', '<mn>3</mn>')) + '、' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo><mo>=</mo><mn>4</mn>') + ' 全合格，但中段拱顶 ' + M('<mi>f</mi><mo stretchy="false">(</mo>' + frac('<mn>4</mn>', '<mn>3</mn>') + '<mo stretchy="false">)</mo><mo>=</mo>' + frac('<mn>40</mn>', '<mn>9</mn>') + '<mo>&gt;</mo><mn>4</mn>') + ' 早已越线。';
+      } else {
+        manualA = PEAK_LIMIT;
+        showWrongRings = false;
+        betFeedback.innerHTML = '<strong>判断准确：</strong>探路只能给必要大框，第 (2) 问压的是最大值，必须补检内部开口向下抛物线拱顶 ' + M('<mi>f</mi><mo stretchy="false">(</mo>' + frac('<mi>a</mi>', '<mn>2</mn>') + '<mo stretchy="false">)</mo><mo>&#x2264;</mo><mn>4</mn>') + '，收紧为 ' + M('<mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><msqrt><mn>5</mn></msqrt><mo>−</mo><mn>2</mn><mo stretchy="false">]</mo></mrow>') + '。';
+      }
+      render();
+    });
+  });
+
+  document.getElementById('quote-btn').addEventListener('click', function () {
+    playing = false;
+    var st = computeState();
+    var msg = '我在《第19讲·例1 含参绝对值闭区间上下界》第 ' + formatTime(t) + ' 暂停了（模式 ' + st.mode + '，a=' + st.a.toFixed(2) + '），请带我核对为什么第(1)问探完端点就直接充分，而第(2)问必须补检内部顶点。';
+    if (window.notara && typeof window.notara.quoteState === 'function') {
+      window.notara.quoteState({
+        summary: msg,
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          mode: st.mode,
+          a: Number(st.a.toFixed(2)),
+          pass: st.info.fullPass
+        }
+      });
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
+    } else {
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，a=' + st.a.toFixed(2) + '）。';
+    }
+    render();
+  });
+
+  window.addEventListener('resize', render);
+  render();
+})();
+</script>
+</body>
+</html>

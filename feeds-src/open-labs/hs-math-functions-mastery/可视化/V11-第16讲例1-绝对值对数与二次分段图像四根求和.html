@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第16讲·例1 · 绝对值对数与二次分段图像四根求和</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
+    overflow: hidden;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
+  }
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
+  }
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 296px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2b251f;
+  }
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sol-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.54;
+    cursor: pointer;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .sol-step:hover { opacity: 0.86; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #355070;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13.2px;
+    color: #25201b;
+    line-height: 1.62;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.2px;
+    color: #2b251f;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.58;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
+
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+  }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+    margin-top: 4px;
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 74px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #355070;
+  }
+
+  @media (max-width: 700px) {
+    .sheet-head { padding: 9px 14px; }
+    .sheet-title { font-size: 14px; }
+    .sheet-live { font-size: 12px; }
+    .sheet-grid { grid-template-columns: 1.04fr 1fr; min-height: 318px; }
+    .sheet-left { padding: 10px 12px 11px; }
+    canvas { height: 242px; }
+    .sheet-note { font-size: 11.8px; line-height: 1.6; padding-top: 7px; }
+    .sheet-right { padding: 11px 13px 10px; }
+    .sol-steps { gap: 5px; }
+    .sol-step { padding: 4px 6px 4px 9px; }
+    .sol-step-top { font-size: 11.5px; margin-bottom: 1px; }
+    .sol-eq { font-size: 12px; line-height: 1.48; }
+    .sheet-foot { padding: 8px 14px; gap: 10px; }
+    .foot-transport { min-width: 170px; gap: 8px; }
+    .play-btn { padding: 4px 10px; font-size: 11.5px; }
+    .foot-params { gap: 9px; }
+    .param-pair input[type="range"] { width: 52px; }
+  }
+
+  @media (max-width: 470px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">第16讲·例1 · 绝对值对数与二次分段图像四根求和</h1>
+    <div class="sheet-live" id="live-readout"></div>
+  </header>
+
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
+    </div>
+
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>四根消元与对勾定界</h2>
+          <span class="sol-total mono">第16讲·例1</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0" data-active="true">
+            <div class="sol-step-top"><span>（一）分段图像与 x=2 实空断点</span><span class="sol-pts mono">00:04</span></div>
+            <div class="sol-eq">左支实心端点 <math display="inline"><mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math>，右支空心 <math display="inline"><mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math>、顶点 <math display="inline"><mrow><mo stretchy="false">(</mo><mn>4</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math></div>
+          </li>
+          <li class="sol-step" data-jump="16" data-step="1">
+            <div class="sol-step-top"><span>（二）水平线扫描锁定 <math display="inline"><mn>0</mn><mo>&lt;</mo><mi>t</mi><mo>&lt;</mo><mn>1</mn></math></span><span class="sol-pts mono">00:16</span></div>
+            <div class="sol-eq"><math display="inline"><mi>t</mi><mo>=</mo><mn>0</mn></math> 与 <math display="inline"><mi>t</mi><mo>=</mo><mn>1</mn></math> 均仅 3 交点，四根必有 <math display="inline"><mn>0</mn><mo>&lt;</mo><mi>t</mi><mo>&lt;</mo><mn>1</mn></math></div>
+          </li>
+          <li class="sol-step" data-jump="30" data-step="2">
+            <div class="sol-step-top"><span>（三）对称配对消元归至 <math display="inline"><msub><mi>x</mi><mn>2</mn></msub></math></span><span class="sol-pts mono">00:30</span></div>
+            <div class="sol-eq"><math display="inline"><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn></math>，<math display="inline"><msub><mi>x</mi><mn>3</mn></msub><mo>+</mo><msub><mi>x</mi><mn>4</mn></msub><mo>=</mo><mn>8</mn></math>，主元 <math display="inline"><msub><mi>x</mi><mn>2</mn></msub><mo>∈</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></math></div>
+          </li>
+          <li class="sol-step" data-jump="44" data-step="3">
+            <div class="sol-step-top"><span>（四）对勾单调锁定开区间 C</span><span class="sol-pts mono">00:44</span></div>
+            <div class="sol-eq"><math display="inline"><mi>S</mi><mo>=</mo><msub><mi>x</mi><mn>2</mn></msub><mo>+</mo><mfrac><mn>1</mn><msub><mi>x</mi><mn>2</mn></msub></mfrac><mo>+</mo><mn>8</mn><mo>∈</mo><mrow><mo stretchy="false">(</mo><mn>10</mn><mo>,</mo><mfrac><mn>21</mn><mn>2</mn></mfrac><mo stretchy="false">)</mo></mrow></math>，选 C</div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>易错自测 · 00:30</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <div style="font-size:12px;color:#3a332c;margin-bottom:4px;">为什么四根之和 <math display="inline"><mrow><mo stretchy="false">(</mo><mn>10</mn><mo>,</mo><mfrac><mn>21</mn><mn>2</mn></mfrac><mo stretchy="false">)</mo></mrow></math> 的右端点 <math display="inline"><mfrac><mn>21</mn><mn>2</mn></mfrac></math> 必须开区间（选 C 而非 B）：</div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：高度 <math display="inline"><mi>t</mi><mo>=</mo><mn>1</mn></math> 时图像在 <math display="inline"><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mn>2</mn><mo>,</mo><mn>6</mn></math> 与右支 <math display="inline"><mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math> 共交 4 处，可取到 <math display="inline"><mfrac><mn>21</mn><mn>2</mn></mfrac></math></button>
+          <button type="button" class="bet-choice" data-bet="right">乙：右支定义域 <math display="inline"><mi>x</mi><mo>&gt;</mo><mn>2</mn></math> 使 <math display="inline"><mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math> 为空心断点，<math display="inline"><mi>t</mi><mo>=</mo><mn>1</mn></math> 实际仅 3 个交点，故 <math display="inline"><msub><mi>x</mi><mn>2</mn></msub><mo>&lt;</mo><mn>2</mn></math></button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
+      </div>
+
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">自测一下</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="4.0" aria-label="时间轴">
+      <span class="clock mono" id="time-readout"><span id="clock">00:04 / 00:48</span></span>
+    </div>
+    <div class="foot-params">
+      <label class="param-pair" title="拖动水平截线高度 y = t 观察交点个数在 t=0 与 t=1 处的跳变">
+        <span>高度 <math display="inline"><mi>t</mi></math></span>
+        <input type="range" class="hairline-range" id="t-slider" data-param="level_t" min="0.05" max="1.10" step="0.01" value="0.50">
+      </label>
+      <label class="param-pair" title="拖动主元 x₂ ∈ (1, 2) 观察 S(x₂) 沿对勾曲线单调变化">
+        <span>主元 <math display="inline"><msub><mi>x</mi><mn>2</mn></msub></math></span>
+        <input type="range" class="hairline-range" id="x2-slider" data-param="pivot_x2" min="1.04" max="1.98" step="0.01" value="1.41">
+      </label>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 48;
+  var playing = false;
+  var interactiveOverride = false;
+  var betFiredDuringPlay = false;
+  var showWrongHollow = false;
+  var betResult = '';
+  var t = 4.0;
+  var manualLevelT = 0.50;
+  var lastTs = 0;
+
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+  var playBtn = document.getElementById('play-btn');
+  var timeline = document.getElementById('timeline');
+  var timeEl = document.getElementById('clock');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
+  var tSlider = document.getElementById('t-slider');
+  var x2Slider = document.getElementById('x2-slider');
+  var betOverlay = document.getElementById('bet-overlay');
+  var betFeedback = document.getElementById('bet-feedback');
+  var betSkip = document.getElementById('bet-skip');
+  var openBetBtn = document.getElementById('open-bet-btn');
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
+  var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function frac(a, b) { return '<mfrac><mrow>' + a + '</mrow><mrow>' + b + '</mrow></mfrac>'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function smoothstep(u) { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); }
+  function formatTime(sec) {
+    var s = Math.max(0, Math.floor(sec));
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function solveRoots(levelT) {
+    var roots = [];
+    // Left branch: |log2(x)| = t on (0, 2]
+    if (levelT > 0) {
+      var xl1 = Math.pow(2, -levelT);
+      if (xl1 > 0 && xl1 <= 2) roots.push({ x: xl1, y: levelT, branch: 'left' });
+      var xl2 = Math.pow(2, levelT);
+      if (xl2 > 1 && xl2 <= 2 + 1e-6) roots.push({ x: Math.min(2, xl2), y: levelT, branch: 'left' });
+    } else if (Math.abs(levelT) < 1e-6) {
+      roots.push({ x: 1, y: 0, branch: 'left' });
+    }
+    // Right branch: 0.5*(x-4)^2 - 1 = t on (2, +inf)
+    if (levelT > -1) {
+      var d = Math.sqrt(2 * (levelT + 1));
+      var xr1 = 4 - d;
+      var xr2 = 4 + d;
+      if (xr1 > 2 + 1e-6) roots.push({ x: xr1, y: levelT, branch: 'right' });
+      if (xr2 > 2 + 1e-6) roots.push({ x: xr2, y: levelT, branch: 'right' });
+    } else if (Math.abs(levelT + 1) < 1e-6) {
+      roots.push({ x: 4, y: -1, branch: 'right' });
+    }
+    return roots;
+  }
+
+  function computeState() {
+    var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
+    if (interactiveOverride) {
+      var rMan = solveRoots(manualLevelT);
+      var has4Man = rMan.length === 4;
+      var x2Man = has4Man ? rMan[1].x : clamp(Math.pow(2, manualLevelT), 1.01, 2.0);
+      var sMan = has4Man ? (x2Man + 1 / x2Man + 8) : null;
+      return {
+        sceneIdx: manualLevelT >= 0.99 || manualLevelT <= 0.01 ? 1 : (sMan !== null ? 3 : 1),
+        levelT: manualLevelT,
+        roots: rMan,
+        x2: x2Man,
+        sumVal: sMan,
+        noteHtml: has4Man
+          ? '水平线 ' + M('<mi>y</mi><mo>=</mo><mn>' + manualLevelT.toFixed(2) + '</mn>') + ' 切出 4 根：' + M('<msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn>') + '、' + M('<msub><mi>x</mi><mn>3</mn></msub><mo>+</mo><msub><mi>x</mi><mn>4</mn></msub><mo>=</mo><mn>8</mn>') + '，主元 ' + M('<msub><mi>x</mi><mn>2</mn></msub><mo>≈</mo><mn>' + x2Man.toFixed(3) + '</mn>') + '，和 ' + M('<mi>S</mi><mo>≈</mo><mn>' + sMan.toFixed(3) + '</mn>') + '。'
+          : '当前高度 ' + M('<mi>t</mi><mo>=</mo><mn>' + manualLevelT.toFixed(2) + '</mn>') + ' 共有 <strong>' + rMan.length + '</strong> 个交点（注意右支在 ' + M('<mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + ' 为空心点），不能构成 4 个互异实根。'
+      };
+    }
+
+    if (sceneIdx === 0) {
+      var lv0 = 0.50;
+      return {
+        sceneIdx: 0,
+        levelT: lv0,
+        roots: solveRoots(lv0),
+        x2: Math.pow(2, lv0),
+        sumVal: Math.pow(2, lv0) + Math.pow(2, -lv0) + 8,
+        noteHtml: '翻折左支 ' + M('<mrow><mo stretchy="false">|</mo><msub><mi>log</mi><mn>2</mn></msub><mo>&#x2061;</mo><mi>x</mi><mo stretchy="false">|</mo></mrow>') + ' 止于<strong>实心</strong>点 ' + M('<mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + '，右支抛物线从<strong>空心</strong>点 ' + M('<mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + ' 探底至顶点 ' + M('<mrow><mo stretchy="false">(</mo><mn>4</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + ' 再过 ' + M('<mrow><mo stretchy="false">(</mo><mn>6</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + '。'
+      };
+    }
+
+    if (sceneIdx === 1) {
+      // Sweep t across 0.0 -> 0.5 -> 1.0 -> 1.12 -> 0.65; t=16 hits 0.50
+      var lv1;
+      if (t <= 14) lv1 = lerp(0.0, 0.50, smoothstep((t - 12) / 2));
+      else if (t <= 17) lv1 = 0.50;
+      else if (t <= 21) lv1 = lerp(0.50, 1.00, smoothstep((t - 17) / 4));
+      else lv1 = lerp(1.00, 1.12, smoothstep((t - 21) / 3));
+      var r1 = solveRoots(lv1);
+      var note1 = Math.abs(lv1 - 1.0) < 0.03
+        ? '临界陷阱 ' + M('<mi>t</mi><mo>=</mo><mn>1</mn>') + '：左支交于 ' + M(frac('<mn>1</mn>', '<mn>2</mn>')) + ' 与实心 ' + M('<mn>2</mn>') + '，但右支空心点 ' + M('<mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + ' 无法取到，只剩 ' + M('<mn>6</mn>') + '，总交点数仅 3 个。'
+        : Math.abs(lv1) < 0.03
+          ? '底端临界 ' + M('<mi>t</mi><mo>=</mo><mn>0</mn>') + '：左支在尖谷 ' + M('<mrow><mo stretchy="false">(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false">)</mo></mrow>') + ' 仅 1 交点，总交点数同样只有 3 个，故必须严格 ' + M('<mn>0</mn><mo>&lt;</mo><mi>t</mi><mo>&lt;</mo><mn>1</mn>') + '。'
+          : '只有当水平截线严格落在开区间 ' + M('<mn>0</mn><mo>&lt;</mo><mi>t</mi><mo>&lt;</mo><mn>1</mn>') + ' 时，图像才恰好切出 4 个互异交点。';
+      return {
+        sceneIdx: 1,
+        levelT: lv1,
+        roots: r1,
+        x2: Math.pow(2, clamp(lv1, 0, 1)),
+        sumVal: r1.length === 4 ? (r1[1].x + 1 / r1[1].x + 8) : null,
+        noteHtml: note1
+      };
+    }
+
+    if (sceneIdx === 2) {
+      var lv2 = 0.50;
+      var r2 = solveRoots(lv2);
+      var x2_2 = r2[1].x;
+      return {
+        sceneIdx: 2,
+        levelT: lv2,
+        roots: r2,
+        x2: x2_2,
+        sumVal: x2_2 + 1 / x2_2 + 8,
+        noteHtml: '左对满足 ' + M('<mo>−</mo><msub><mi>log</mi><mn>2</mn></msub><mo>&#x2061;</mo><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mo>&#x2061;</mo><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mi>t</mi><mo>⇒</mo><msub><mi>x</mi><mn>1</mn></msub><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn>') + '；右对关于对称轴 ' + M('<mi>x</mi><mo>=</mo><mn>4</mn>') + ' 对称得 ' + M('<msub><mi>x</mi><mn>3</mn></msub><mo>+</mo><msub><mi>x</mi><mn>4</mn></msub><mo>=</mo><mn>8</mn>') + '。'
+      };
+    }
+
+    var lv3 = t <= 42 ? lerp(0.12, 0.60, smoothstep((t - 36) / 6)) : lerp(0.60, 0.94, smoothstep((t - 42) / 6));
+    var r3 = solveRoots(lv3);
+    var x2_3 = r3[1].x;
+    return {
+      sceneIdx: 3,
+      levelT: lv3,
+      roots: r3,
+      x2: x2_3,
+      sumVal: x2_3 + 1 / x2_3 + 8,
+      noteHtml: '因为 ' + M('<mi>h</mi><mrow><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>u</mi><mo>+</mo>' + frac('<mn>1</mn>', '<mi>u</mi>') + '') + ' 谷底 ' + M('<mi>u</mi><mo>=</mo><mn>1</mn>') + ' 在开区间 ' + M('<mrow><mo stretchy="false">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow>') + ' 之外且在 ' + M('<mrow><mo stretchy="false">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow>') + ' 上严增，所以 ' + M('<mi>S</mi><mo>∈</mo><mrow><mo stretchy="false">(</mo><mn>10</mn><mo>,</mo>' + frac('<mn>21</mn>', '<mn>2</mn>') + '<mo stretchy="false">)</mo></mrow>') + '，选 <strong>C</strong>。'
+    };
+  }
+
+  function setupCanvasSize() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var rect = canvas.getBoundingClientRect();
+    var cssW = Math.max(280, Math.round(rect.width || 440));
+    var cssH = Math.max(200, Math.round(rect.height || 296));
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: cssW, H: cssH };
+  }
+
+  function drawDot(x, y, r, fill, ring) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (ring) {
+      ctx.strokeStyle = ring;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+  }
+
+  function drawScene(st, W, H) {
+    var xMin = -0.15, xMax = 6.75, yMin = -1.25, yMax = 1.50;
+    var padL = 28, padR = 14, padT = 16, padB = 22;
+    var plotW = W - padL - padR;
+    var plotH = H - padT - padB;
+    function mx(x) { return padL + ((x - xMin) / (xMax - xMin)) * plotW; }
+    function my(y) { return padT + ((yMax - y) / (yMax - yMin)) * plotH; }
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(padL - 4, padT - 4, plotW + 8, plotH + 8);
+    ctx.clip();
+
+    // Subtle grid
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.08)';
+    ctx.lineWidth = 0.7;
+    for (var gx = 1; gx <= 6; gx++) {
+      ctx.beginPath(); ctx.moveTo(mx(gx), padT); ctx.lineTo(mx(gx), padT + plotH); ctx.stroke();
+    }
+    [-1, -0.5, 0.5, 1.0].forEach(function (gy) {
+      ctx.beginPath(); ctx.moveTo(padL, my(gy)); ctx.lineTo(padL + plotW, my(gy)); ctx.stroke();
+    });
+
+    // Axes
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.44)';
+    ctx.lineWidth = 1.05;
+    ctx.beginPath(); ctx.moveTo(padL, my(0)); ctx.lineTo(padL + plotW, my(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mx(0), padT); ctx.lineTo(mx(0), padT + plotH); ctx.stroke();
+
+    // Vertical join x = 2 (stops above inset zone) & symmetry axis x = 4
+    ctx.save();
+    ctx.strokeStyle = 'rgba(125, 92, 70, 0.36)';
+    ctx.lineWidth = 1.0;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(mx(2), my(-0.05)); ctx.lineTo(mx(2), my(1.42)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mx(4), my(-1.05)); ctx.lineTo(mx(4), my(1.42)); ctx.stroke();
+    ctx.restore();
+
+    ctx.fillStyle = '#7d5c46';
+    ctx.font = '600 10.5px ui-monospace, Menlo, monospace';
+    ctx.fillText('x=2', mx(2) - 10, my(1.42) + 8);
+    ctx.fillText('x=4', mx(4) - 10, my(1.42) + 8);
+
+    // Band highlight for 0 < t < 1
+    ctx.fillStyle = 'rgba(176, 125, 43, 0.045)';
+    ctx.fillRect(padL, my(1), plotW, my(0) - my(1));
+    ctx.save();
+    ctx.strokeStyle = 'rgba(176, 125, 43, 0.42)';
+    ctx.lineWidth = 1.0;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath(); ctx.moveTo(padL, my(1)); ctx.lineTo(padL + plotW, my(1)); ctx.stroke();
+    ctx.restore();
+
+    // Left curve: |log2(x)| on (0, 2] (vermilion)
+    ctx.strokeStyle = '#a83825';
+    ctx.lineWidth = 2.25;
+    ctx.beginPath();
+    var pen = false;
+    for (var i = 0; i <= 150; i++) {
+      var x = 0.06 + (1.94 * i) / 150;
+      var y = Math.abs(Math.log(x) / Math.LN2);
+      if (y > yMax + 0.1) { pen = false; continue; }
+      if (!pen) { ctx.moveTo(mx(x), my(y)); pen = true; }
+      else ctx.lineTo(mx(x), my(y));
+    }
+    ctx.stroke();
+
+    // Right curve: 0.5*(x-4)^2 - 1 on (2, 6.6] (indigo)
+    ctx.strokeStyle = '#355070';
+    ctx.lineWidth = 2.25;
+    ctx.beginPath();
+    pen = false;
+    for (var j = 0; j <= 150; j++) {
+      var xr = 2.02 + (4.55 * j) / 150;
+      var yr = 0.5 * (xr - 4) * (xr - 4) - 1;
+      if (yr > yMax + 0.1) { pen = false; continue; }
+      if (!pen) { ctx.moveTo(mx(xr), my(yr)); pen = true; }
+      else ctx.lineTo(mx(xr), my(yr));
+    }
+    ctx.stroke();
+
+    // Solid endpoint (2, 1) on left & hollow circle (2, 1) on right
+    drawDot(mx(2), my(1), 4.2, '#a83825', '#faf6ee');
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(mx(2), my(1), 6.5, 0, Math.PI * 2);
+    ctx.strokeStyle = '#355070';
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
+    ctx.restore();
+
+    if (showWrongHollow) {
+      ctx.save();
+      ctx.strokeStyle = '#a83825';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath(); ctx.arc(mx(2), my(1), 10.5, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = '#a83825';
+      ctx.font = '600 10.5px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('右支 (2,1) 空心，仅 3 根', mx(2) + 13, my(1) - 6);
+      ctx.restore();
+    }
+
+    // Vertex (4, -1) and (6, 1)
+    drawDot(mx(4), my(-1), 3.8, '#355070', '#faf6ee');
+    drawDot(mx(6), my(1), 3.6, '#355070', '#faf6ee');
+    ctx.fillStyle = '#355070';
+    ctx.font = '500 10px ui-monospace, Menlo, monospace';
+    ctx.fillText('(4,-1)', mx(4) - 18, my(-1) + 14);
+    ctx.fillText('(6,1)', mx(6) + 5, my(1) - 5);
+
+    // Sliding horizontal line y = t
+    var ly = my(st.levelT);
+    ctx.save();
+    ctx.strokeStyle = '#b07d2b';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(padL, ly); ctx.lineTo(padL + plotW, ly); ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = '#b07d2b';
+    ctx.font = '600 10.5px ui-monospace, Menlo, monospace';
+    ctx.fillText('y=' + st.levelT.toFixed(2), padL + plotW - 46, ly - 5);
+
+    // Plot intersection roots & pairing braces
+    var rts = st.roots;
+    rts.forEach(function (rt, idx) {
+      var col = rt.branch === 'left' ? '#a83825' : '#355070';
+      drawDot(mx(rt.x), my(rt.y), 4.2, col, '#faf6ee');
+      if (rts.length === 4) {
+        ctx.fillStyle = col;
+        ctx.font = '600 10px ui-monospace, Menlo, monospace';
+        var dx = idx === 0 ? -13 : (idx === 1 ? 4 : (idx === 2 ? -13 : 5));
+        ctx.fillText('x' + (idx + 1), mx(rt.x) + dx, ly - 7);
+      }
+    });
+
+    if (rts.length === 4) {
+      // Bracket x1*x2 = 1 and x3 + x4 = 8
+      ctx.save();
+      ctx.strokeStyle = 'rgba(168, 56, 37, 0.52)';
+      ctx.lineWidth = 1.0;
+      ctx.setLineDash([2, 2]);
+      ctx.beginPath(); ctx.moveTo(mx(rts[0].x), my(0)); ctx.lineTo(mx(rts[0].x), ly); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(mx(rts[1].x), my(0)); ctx.lineTo(mx(rts[1].x), ly); ctx.stroke();
+      ctx.strokeStyle = 'rgba(53, 80, 112, 0.52)';
+      ctx.beginPath(); ctx.moveTo(mx(rts[2].x), my(0)); ctx.lineTo(mx(rts[2].x), ly); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(mx(rts[3].x), my(0)); ctx.lineTo(mx(rts[3].x), ly); ctx.stroke();
+      ctx.restore();
+
+      ctx.fillStyle = '#a83825';
+      ctx.font = '600 10px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('x₁x₂=1', (mx(rts[0].x) + mx(rts[1].x)) * 0.5 - 18, ly + 13);
+      ctx.fillStyle = '#355070';
+      ctx.fillText('x₃+x₄=8', mx(4) - 22, ly + 13);
+    }
+
+    ctx.restore();
+
+    // Tick numbers along x-axis
+    ctx.fillStyle = '#6f6254';
+    ctx.font = '10px ui-monospace, Menlo, monospace';
+    [1, 2, 4, 6].forEach(function (xv) {
+      ctx.fillText(String(xv), mx(xv) - 3, my(0) + 12);
+    });
+    ctx.fillText('1', padL - 12, my(1) + 3.5);
+    ctx.fillText('0', padL - 12, my(0) + 3.5);
+    ctx.fillText('-1', padL - 16, my(-1) + 3.5);
+
+    // Live S(x2) inset card safely tucked inside empty bottom-left quadrant (y < -0.10, x < 2.4)
+    var ibx = padL + 4;
+    var iby = my(-0.14);
+    var ibw = clamp(Math.round(W * 0.39), 122, 174);
+    var ibh = Math.max(66, H - iby - 10);
+
+    ctx.save();
+    ctx.fillStyle = '#fbf7ef';
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.30)';
+    ctx.lineWidth = 1;
+    ctx.fillRect(ibx, iby, ibw, ibh);
+    ctx.strokeRect(ibx, iby, ibw, ibh);
+
+    ctx.fillStyle = '#26211c';
+    ctx.font = '600 10px -apple-system, "PingFang SC", sans-serif';
+    ctx.fillText('S(x₂)=x₂+1/x₂+8', ibx + 6, iby + 13);
+
+    var uxMin = 0.78, uxMax = 2.15, syMin = 9.90, syMax = 10.62;
+    function smx(u) { return ibx + 12 + ((u - uxMin) / (uxMax - uxMin)) * (ibw - 22); }
+    function smy(s) { return iby + 20 + ((syMax - s) / (syMax - syMin)) * (ibh - 33); }
+
+    // Guide lines S = 10 and S = 10.5
+    [10.0, 10.5].forEach(function (sv) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(125, 92, 70, 0.35)';
+      ctx.lineWidth = 0.85;
+      ctx.setLineDash([2, 2]);
+      ctx.beginPath(); ctx.moveTo(ibx + 6, smy(sv)); ctx.lineTo(ibx + ibw - 6, smy(sv)); ctx.stroke();
+      ctx.restore();
+    });
+
+    // Pre-minimum dashed wing (0.78..1.0)
+    ctx.save();
+    ctx.strokeStyle = 'rgba(125, 92, 70, 0.45)';
+    ctx.lineWidth = 1.1;
+    ctx.setLineDash([2, 2]);
+    ctx.beginPath();
+    for (var k = 0; k <= 16; k++) {
+      var u0 = 0.78 + (0.22 * k) / 16;
+      var s0 = u0 + 1 / u0 + 8;
+      if (k === 0) ctx.moveTo(smx(u0), smy(s0));
+      else ctx.lineTo(smx(u0), smy(s0));
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // Active strictly increasing arc on (1, 2)
+    ctx.strokeStyle = '#a83825';
+    ctx.lineWidth = 2.0;
+    ctx.beginPath();
+    for (var m = 0; m <= 30; m++) {
+      var u1 = 1.0 + (1.0 * m) / 30;
+      var s1 = u1 + 1 / u1 + 8;
+      if (m === 0) ctx.moveTo(smx(u1), smy(s1));
+      else ctx.lineTo(smx(u1), smy(s1));
+    }
+    ctx.stroke();
+
+    // Hollow boundary endpoints (1, 10) and (2, 10.5)
+    drawDot(smx(1), smy(10), 3.0, '#fbf7ef', '#a83825');
+    drawDot(smx(2), smy(10.5), 3.0, '#fbf7ef', '#a83825');
+
+    if (st.sumVal !== null) {
+      drawDot(smx(st.x2), smy(st.sumVal), 3.8, '#a83825', '#fbf7ef');
+      ctx.fillStyle = '#a83825';
+      ctx.font = '600 9.5px ui-monospace, Menlo, monospace';
+      ctx.fillText('S≈' + st.sumVal.toFixed(2) + ' ∈(10, 21/2)', ibx + 6, iby + ibh - 5);
+    } else {
+      ctx.fillStyle = '#6f6254';
+      ctx.font = '600 9.5px ui-monospace, Menlo, monospace';
+      ctx.fillText('仅 ' + rts.length + ' 根 · 须 0<t<1', ibx + 6, iby + ibh - 5);
+    }
+    ctx.restore();
+  }
+
+  function render() {
+    var st = computeState();
+    openBetBtn.textContent = betOverlay.hidden ? '自测一下' : '收起自测';
+    var size = setupCanvasSize();
+    ctx.clearRect(0, 0, size.W, size.H);
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, size.W, size.H);
+
+    drawScene(st, size.W, size.H);
+
+    var nR = st.roots.length;
+    liveEl.innerHTML = M('<mi>t</mi><mo>=</mo><mn>' + st.levelT.toFixed(2) + '</mn>') + ' · 交点 <strong>' + nR + '</strong>' + (st.sumVal !== null ? ' · ' + M('<mi>S</mi><mo>≈</mo><mn>' + st.sumVal.toFixed(2) + '</mn>') : '');
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
+    timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
+    timeline.value = t.toFixed(2);
+    tSlider.value = clamp(st.levelT, 0.05, 1.10).toFixed(2);
+    x2Slider.value = clamp(st.x2, 1.04, 1.98).toFixed(2);
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
+
+    for (var i = 0; i < stepEls.length; i++) {
+      stepEls[i].setAttribute('data-active', i === st.sceneIdx ? 'true' : 'false');
+    }
+
+    if (window.notara && typeof window.notara.setState === 'function') {
+      window.notara.setState({
+        summary: '图解《第16讲·例1 分段四实根之和》停在 ' + formatTime(t) + '（第 ' + (st.sceneIdx + 1) + ' 步，截线 t=' + st.levelT.toFixed(2) + '，交点数=' + nR + (st.sumVal !== null ? '，四根和≈' + st.sumVal.toFixed(3) : '') + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          level_t: Number(st.levelT.toFixed(2)),
+          pivot_x2: Number(st.x2.toFixed(2)),
+          intersections: nR,
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
+    }
+  }
+
+  function showBetCheckpoint() {
+    playing = false;
+    betOverlay.hidden = false;
+    betFeedback.hidden = true;
+    render();
+  }
+
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showWrongHollow = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object') {
+        if (typeof detail.params.level_t === 'number') {
+          manualLevelT = clamp(detail.params.level_t, 0.0, 1.15);
+          interactiveOverride = true;
+        }
+        if (typeof detail.params.pivot_x2 === 'number') {
+          var x2v = clamp(detail.params.pivot_x2, 1.02, 1.99);
+          manualLevelT = Math.log(x2v) / Math.LN2;
+          interactiveOverride = true;
+        }
+      }
+      render();
+    });
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    var prevT = t;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
+    lastTs = ts;
+    t += dt;
+    if (!betFiredDuringPlay && prevT < 30.0 && t >= 30.0) {
+      t = 30.0;
+      betFiredDuringPlay = true;
+      showBetCheckpoint();
+      return;
+    }
+    if (t >= TOTAL) { t = TOTAL; playing = false; }
+    render();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener('click', function () {
+    if (playing) {
+      playing = false;
+      interactiveOverride = true;
+      manualLevelT = computeState().levelT;
+      render();
+    } else {
+      betOverlay.hidden = true;
+      showWrongHollow = false;
+      if (t >= TOTAL - 0.1) { t = 0; betFiredDuringPlay = false; }
+      interactiveOverride = false;
+      playing = true;
+      lastTs = 0;
+      render();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  timeline.addEventListener('input', function () {
+    t = Number(timeline.value) || 0;
+    betOverlay.hidden = true;
+    showWrongHollow = false;
+    interactiveOverride = false;
+    if (t < 29) betFiredDuringPlay = false;
+    render();
+  });
+
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
+      showWrongHollow = false;
+      interactiveOverride = false;
+      t = Number(el.dataset.jump) || 0;
+      betOverlay.hidden = true;
+      render();
+    });
+  });
+
+  tSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongHollow = false;
+    interactiveOverride = true;
+    manualLevelT = clamp(Number(tSlider.value) || 0.50, 0.05, 1.10);
+    render();
+  });
+
+  x2Slider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongHollow = false;
+    interactiveOverride = true;
+    var xv = clamp(Number(x2Slider.value) || 1.41, 1.04, 1.98);
+    manualLevelT = Math.log(xv) / Math.LN2;
+    render();
+  });
+
+  openBetBtn.addEventListener('click', function () {
+    if (!betOverlay.hidden) {
+      betOverlay.hidden = true;
+      render();
+      return;
+    }
+    t = 30.0;
+    interactiveOverride = false;
+    showWrongHollow = false;
+    showBetCheckpoint();
+  });
+
+  betSkip.addEventListener('click', function () {
+    betOverlay.hidden = true;
+    showWrongHollow = false;
+    interactiveOverride = false;
+    if (t < 36) t = 36.0;
+    playing = true;
+    lastTs = 0;
+    render();
+    requestAnimationFrame(tick);
+  });
+
+  betBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
+      betFeedback.hidden = false;
+      interactiveOverride = true;
+      t = 30.0;
+      if (ans === 'wrong') {
+        showWrongHollow = true;
+        manualLevelT = 1.00;
+        betFeedback.innerHTML = '<strong>易错提醒：</strong>看图中空心圆圈，右支在 ' + M('<mi>x</mi><mo>&gt;</mo><mn>2</mn>') + ' 上取不到 ' + M('<mrow><mo stretchy="false">(</mo><mn>2</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + '，故 ' + M('<mi>t</mi><mo>=</mo><mn>1</mn>') + ' 时只有 ' + M('<mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mn>2</mn><mo>,</mo><mn>6</mn>') + ' 共 3 个交点，右端点 ' + M(frac('<mn>21</mn>', '<mn>2</mn>')) + ' 必须取开区间。';
+      } else {
+        showWrongHollow = false;
+        manualLevelT = 0.50;
+        betFeedback.innerHTML = '<strong>判断准确：</strong>' + M('<mi>t</mi><mo>=</mo><mn>0</mn>') + '（尖谷 3 根）与 ' + M('<mi>t</mi><mo>=</mo><mn>1</mn>') + '（空心断点 3 根）双端均需剔除，故 ' + M('<msub><mi>x</mi><mn>2</mn></msub><mo>∈</mo><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow>') + ' 两端全开。';
+      }
+      render();
+    });
+  });
+
+  document.getElementById('quote-btn').addEventListener('click', function () {
+    playing = false;
+    var st = computeState();
+    var msg = '我在图解《第16讲·例1 分段四实根之和》第 ' + formatTime(t) + ' 暂停了（截线 t=' + st.levelT.toFixed(2) + '，交点数 ' + st.roots.length + '），请带我核对为什么 x=2 断点与对勾谷底决定开区间 (10, 21/2)。';
+    if (window.notara && typeof window.notara.quoteState === 'function') {
+      window.notara.quoteState({
+        summary: msg,
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          level_t: Number(st.levelT.toFixed(2)),
+          pivot_x2: Number(st.x2.toFixed(2)),
+          intersections: st.roots.length
+        }
+      });
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
+    } else {
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，t=' + st.levelT.toFixed(2) + '）。';
+    }
+    render();
+  });
+
+  window.addEventListener('resize', render);
+  render();
+})();
+</script>
+</body>
+</html>

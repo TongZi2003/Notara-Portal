@@ -32,6 +32,18 @@ const vendorAssetsDir = join(rootDir, 'vendor-assets');
 const isStandalone = existsSync(vendorAssetsDir);
 const distDir = join(rootDir, 'dist');
 
+const WIN_INSTALLER_VERSION = 'v0.1.0-preview.7';
+const WIN_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.7-x64-Setup.exe';
+const WIN_INSTALLER_SIZE_LABEL = '690 MB';
+const WIN_INSTALLER_SHA256 = 'f17c15311cef809fd5cd7b3b0938f1c693b01484b7dd29820d2a3580b90c584e';
+const WIN_INSTALLER_URL =
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.7/Notara-PersonalAgent-0.1.0-preview.7-x64-Setup.exe';
+const WIN_SHA256SUMS_URL =
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.7/SHA256SUMS.txt';
+const WIN_RELEASE_PAGE_URL =
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/tag/v0.1.0-preview.7';
+const DESKTOP_ISSUES_URL = 'https://github.com/TongZi2003/Notara-Desktop-Releases/issues';
+
 function pageShell({ title, description, currentPath, body, appPage = false }) {
   const isLibrary = currentPath === '/library/' || currentPath === '/resources/';
   const isGuide = currentPath === '/guide/' || currentPath === '/install/';
@@ -380,7 +392,7 @@ function renderHome() {
           </div>
           <div class="closing-actions">
             <a class="btn-primary" href="/first-lesson/">进入实景课堂试一课</a>
-            <a class="btn-quiet" href="/guide/#download">查看桌面版客户端与上手说明 →</a>
+            <a class="btn-quiet" href="/guide/#download">前往下载 Windows 内测版与上手说明 →</a>
             <span class="closing-spec">支持 macOS（Apple Silicon / Intel）与 Windows 10/11 · 本地开放文档</span>
           </div>
         </div>
@@ -603,23 +615,57 @@ function renderGuide(currentPath = '/guide/') {
 
       <section id="download">
         <div class="download-grid">
-          <div class="download-card">
-            <span class="download-card-tag">macOS · Apple Silicon (M1–M4) &amp; Intel</span>
-            <h2>Notara 桌面端 for macOS</h2>
-            <p>支持 macOS 13 及以上系统。内置高中与大学起步样卷、多源资源市集连接器、原生 JSON Canvas 白板与本地沙箱环境。</p>
+          <div class="download-card download-card--featured">
+            <span class="download-card-tag">Windows · 10 / 11 (64-bit) · 首轮内测开放下载</span>
+            <h2>Notara 桌面端 for Windows</h2>
+            <p>支持 Windows 10 / 11（x64）。独立安装包内置运行环境、PDF 渲染、离线公式字体与开放起步学习集；所有个人卡片与白板均以标准 <code>.md</code> / <code>.canvas</code> 留在本地，升级与课程包更新绝不覆盖个人笔记。</p>
             <div class="download-card-actions">
-              <a class="btn-primary" href="/first-lesson/">内测分发中 · 先在线试读实景</a>
-              <span style="font-size:0.78rem;color:var(--ink-muted);">v0.1.0-preview · DMG 安装包</span>
+              <a class="btn-primary" href="${WIN_INSTALLER_URL}" rel="noopener" data-download-win>下载 Windows 安装包（.exe · ${WIN_INSTALLER_SIZE_LABEL}）</a>
+              <a class="btn-quiet" href="${WIN_RELEASE_PAGE_URL}" target="_blank" rel="noopener">版本说明与附件清单 ↗</a>
+            </div>
+            <div class="download-meta-box">
+              <div class="download-meta-file">
+                <span>当前内测版本：<strong>${WIN_INSTALLER_VERSION}</strong></span>
+                <code>${WIN_INSTALLER_FILENAME}</code>
+              </div>
+              <div class="download-sha-row">
+                <span class="download-sha-label">SHA-256</span>
+                <code class="download-sha-code">${WIN_INSTALLER_SHA256}</code>
+                <button type="button" class="download-copy-btn" data-copy-sha="${WIN_INSTALLER_SHA256}">复制 SHA-256</button>
+                <a class="download-sha-link" href="${WIN_SHA256SUMS_URL}" target="_blank" rel="noopener">SHA256SUMS.txt ↗</a>
+              </div>
             </div>
           </div>
 
           <div class="download-card">
-            <span class="download-card-tag">Windows · 10 / 11 (64-bit)</span>
-            <h2>Notara 桌面端 for Windows</h2>
-            <p>支持 Windows 10 / 11（x64）。本地文件夹直接存储标准 Markdown 卡片与手帐记忆，订阅市集追更或软件升级绝不触碰已有个人笔记。</p>
+            <span class="download-card-tag">macOS · Apple Silicon (M1–M4) &amp; Intel</span>
+            <h2>Notara 桌面端 for macOS</h2>
+            <p>支持 macOS 13 及以上系统。Apple Developer ID 公证 DMG 安装包正在准备公证签名分发；你可以先在浏览器免登录体验 1:1 真实课堂、卡片与白板。</p>
             <div class="download-card-actions">
-              <a class="btn-primary" href="/library/">进入资源市集与在线试读样卷</a>
-              <span style="font-size:0.78rem;color:var(--ink-muted);">v0.1.0-preview · 安装程序</span>
+              <a class="btn-quiet" href="/first-lesson/">先在线体验 1:1 实景课堂 →</a>
+              <a class="btn-quiet" href="/library/">浏览公开样卷 →</a>
+              <span style="font-size:0.78rem;color:var(--ink-muted);">v0.1.0-preview · 公证签名准备中</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="install-notes-sheet">
+          <div class="install-notes-head">
+            <h3>内测安装与 BYOK 快速排障须知</h3>
+            <span>面向首轮 Windows x64 BYOK 内测用户</span>
+          </div>
+          <div class="install-notes-grid">
+            <div class="install-note-item">
+              <h4>1. SmartScreen 首次启动提示</h4>
+              <p>内测预览版暂未绑定商业 EV 代码签名证书，Windows 若弹出「Windows 已保护你的电脑」，可先核对下方 SHA-256 或运行 <code>Get-FileHash .\${WIN_INSTALLER_FILENAME} -Algorithm SHA256</code> 校验完整，再点击「更多信息 → 仍要运行」。</p>
+            </div>
+            <div class="install-note-item">
+              <h4>2. 免注册 BYOK 与视觉模型提示</h4>
+              <p>打开后在引导框直接填入自有 API Key（DeepSeek / OpenAI / Anthropic / Gemini 等）即可开课，无需注册账号；若需拆解带配图或手写扫描 PDF，请在「设置 → 模型连接 / 工作员算力」为<strong>拆书整理师</strong>与<strong>分片建卡员</strong>选配带有「视觉」标识的多模态模型。</p>
+            </div>
+            <div class="install-note-item">
+              <h4>3. 一键导出脱敏诊断与反馈</h4>
+              <p>若遇界面卡住或拆书异常，请在「设置 → 外观与常用连接 → 问题反馈与诊断」点击<strong>「导出脱敏诊断」</strong>（自动过滤 API Key 与个人笔记正文），将 JSON 报告发回内测群或 <a href="${DESKTOP_ISSUES_URL}" target="_blank" rel="noopener">桌面版 Issues ↗</a>。</p>
             </div>
           </div>
         </div>
@@ -699,7 +745,7 @@ function renderCodeVideoPage(catalogItems = []) {
         <p class="section-rubric">L1 真实公开连接器源 · 交互式代码视频</p>
         <h1>随时按下暂停就能改参数的<span class="nowrap"> 20 KB 矢量代码微课。</span></h1>
         <p>
-          下面三套开放微课包已直接打包为标准 <code>.notara-pack.json</code> 并挂载至公网开放连接器源。你可以在网页里直接点击播放、拖动时间轴、随时暂停伸手改参数；也可以把下方 <code>catalog.json</code> 地址贴进 Notara 桌面端「私人书房 → 连接器」，一键免登录订阅并无损合入你的本地学习集。
+          下列开放微课包已直接打包为标准 <code>.notara-pack.json</code> 并挂载至公网开放连接器源。你可以在网页里直接点击播放、拖动时间轴、随时暂停伸手改参数；也可以把下方 <code>catalog.json</code> 地址贴进 Notara 桌面端「私人书房 → 连接器」，一键免登录订阅并无损合入你的本地学习集。
         </p>
         <div style="margin-top:18px;padding:12px 16px;border-radius:10px;border:1px solid var(--rule-strong);background:var(--paper-sheet);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
           <div style="min-width:0;font-size:13px;">

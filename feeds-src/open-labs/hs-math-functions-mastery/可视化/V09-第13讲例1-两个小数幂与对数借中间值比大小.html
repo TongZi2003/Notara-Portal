@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第13讲·例1 · 两个小数幂与对数借中间值比大小</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
+    overflow: hidden;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
+  }
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
+  }
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 296px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2b251f;
+  }
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sol-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.54;
+    cursor: pointer;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .sol-step:hover { opacity: 0.86; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #355070;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13.2px;
+    color: #25201b;
+    line-height: 1.62;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.2px;
+    color: #2b251f;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.58;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
+
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+  }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+    margin-top: 4px;
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 74px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #355070;
+  }
+
+  @media (max-width: 700px) {
+    .sheet-head { padding: 9px 14px; }
+    .sheet-title { font-size: 14px; }
+    .sheet-live { font-size: 12px; }
+    .sheet-grid { grid-template-columns: 1.04fr 1fr; min-height: 318px; }
+    .sheet-left { padding: 10px 12px 11px; }
+    canvas { height: 242px; }
+    .sheet-note { font-size: 11.8px; line-height: 1.6; padding-top: 7px; }
+    .sheet-right { padding: 11px 13px 10px; }
+    .sol-steps { gap: 5px; }
+    .sol-step { padding: 4px 6px 4px 9px; }
+    .sol-step-top { font-size: 11.5px; margin-bottom: 1px; }
+    .sol-eq { font-size: 12px; line-height: 1.48; }
+    .sheet-foot { padding: 8px 14px; gap: 10px; }
+    .foot-transport { min-width: 170px; gap: 8px; }
+    .play-btn { padding: 4px 10px; font-size: 11.5px; }
+    .foot-params { gap: 9px; }
+    .param-pair input[type="range"] { width: 52px; }
+  }
+
+  @media (max-width: 470px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">第13讲·例1 · 两个小数幂与对数借中间值比大小</h1>
+    <div class="sheet-live" id="live-readout"></div>
+  </header>
+
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
+    </div>
+
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>四步桥接推演</h2>
+          <span class="sol-total mono">第13讲·例1</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0" data-active="true">
+            <div class="sol-step-top"><span>（一）先与0和1比：三数同居 (0, 1)</span><span class="sol-pts mono">00:04</span></div>
+            <div class="sol-eq"><math display="inline"><mn>0</mn><mo>&lt;</mo><msup><mn>0.7</mn><mn>0.6</mn></msup><mo>,</mo><msup><mn>0.6</mn><mn>0.7</mn></msup><mo>,</mo><msub><mi>log</mi><mn>5</mn></msub><mo>&#x2061;</mo><mn>2</mn><mo>&lt;</mo><mn>1</mn></math></div>
+          </li>
+          <li class="sol-step" data-jump="16" data-step="1">
+            <div class="sol-step-top"><span>（二）十字拼桥拉开 a 与 b</span><span class="sol-pts mono">00:16</span></div>
+            <div class="sol-eq"><math display="inline"><msup><mn>0.7</mn><mn>0.6</mn></msup><mo>&gt;</mo><msup><mn>0.6</mn><mn>0.6</mn></msup><mo>&gt;</mo><msup><mn>0.6</mn><mn>0.7</mn></msup></math>（也可搭 <math display="inline"><msup><mn>0.7</mn><mn>0.7</mn></msup></math>）</div>
+          </li>
+          <li class="sol-step" data-jump="30" data-step="2">
+            <div class="sol-step-top"><span>（三）分数 1/2 隔开 b 与 c</span><span class="sol-pts mono">00:30</span></div>
+            <div class="sol-eq"><math display="inline"><msub><mi>log</mi><mn>5</mn></msub><mo>&#x2061;</mo><mn>2</mn><mo>&lt;</mo><msub><mi>log</mi><mn>5</mn></msub><mo>&#x2061;</mo><msqrt><mn>5</mn></msqrt><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>&lt;</mo><msup><mn>0.6</mn><mn>1</mn></msup><mo>&lt;</mo><msup><mn>0.6</mn><mn>0.7</mn></msup></math></div>
+          </li>
+          <li class="sol-step" data-jump="44" data-step="3">
+            <div class="sol-step-top"><span>（四）传递合龙锁定 A</span><span class="sol-pts mono">00:44</span></div>
+            <div class="sol-eq"><math display="inline"><mi>c</mi><mo>&lt;</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>&lt;</mo><mi>b</mi><mo>&lt;</mo><mi>a</mi><mo>⇒</mo><mi>a</mi><mo>&gt;</mo><mi>b</mi><mo>&gt;</mo><mi>c</mi></math>（选 A）</div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>易错自测 · 00:30</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <div style="font-size:12px;color:#3a332c;margin-bottom:4px;">已定 <math display="inline"><mi>a</mi><mo>&gt;</mo><mi>b</mi></math>，比较 <math display="inline"><mi>b</mi><mo>=</mo><msup><mn>0.6</mn><mn>0.7</mn></msup></math> 与 <math display="inline"><mi>c</mi><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><mo>&#x2061;</mo><mn>2</mn></math> 的最佳桥梁：</div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：底数指数全不同，必须估算三位小数近似值才能比</button>
+          <button type="button" class="bet-choice" data-bet="right">乙：插分数中间值 <math display="inline"><mfrac><mn>1</mn><mn>2</mn></mfrac></math>：<math display="inline"><mi>b</mi><mo>&gt;</mo><msup><mn>0.6</mn><mn>1</mn></msup><mo>&gt;</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> 且 <math display="inline"><msup><mn>2</mn><mn>2</mn></msup><mo>&lt;</mo><mn>5</mn><mo>⇒</mo><mi>c</mi><mo>&lt;</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math></button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
+      </div>
+
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">自测一下</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="4.0" aria-label="时间轴">
+      <span class="clock mono" id="time-readout"><span id="clock">00:04 / 00:48</span></span>
+    </div>
+    <div class="foot-params">
+      <label class="param-pair" title="拖动探针扫描 x^{0.6} 与 0.6^x 的桥接点 0.6 与目标点 0.7 及下界 1.0">
+        <span>探针 <math display="inline"><mi>x</mi></math></span>
+        <input type="range" class="hairline-range" id="probe-slider" data-param="probe_x" min="0.45" max="1.04" step="0.01" value="0.70">
+      </label>
+      <label class="param-pair" title="调整高程放大框倍率，从 0/1 概览放大至 1/2 基准附近">
+        <span>放大框</span>
+        <input type="range" class="hairline-range" id="zoom-slider" data-param="zoom" min="0.00" max="1.00" step="0.02" value="0.00">
+      </label>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 48;
+  var VAL_A = Math.pow(0.7, 0.6); // ~0.8073
+  var VAL_BRIDGE = Math.pow(0.6, 0.6); // ~0.7360
+  var VAL_B = Math.pow(0.6, 0.7); // ~0.6994
+  var VAL_C = Math.log(2) / Math.log(5); // ~0.4307
+
+  var playing = false;
+  var interactiveOverride = false;
+  var betFiredDuringPlay = false;
+  var showWrongRings = false;
+  var betResult = '';
+  var t = 4.0;
+  var manualProbeX = 0.70;
+  var manualZoom = 0.75;
+  var lastTs = 0;
+
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+  var playBtn = document.getElementById('play-btn');
+  var timeline = document.getElementById('timeline');
+  var timeEl = document.getElementById('clock');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
+  var probeSlider = document.getElementById('probe-slider');
+  var zoomSlider = document.getElementById('zoom-slider');
+  var betOverlay = document.getElementById('bet-overlay');
+  var betFeedback = document.getElementById('bet-feedback');
+  var betSkip = document.getElementById('bet-skip');
+  var openBetBtn = document.getElementById('open-bet-btn');
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
+  var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function frac(a, b) { return '<mfrac><mrow>' + a + '</mrow><mrow>' + b + '</mrow></mfrac>'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function smoothstep(u) { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); }
+  function formatTime(sec) {
+    var s = Math.max(0, Math.floor(sec));
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function computeState() {
+    var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
+    if (interactiveOverride) {
+      return {
+        sceneIdx: manualZoom < 0.25 ? 0 : (manualProbeX > 0.85 ? 2 : 1),
+        probeX: manualProbeX,
+        zoom: manualZoom,
+        showLogWitness: manualZoom >= 0.45,
+        noteHtml: '探针 ' + M('<mi>x</mi><mo>=</mo><mn>' + manualProbeX.toFixed(2) + '</mn>') + ' 处：幂值 ' + M('<msup><mi>x</mi><mn>0.6</mn></msup><mo>≈</mo><mn>' + Math.pow(manualProbeX, 0.6).toFixed(3) + '</mn>') + '，指数值 ' + M('<msup><mn>0.6</mn><mi>x</mi></msup><mo>≈</mo><mn>' + Math.pow(0.6, manualProbeX).toFixed(3) + '</mn>') + '；交点 ' + M('<mn>0.6</mn>') + ' 为桥，' + M('<mn>1.0</mn>') + ' 为放缩下界。'
+      };
+    }
+
+    if (sceneIdx === 0) {
+      var z0 = t <= 7 ? 0.0 : smoothstep((t - 7) / 5) * 0.32;
+      var p0 = lerp(0.55, 0.70, clamp(t / 10, 0, 1));
+      return {
+        sceneIdx: 0,
+        probeX: p0,
+        zoom: z0,
+        showLogWitness: false,
+        noteHtml: '先拿 ' + M('<mn>0</mn>') + ' 与 ' + M('<mn>1</mn>') + ' 比0和1：三数全落在 ' + M('<mrow><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + ' 同一区间内，单靠零一隔断无法排出高低。'
+      };
+    }
+
+    if (sceneIdx === 1) {
+      // Sweeps probe from 0.56 -> 0.60 (bridge) -> 0.70 (target)
+      var z1 = lerp(0.32, 0.88, smoothstep((t - 12) / 4));
+      var p1 = t <= 16 ? lerp(0.52, 0.60, smoothstep((t - 12) / 4)) : lerp(0.60, 0.70, smoothstep((t - 16) / 6));
+      return {
+        sceneIdx: 1,
+        probeX: p1,
+        zoom: z1,
+        showLogWitness: false,
+        noteHtml: '取交叉中间桥 ' + M('<msup><mn>0.6</mn><mn>0.6</mn></msup>') + '（两条曲线在 ' + M('<mi>x</mi><mo>=</mo><mn>0.6</mn>') + ' 的交点）：幂函数 ' + M('<msup><mi>x</mi><mn>0.6</mn></msup>') + ' 单增得 ' + M('<msup><mn>0.7</mn><mn>0.6</mn></msup><mo>&gt;</mo><msup><mn>0.6</mn><mn>0.6</mn></msup>') + '，指数 ' + M('<msup><mn>0.6</mn><mi>x</mi></msup>') + ' 单减得 ' + M('<msup><mn>0.6</mn><mn>0.6</mn></msup><mo>&gt;</mo><msup><mn>0.6</mn><mn>0.7</mn></msup>') + '。'
+      };
+    }
+
+    if (sceneIdx === 2) {
+      var p2 = lerp(0.70, 1.00, smoothstep((t - 24) / 5));
+      return {
+        sceneIdx: 2,
+        probeX: p2,
+        zoom: 0.92,
+        showLogWitness: true,
+        noteHtml: '插分数中间值 ' + M(frac('<mn>1</mn>', '<mn>2</mn>')) + '：因 ' + M('<msup><mn>0.6</mn><mi>x</mi></msup>') + ' 单减，' + M('<mi>b</mi><mo>=</mo><msup><mn>0.6</mn><mn>0.7</mn></msup><mo>&gt;</mo><msup><mn>0.6</mn><mn>1</mn></msup><mo>=</mo><mn>0.6</mn><mo>&gt;</mo>' + frac('<mn>1</mn>', '<mn>2</mn>')) + '；又 ' + M('<msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn><mo>&lt;</mo><mn>5</mn>') + '，得 ' + M('<mi>c</mi><mo>=</mo><msub><mi>log</mi><mn>5</mn></msub><mo>&#x2061;</mo><mn>2</mn><mo>&lt;</mo><msub><mi>log</mi><mn>5</mn></msub><mo>&#x2061;</mo><msqrt><mn>5</mn></msqrt><mo>=</mo>' + frac('<mn>1</mn>', '<mn>2</mn>')) + '。'
+      };
+    }
+
+    return {
+      sceneIdx: 3,
+      probeX: 0.70,
+      zoom: 0.96,
+      showLogWitness: true,
+      noteHtml: '四段链条严谨合龙：' + M('<msub><mi>log</mi><mn>5</mn></msub><mo>&#x2061;</mo><mn>2</mn><mo>&lt;</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo>&lt;</mo><mn>0.6</mn><mo>&lt;</mo><msup><mn>0.6</mn><mn>0.7</mn></msup><mo>&lt;</mo><msup><mn>0.6</mn><mn>0.6</mn></msup><mo>&lt;</mo><msup><mn>0.7</mn><mn>0.6</mn></msup>') + '，即 ' + M('<mi>a</mi><mo>&gt;</mo><mi>b</mi><mo>&gt;</mo><mi>c</mi>') + '，唯一正解为选项 <strong>A</strong>。'
+    };
+  }
+
+  function setupCanvasSize() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var rect = canvas.getBoundingClientRect();
+    var cssW = Math.max(280, Math.round(rect.width || 440));
+    var cssH = Math.max(200, Math.round(rect.height || 296));
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: cssW, H: cssH };
+  }
+
+  function drawDot(x, y, r, fill, ring) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (ring) {
+      ctx.strokeStyle = ring;
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+    }
+  }
+
+  function layoutLabels(items, minGap, minY, maxY) {
+    items.sort(function (a, b) { return a.y - b.y; });
+    for (var i = 0; i < items.length; i++) {
+      items[i].ly = clamp(items[i].y, minY, maxY);
+    }
+    for (var j = 1; j < items.length; j++) {
+      if (items[j].ly - items[j - 1].ly < minGap) {
+        items[j].ly = items[j - 1].ly + minGap;
+      }
+    }
+    if (items.length && items[items.length - 1].ly > maxY) {
+      items[items.length - 1].ly = maxY;
+      for (var k = items.length - 2; k >= 0; k--) {
+        if (items[k + 1].ly - items[k].ly < minGap) {
+          items[k].ly = items[k + 1].ly - minGap;
+        }
+      }
+    }
+  }
+
+  function drawScene(st, W, H) {
+    var zoom = st.zoom;
+    var yMin = lerp(-0.04, 0.36, zoom);
+    var yMax = lerp(1.08, 0.89, zoom);
+    var xMin = lerp(0.32, 0.44, zoom);
+    var xMax = 1.07;
+
+    var zoomBoxW = clamp(Math.round(W * 0.32), 98, 146);
+    var padL = 32;
+    var padT = 22;
+    var padB = 26;
+    var gap = 12;
+    var plotW = Math.max(120, W - padL - zoomBoxW - gap - 10);
+    var plotH = H - padT - padB;
+    var boxX = padL + plotW + gap;
+
+    function mx(x) { return padL + ((x - xMin) / (xMax - xMin)) * plotW; }
+    function my(y) { return padT + ((yMax - y) / (yMax - yMin)) * plotH; }
+
+    // 1. Subtle 0/1 or benchmark background shading in comparison box
+    if (yMax > 0.5 && yMin < 1.0) {
+      var topHalf = my(Math.min(yMax, 1.0));
+      var midHalf = my(0.5);
+      ctx.fillStyle = 'rgba(168, 56, 37, 0.03)';
+      ctx.fillRect(boxX, topHalf, zoomBoxW, midHalf - topHalf);
+    }
+    if (yMin < 0.5) {
+      var botHalf = my(Math.max(yMin, 0.0));
+      var midHalf2 = my(0.5);
+      ctx.fillStyle = 'rgba(107, 76, 122, 0.04)';
+      ctx.fillRect(boxX, midHalf2, zoomBoxW, botHalf - midHalf2);
+    }
+
+    // 2. Left Plot Grid & Axes
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(padL - 2, padT - 4, plotW + 6, plotH + 8);
+    ctx.clip();
+
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.08)';
+    ctx.lineWidth = 0.75;
+    for (var gy = 0; gy <= 1.01; gy += 0.1) {
+      if (gy < yMin || gy > yMax) continue;
+      ctx.beginPath(); ctx.moveTo(padL, my(gy)); ctx.lineTo(padL + plotW, my(gy)); ctx.stroke();
+    }
+    for (var gx = 0.4; gx <= 1.01; gx += 0.1) {
+      if (gx < xMin || gx > xMax) continue;
+      ctx.beginPath(); ctx.moveTo(mx(gx), padT); ctx.lineTo(mx(gx), padT + plotH); ctx.stroke();
+    }
+
+    // 0 and 1 walls if visible
+    [0, 1].forEach(function (wall) {
+      if (wall >= yMin && wall <= yMax) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(125, 92, 70, 0.52)';
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath(); ctx.moveTo(padL, my(wall)); ctx.lineTo(padL + plotW, my(wall)); ctx.stroke();
+        ctx.restore();
+      }
+    });
+
+    // Benchmark y = 1/2 across plot
+    if (0.5 >= yMin && 0.5 <= yMax) {
+      ctx.save();
+      ctx.strokeStyle = '#b07d2b';
+      ctx.lineWidth = 1.35;
+      ctx.setLineDash([5, 3]);
+      ctx.beginPath(); ctx.moveTo(padL, my(0.5)); ctx.lineTo(padL + plotW, my(0.5)); ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = '#b07d2b';
+      ctx.font = '600 10.5px ui-monospace, Menlo, monospace';
+      ctx.fillText('1/2 = 0.5', padL + 4, my(0.5) - 5);
+    }
+
+    // Guide verticals x=0.6, x=0.7, x=1.0
+    [0.6, 0.7, 1.0].forEach(function (xv) {
+      if (xv < xMin || xv > xMax) return;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(125, 92, 70, 0.25)';
+      ctx.lineWidth = 0.9;
+      ctx.setLineDash([2, 3]);
+      ctx.beginPath(); ctx.moveTo(mx(xv), padT); ctx.lineTo(mx(xv), padT + plotH); ctx.stroke();
+      ctx.restore();
+    });
+
+    // Curve 1: y = x^{0.6} (vermilion)
+    ctx.strokeStyle = '#a83825';
+    ctx.lineWidth = 2.25;
+    ctx.beginPath();
+    var pen = false;
+    for (var i = 0; i <= 140; i++) {
+      var x = xMin + ((xMax - xMin) * i) / 140;
+      var y = Math.pow(x, 0.6);
+      if (y < yMin - 0.1 || y > yMax + 0.1) { pen = false; continue; }
+      if (!pen) { ctx.moveTo(mx(x), my(y)); pen = true; }
+      else ctx.lineTo(mx(x), my(y));
+    }
+    ctx.stroke();
+
+    // Curve 2: y = 0.6^x (indigo)
+    ctx.strokeStyle = '#355070';
+    ctx.lineWidth = 2.25;
+    ctx.beginPath();
+    pen = false;
+    for (var j = 0; j <= 140; j++) {
+      var x2 = xMin + ((xMax - xMin) * j) / 140;
+      var y2 = Math.pow(0.6, x2);
+      if (y2 < yMin - 0.1 || y2 > yMax + 0.1) { pen = false; continue; }
+      if (!pen) { ctx.moveTo(mx(x2), my(y2)); pen = true; }
+      else ctx.lineTo(mx(x2), my(y2));
+    }
+    ctx.stroke();
+
+    // Bridge point (0.6, 0.6^0.6), target points (0.7, 0.7^0.6) & (0.7, 0.6^0.7), witness (1.0, 0.6)
+    // Horizontal projection dashed lines to right zoom box
+    var projections = [
+      { x: 0.7, y: VAL_A, color: 'rgba(168, 56, 37, 0.42)' },
+      { x: 0.6, y: VAL_BRIDGE, color: 'rgba(44, 39, 34, 0.32)' },
+      { x: 0.7, y: VAL_B, color: 'rgba(53, 80, 112, 0.42)' },
+      { x: 1.0, y: 0.6, color: 'rgba(53, 80, 112, 0.28)' }
+    ];
+    projections.forEach(function (pr) {
+      if (pr.y < yMin || pr.y > yMax) return;
+      ctx.save();
+      ctx.strokeStyle = pr.color;
+      ctx.lineWidth = 0.9;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(mx(pr.x), my(pr.y)); ctx.lineTo(padL + plotW, my(pr.y)); ctx.stroke();
+      ctx.restore();
+    });
+
+    // Active probe vertical line
+    var px = clamp(st.probeX, xMin, xMax);
+    var pyPow = Math.pow(px, 0.6);
+    var pyExp = Math.pow(0.6, px);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(168, 56, 37, 0.36)';
+    ctx.lineWidth = 1.1;
+    ctx.beginPath(); ctx.moveTo(mx(px), padT); ctx.lineTo(mx(px), padT + plotH); ctx.stroke();
+    ctx.restore();
+
+    if (pyPow >= yMin && pyPow <= yMax) drawDot(mx(px), my(pyPow), 3.6, '#a83825', '#faf6ee');
+    if (pyExp >= yMin && pyExp <= yMax) drawDot(mx(px), my(pyExp), 3.6, '#355070', '#faf6ee');
+
+    // Key points
+    drawDot(mx(0.6), my(VAL_BRIDGE), 4.6, '#2c2722', '#faf6ee');
+    drawDot(mx(0.7), my(VAL_A), 4.4, '#a83825', '#faf6ee');
+    drawDot(mx(0.7), my(VAL_B), 4.4, '#355070', '#faf6ee');
+    drawDot(mx(1.0), my(0.6), 3.8, '#355070', '#faf6ee');
+
+    // Curve labels in clean non-overlapping positions
+    ctx.font = '600 10.5px Georgia, "Noto Serif SC", serif';
+    ctx.fillStyle = '#a83825';
+    var lblPowX = clamp(mx(0.82), padL + 6, padL + plotW - 56);
+    ctx.fillText('y = x^0.6', lblPowX, clamp(my(Math.pow(0.82, 0.6)) - 10, padT + 14, padT + plotH - 12));
+    ctx.fillStyle = '#355070';
+    ctx.fillText('y = 0.6^x', clamp(mx(0.47), padL + 4, padL + plotW - 56), clamp(my(Math.pow(0.6, 0.47)) - 11, padT + 14, padT + plotH - 8));
+
+    if (zoom >= 0.4) {
+      ctx.font = '600 10.5px ui-monospace, Menlo, monospace';
+      ctx.fillStyle = '#2c2722';
+      ctx.fillText('桥 0.6^0.6', mx(0.6) - 18, my(VAL_BRIDGE) + 16);
+      ctx.fillStyle = '#a83825';
+      ctx.fillText('a', mx(0.7) + 6, my(VAL_A) - 4);
+      ctx.fillStyle = '#355070';
+      ctx.fillText('b', mx(0.7) + 6, my(VAL_B) + 11);
+      ctx.fillText('0.6^1', mx(1.0) - 24, my(0.6) - 9);
+    }
+
+    // Mini log_5 witness badge inside bottom-left when in Act 3/4 or zoomed
+    if (st.showLogWitness && plotW >= 160) {
+      var bx = padL + 6, by = padT + plotH - 46, bw = Math.min(144, plotW * 0.56), bh = 40;
+      ctx.fillStyle = 'rgba(251, 247, 239, 0.94)';
+      ctx.strokeStyle = 'rgba(107, 76, 122, 0.45)';
+      ctx.lineWidth = 1;
+      ctx.fillRect(bx, by, bw, bh);
+      ctx.strokeRect(bx, by, bw, bh);
+      ctx.fillStyle = '#6b4c7a';
+      ctx.font = '600 10.5px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('对数基准核对：', bx + 7, by + 15);
+      ctx.font = '500 10.5px ui-monospace, Menlo, monospace';
+      ctx.fillText('2^2=4 < 5 ⇒ log_5(2) < 1/2', bx + 7, by + 31);
+    }
+
+    ctx.restore();
+
+    // Axes lines & ticks on left plot
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.44)';
+    ctx.lineWidth = 1.05;
+    ctx.beginPath();
+    ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH);
+    ctx.stroke();
+
+    ctx.fillStyle = '#6f6254';
+    ctx.font = '10.5px ui-monospace, Menlo, monospace';
+    [0.5, 0.6, 0.7, 1.0].forEach(function (xv) {
+      if (xv < xMin || xv > xMax) return;
+      ctx.fillText(xv.toFixed(1), mx(xv) - 10, padT + plotH + 14);
+    });
+    [0, 0.5, 0.6, 0.7, 0.8, 1.0].forEach(function (yv) {
+      if (yv < yMin + 0.01 || yv > yMax - 0.01) return;
+      ctx.fillText(yv.toFixed(1), 4, my(yv) + 3.5);
+    });
+
+    // 3. Right Comparison Zoom Box (Height Ruler)
+    ctx.save();
+    ctx.fillStyle = '#fbf7ef';
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.28)';
+    ctx.lineWidth = 1;
+    ctx.fillRect(boxX, padT, zoomBoxW, plotH);
+    ctx.strokeRect(boxX, padT, zoomBoxW, plotH);
+
+    ctx.fillStyle = '#26211c';
+    ctx.font = '600 11px -apple-system, "PingFang SC", sans-serif';
+    ctx.fillText('高程比大小标尺', boxX + 8, padT + 14);
+
+    // Benchmark 1/2 line in zoom box
+    var spineX = boxX + 18;
+    ctx.strokeStyle = 'rgba(44, 39, 34, 0.45)';
+    ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(spineX, padT + 22); ctx.lineTo(spineX, padT + plotH - 8); ctx.stroke();
+
+    if (0.5 >= yMin && 0.5 <= yMax) {
+      ctx.save();
+      ctx.strokeStyle = '#b07d2b';
+      ctx.lineWidth = 1.3;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath(); ctx.moveTo(boxX + 3, my(0.5)); ctx.lineTo(boxX + zoomBoxW - 3, my(0.5)); ctx.stroke();
+      ctx.restore();
+    }
+
+    var markers = [
+      { v: VAL_A, color: '#a83825', txt: 'a=0.7^0.6≈0.807', shortTxt: 'a≈0.807' },
+      { v: VAL_BRIDGE, color: '#2c2722', txt: '桥 0.6^0.6≈0.736', shortTxt: '桥≈0.736' },
+      { v: VAL_B, color: '#355070', txt: 'b=0.6^0.7≈0.699', shortTxt: 'b≈0.699' },
+      { v: 0.6, color: '#355070', txt: '0.6^1 = 0.600', shortTxt: '0.6^1=0.6' },
+      { v: 0.5, color: '#b07d2b', txt: '基准 1/2 = 0.500', shortTxt: '1/2=0.5' },
+      { v: VAL_C, color: '#6b4c7a', txt: 'c=log_5(2)≈0.431', shortTxt: 'c≈0.431' }
+    ].filter(function (m) { return m.v >= yMin && m.v <= yMax; });
+
+    markers.forEach(function (m) { m.y = my(m.v); });
+    layoutLabels(markers, 15, padT + 28, padT + plotH - 8);
+
+    markers.forEach(function (m) {
+      drawDot(spineX, m.y, m.v === VAL_BRIDGE ? 4.2 : 3.8, m.color, '#fbf7ef');
+      if (Math.abs(m.ly - m.y) > 2) {
+        ctx.strokeStyle = 'rgba(92, 76, 58, 0.25)';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath(); ctx.moveTo(spineX + 5, m.y); ctx.lineTo(spineX + 12, m.ly); ctx.stroke();
+      }
+      ctx.fillStyle = m.color;
+      ctx.font = '600 10px ui-monospace, Menlo, monospace';
+      var text = zoomBoxW < 126 ? m.shortTxt : m.txt;
+      ctx.fillText(text, spineX + 13, m.ly + 3.5);
+    });
+
+    if (showWrongRings) {
+      var ringY1 = my(0.5);
+      ctx.strokeStyle = '#a83825';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(spineX, ringY1, 8.5, 0, Math.PI * 2); ctx.stroke();
+      if (VAL_C >= yMin && VAL_C <= yMax) {
+        ctx.beginPath(); ctx.arc(spineX, my(VAL_C), 8.5, 0, Math.PI * 2); ctx.stroke();
+      }
+      ctx.fillStyle = '#a83825';
+      ctx.font = '600 10.5px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('1/2 隔断 b 与 c', boxX + 8, padT + plotH - 8);
+    }
+
+    ctx.restore();
+  }
+
+  function render() {
+    var st = computeState();
+    openBetBtn.textContent = betOverlay.hidden ? '自测一下' : '收起自测';
+    var size = setupCanvasSize();
+    ctx.clearRect(0, 0, size.W, size.H);
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, size.W, size.H);
+
+    drawScene(st, size.W, size.H);
+
+    if (st.sceneIdx === 0) {
+      liveEl.innerHTML = '第 1 步：' + M('<mn>0</mn><mo>&lt;</mo><mi>c</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>a</mi><mo>&lt;</mo><mn>1</mn>');
+    } else if (st.sceneIdx === 1) {
+      liveEl.innerHTML = '拼桥 ' + M('<msup><mn>0.6</mn><mn>0.6</mn></msup><mo>≈</mo><mn>0.736</mn>') + ' · <strong>' + M('<mi>a</mi><mo>&gt;</mo><mi>b</mi>') + '</strong>';
+    } else if (st.sceneIdx === 2) {
+      liveEl.innerHTML = '基准 ' + M(frac('<mn>1</mn>', '<mn>2</mn>')) + ' 隔断：<strong>' + M('<mi>c</mi><mo>&lt;</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo>&lt;</mo><mn>0.6</mn><mo>&lt;</mo><mi>b</mi>') + '</strong>';
+    } else {
+      liveEl.innerHTML = '最终排序：<strong>' + M('<mi>a</mi><mo>&gt;</mo><mi>b</mi><mo>&gt;</mo><mi>c</mi>') + '（选 A）</strong>';
+    }
+
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
+    timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
+    timeline.value = t.toFixed(2);
+    probeSlider.value = clamp(st.probeX, 0.45, 1.04).toFixed(2);
+    zoomSlider.value = clamp(st.zoom, 0, 1).toFixed(2);
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
+
+    for (var i = 0; i < stepEls.length; i++) {
+      stepEls[i].setAttribute('data-active', i === st.sceneIdx ? 'true' : 'false');
+    }
+
+    if (window.notara && typeof window.notara.setState === 'function') {
+      window.notara.setState({
+        summary: '图解《第13讲·例1 指对幂比大小》停在 ' + formatTime(t) + '（第 ' + (st.sceneIdx + 1) + ' 步，探针 x=' + st.probeX.toFixed(2) + '，缩放=' + st.zoom.toFixed(2) + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          probe_x: Number(st.probeX.toFixed(2)),
+          zoom: Number(st.zoom.toFixed(2)),
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
+    }
+  }
+
+  function showBetCheckpoint() {
+    playing = false;
+    betOverlay.hidden = false;
+    betFeedback.hidden = true;
+    render();
+  }
+
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object') {
+        if (typeof detail.params.probe_x === 'number') {
+          manualProbeX = clamp(detail.params.probe_x, 0.45, 1.04);
+          interactiveOverride = true;
+        }
+        if (typeof detail.params.zoom === 'number') {
+          manualZoom = clamp(detail.params.zoom, 0, 1);
+          interactiveOverride = true;
+        }
+      }
+      render();
+    });
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    var prevT = t;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
+    lastTs = ts;
+    t += dt;
+    if (!betFiredDuringPlay && prevT < 30.0 && t >= 30.0) {
+      t = 30.0;
+      betFiredDuringPlay = true;
+      showBetCheckpoint();
+      return;
+    }
+    if (t >= TOTAL) { t = TOTAL; playing = false; }
+    render();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener('click', function () {
+    if (playing) {
+      playing = false;
+      interactiveOverride = true;
+      var st = computeState();
+      manualProbeX = st.probeX;
+      manualZoom = st.zoom;
+      render();
+    } else {
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      if (t >= TOTAL - 0.1) { t = 0; betFiredDuringPlay = false; }
+      interactiveOverride = false;
+      playing = true;
+      lastTs = 0;
+      render();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  timeline.addEventListener('input', function () {
+    t = Number(timeline.value) || 0;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = false;
+    if (t < 29) betFiredDuringPlay = false;
+    render();
+  });
+
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
+      showWrongRings = false;
+      interactiveOverride = false;
+      t = Number(el.dataset.jump) || 0;
+      betOverlay.hidden = true;
+      render();
+    });
+  });
+
+  probeSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = true;
+    manualProbeX = clamp(Number(probeSlider.value) || 0.70, 0.45, 1.04);
+    render();
+  });
+
+  zoomSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = true;
+    manualZoom = clamp(Number(zoomSlider.value) || 0.75, 0, 1);
+    render();
+  });
+
+  openBetBtn.addEventListener('click', function () {
+    if (!betOverlay.hidden) {
+      betOverlay.hidden = true;
+      render();
+      return;
+    }
+    t = 30.0;
+    interactiveOverride = false;
+    showWrongRings = false;
+    showBetCheckpoint();
+  });
+
+  betSkip.addEventListener('click', function () {
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = false;
+    if (t < 36) t = 36.0;
+    playing = true;
+    lastTs = 0;
+    render();
+    requestAnimationFrame(tick);
+  });
+
+  betBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
+      betFeedback.hidden = false;
+      interactiveOverride = true;
+      manualProbeX = 1.00;
+      manualZoom = 0.92;
+      t = 30.0;
+      if (ans === 'wrong') {
+        showWrongRings = true;
+        betFeedback.innerHTML = '<strong>易错提醒：</strong>不用算近似小数。先由 ' + M('<msup><mn>0.6</mn><mi>x</mi></msup>') + ' 单减放缩出 ' + M('<mi>b</mi><mo>&gt;</mo><msup><mn>0.6</mn><mn>1</mn></msup><mo>=</mo><mn>0.6</mn><mo>&gt;</mo>' + frac('<mn>1</mn>', '<mn>2</mn>')) + '，再平方检验 ' + M('<msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><mn>4</mn><mo>&lt;</mo><mn>5</mn>') + ' 得 ' + M('<mi>c</mi><mo>&lt;</mo>' + frac('<mn>1</mn>', '<mn>2</mn>')) + '。';
+      } else {
+        showWrongRings = false;
+        betFeedback.innerHTML = '<strong>判断准确：</strong>用 ' + M(frac('<mn>1</mn>', '<mn>2</mn>')) + ' 一刀劈开 ' + M('<mi>b</mi>') + ' 与 ' + M('<mi>c</mi>') + '，再拼 ' + M('<msup><mn>0.6</mn><mn>0.6</mn></msup>') + ' 隔开 ' + M('<mi>a</mi>') + ' 与 ' + M('<mi>b</mi>') + '，全链 ' + M('<mi>a</mi><mo>&gt;</mo><mi>b</mi><mo>&gt;</mo><mi>c</mi>') + '。';
+      }
+      render();
+    });
+  });
+
+  document.getElementById('quote-btn').addEventListener('click', function () {
+    playing = false;
+    var st = computeState();
+    var msg = '我在图解《第13讲·例1 指对幂比大小》第 ' + formatTime(t) + ' 暂停了（探针 x=' + st.probeX.toFixed(2) + '，缩放=' + st.zoom.toFixed(2) + '），请带我核对为什么 0.6^0.6 桥和 1/2 基准能直接排定 a>b>c。';
+    if (window.notara && typeof window.notara.quoteState === 'function') {
+      window.notara.quoteState({
+        summary: msg,
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          probe_x: Number(st.probeX.toFixed(2)),
+          zoom: Number(st.zoom.toFixed(2))
+        }
+      });
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
+    } else {
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，x=' + st.probeX.toFixed(2) + '）。';
+    }
+    render();
+  });
+
+  window.addEventListener('resize', render);
+  render();
+})();
+</script>
+</body>
+</html>

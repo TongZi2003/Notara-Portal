@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第18讲·例1 · 双量词值域包含与半开区间端点检验</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
+    overflow: hidden;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
+  }
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
+  }
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 296px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2b251f;
+  }
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sol-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.54;
+    cursor: pointer;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .sol-step:hover { opacity: 0.86; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #355070;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13.2px;
+    color: #25201b;
+    line-height: 1.62;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.2px;
+    color: #2b251f;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.58;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
+
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+  }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+    margin-top: 4px;
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 88px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #355070;
+  }
+
+  @media (max-width: 700px) {
+    .sheet-head { padding: 9px 14px; }
+    .sheet-title { font-size: 14px; }
+    .sheet-live { font-size: 12px; }
+    .sheet-grid { grid-template-columns: 1.04fr 1fr; min-height: 318px; }
+    .sheet-left { padding: 10px 12px 11px; }
+    canvas { height: 242px; }
+    .sheet-note { font-size: 11.8px; line-height: 1.6; padding-top: 7px; }
+    .sheet-right { padding: 11px 13px 10px; }
+    .sol-steps { gap: 5px; }
+    .sol-step { padding: 4px 6px 4px 9px; }
+    .sol-step-top { font-size: 11.5px; margin-bottom: 1px; }
+    .sol-eq { font-size: 12px; line-height: 1.48; }
+    .sheet-foot { padding: 8px 14px; gap: 10px; }
+    .foot-transport { min-width: 170px; gap: 8px; }
+    .play-btn { padding: 4px 10px; font-size: 11.5px; }
+    .foot-params { gap: 9px; }
+    .param-pair input[type="range"] { width: 64px; }
+  }
+
+  @media (max-width: 470px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">第18讲·例1 · 双量词值域包含与半开区间端点检验</h1>
+    <div class="sheet-live" id="live-readout"></div>
+  </header>
+
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
+    </div>
+
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>量词翻译与开闭检验</h2>
+          <span class="sol-total mono">4 幕微课</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0" data-active="true">
+            <div class="sol-step-top"><span>（一）双量词落向子集方向</span><span class="sol-pts mono">00:04</span></div>
+            <div class="sol-eq"><math display="inline"><mo>&#x2200;</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mo>&#x2203;</mo><msub><mi>x</mi><mn>2</mn></msub></math> 使 <math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>g</mi><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo stretchy="false">)</mo></mrow><mo>&#x21D4;</mo><mi>A</mi><mo>&#x2286;</mo><mi>B</mi></math>（谁带 <math display="inline"><mo>&#x2200;</mo></math> 在左侧）</div>
+          </li>
+          <li class="sol-step" data-jump="16" data-step="1">
+            <div class="sol-step-top"><span>（二）实心对实心：a = −4 可闭</span><span class="sol-pts mono">00:16</span></div>
+            <div class="sol-eq"><math display="inline"><mi>A</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo stretchy="false">]</mo></mrow></math>，<math display="inline"><mi>B</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo>+</mo><mi>a</mi><mo>,</mo><mn>8</mn><mo>+</mo><mi>a</mi><mo stretchy="false">]</mo></mrow></math>，右端 <math display="inline"><mn>8</mn><mo>+</mo><mi>a</mi><mo>&#x2265;</mo><mn>4</mn></math></div>
+          </li>
+          <li class="sol-step" data-jump="30" data-step="2">
+            <div class="sol-step-top"><span>（三）易错自测：a = 1 撞空心必开</span><span class="sol-pts mono">00:30</span></div>
+            <div class="sol-eq"><math display="inline"><mi>a</mi><mo>=</mo><mn>1</mn></math> 时 <math display="inline"><mi>B</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo>,</mo><mn>9</mn><mo stretchy="false">]</mo></mrow></math> 取不到 <math display="inline"><mn>3</mn><mo>=</mo><mi>f</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math>，须严格 <math display="inline"><mn>2</mn><mo>+</mo><mi>a</mi><mo>&lt;</mo><mn>3</mn></math></div>
+          </li>
+          <li class="sol-step" data-jump="44" data-step="3">
+            <div class="sol-step-top"><span>（四）合并锁定半闭半开区间</span><span class="sol-pts mono">00:44</span></div>
+            <div class="sol-eq">左端开 <math display="inline"><mi>a</mi><mo>&lt;</mo><mn>1</mn></math> 配右端闭 <math display="inline"><mi>a</mi><mo>&#x2265;</mo><mo>−</mo><mn>4</mn><mo>&#x21D2;</mo><mi>a</mi><mo>&#x2208;</mo><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>4</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math></div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>易错自测 · 00:30</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <div style="font-size:12px;color:#3a332c;margin-bottom:4px;">要使 <math display="inline"><mrow><mo stretchy="false">[</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo stretchy="false">]</mo></mrow><mo>&#x2286;</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo>+</mo><mi>a</mi><mo>,</mo><mn>8</mn><mo>+</mo><mi>a</mi><mo stretchy="false">]</mo></mrow></math>，临界点 <math display="inline"><mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn></math> 与 <math display="inline"><mi>a</mi><mo>=</mo><mn>1</mn></math> 的开闭括号应选：</div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：因 <math display="inline"><mi>f</mi></math> 的定义域全闭，两端顺手取闭得 <math display="inline"><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>4</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo></mrow></math>（或因 <math display="inline"><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo stretchy="false">]</mo></mrow></math> 半开错选 <math display="inline"><mrow><mo stretchy="false">(</mo><mo>−</mo><mn>4</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math>）</button>
+          <button type="button" class="bet-choice" data-bet="right">乙：<math display="inline"><mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn></math> 时实心 <math display="inline"><mn>4</mn><mo>&#x2208;</mo><mrow><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo stretchy="false">]</mo></mrow></math> 可取闭；<math display="inline"><mi>a</mi><mo>=</mo><mn>1</mn></math> 时空心 <math display="inline"><mn>3</mn><mo>&#x2209;</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo>,</mo><mn>9</mn><mo stretchy="false">]</mo></mrow></math> 必须开，选 <math display="inline"><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>4</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math></button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
+      </div>
+
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">自测一下</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="4.0" aria-label="时间轴">
+      <span class="clock mono" id="clock"><span id="time-readout">00:04 / 00:48</span></span>
+    </div>
+    <div class="foot-params">
+      <label class="param-pair" title="拖动参数 a 对比闭区间 A=[3,4] 与半开温度计 B=(2+a, 8+a]">
+        <span>参数 <math display="inline"><mi>a</mi></math></span>
+        <input type="range" class="hairline-range" id="a-slider" data-param="a" min="-5.00" max="3.00" step="0.05" value="-1.50">
+      </label>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 48;
+  var playing = false;
+  var interactiveOverride = false;
+  var betFiredDuringPlay = false;
+  var showWrongRings = false;
+  var betResult = '';
+  var t = 4.0;
+  var manualA = -1.50;
+  var lastTs = 0;
+
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+  var playBtn = document.getElementById('play-btn');
+  var timeline = document.getElementById('timeline');
+  var timeEl = document.getElementById('time-readout');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
+  var aSlider = document.getElementById('a-slider');
+  var betOverlay = document.getElementById('bet-overlay');
+  var betFeedback = document.getElementById('bet-feedback');
+  var betSkip = document.getElementById('bet-skip');
+  var openBetBtn = document.getElementById('open-bet-btn');
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
+  var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function formatTime(sec) {
+    var s = Math.max(0, Math.floor(sec));
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function evalStatus(a) {
+    var bLo = 2 + a;
+    var bHi = 8 + a;
+    var ok = (bLo < 3 - 1e-6) && (bHi >= 4 - 1e-6);
+    var reason = 'ok';
+    if (Math.abs(a - 1) < 0.025) reason = 'trap-open';
+    else if (bLo >= 3 - 1e-6) reason = 'fail-low';
+    else if (Math.abs(a + 4) < 0.025) reason = 'edge-closed';
+    else if (bHi < 4 - 1e-6) reason = 'fail-high';
+    return { a: a, bLo: bLo, bHi: bHi, ok: ok, reason: reason };
+  }
+
+  function computeState() {
+    var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
+    if (interactiveOverride) {
+      var st = evalStatus(manualA);
+      var note;
+      if (st.reason === 'trap-open') {
+        note = '危险端点 ' + M('<mi>a</mi><mo>=</mo><mn>1</mn>') + '：此时 ' + M('<mi>B</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo>,</mo><mn>9</mn><mo stretchy="false">]</mo></mrow>') + '，左端 ' + M('<mn>3</mn>') + ' 是空心圆取不到，' + M('<mi>f</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mn>3</mn>') + ' 落空，故 ' + M('<mi>a</mi><mo>=</mo><mn>1</mn>') + ' 必须舍去。';
+      } else if (st.reason === 'edge-closed') {
+        note = '右界压线 ' + M('<mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn>') + '：此时 ' + M('<mi>B</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo stretchy="false">]</mo></mrow>') + '，实心上限 ' + M('<mn>4</mn><mo>=</mo><mi>g</mi><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo>') + ' 稳稳接住 ' + M('<mn>4</mn><mo>&#x2208;</mo><mi>A</mi>') + '，所以 ' + M('<mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn>') + ' 成立。';
+      } else if (st.reason === 'fail-low') {
+        note = '下界过高（' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(2) + '</mn>') + '）：' + M('<mn>2</mn><mo>+</mo><mi>a</mi><mo>=</mo><mn>' + st.bLo.toFixed(2) + '</mn><mo>&gt;</mo><mn>3</mn>') + '，底部一段函数值落在了 ' + M('<mi>B</mi>') + ' 之外。';
+      } else if (st.reason === 'fail-high') {
+        note = '上界偏低（' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(2) + '</mn>') + '）：' + M('<mn>8</mn><mo>+</mo><mi>a</mi><mo>=</mo><mn>' + st.bHi.toFixed(2) + '</mn><mo>&lt;</mo><mn>4</mn>') + '，顶部函数值超出 ' + M('<mi>g</mi>') + ' 的最高输出。';
+      } else {
+        note = '区间含住：' + M('<mi>A</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo stretchy="false">]</mo></mrow><mo>&#x2286;</mo><mi>B</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>' + st.bLo.toFixed(2) + '</mn><mo>,</mo><mn>' + st.bHi.toFixed(2) + '</mn><mo stretchy="false">]</mo></mrow>') + '，任意 ' + M('<msub><mi>x</mi><mn>1</mn></msub>') + ' 都能水平连到唯一 ' + M('<msub><mi>x</mi><mn>2</mn></msub>') + '。';
+      }
+      return { sceneIdx: sceneIdx, a: manualA, probeX1: 1.0, info: st, noteHtml: note };
+    }
+
+    if (sceneIdx === 0) {
+      var a0 = -1.50;
+      var x1Probe = 1.0 + Math.sin((t / 12) * Math.PI * 2) * 0.95;
+      return {
+        sceneIdx: 0,
+        a: a0,
+        probeX1: x1Probe,
+        info: evalStatus(a0),
+        noteHtml: '任意 ' + M('<msub><mi>x</mi><mn>1</mn></msub><mo>&#x2208;</mo><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="false">]</mo></mrow>') + ' 总能在 ' + M('<mi>g</mi>') + ' 上水平接住，等价于值域 ' + M('<mi>A</mi><mo>=</mo><mrow><mo stretchy="false">[</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo stretchy="false">]</mo></mrow>') + ' 完整落入半开区间 ' + M('<mi>B</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mo>+</mo><mi>a</mi><mo>,</mo><mn>8</mn><mo>+</mo><mi>a</mi><mo stretchy="false">]</mo></mrow>') + '。'
+      };
+    }
+
+    if (sceneIdx === 1) {
+      var a1 = t <= 16 ? lerp(-2.2, -4.0, (t - 12) / 4) : lerp(-4.0, -4.6, (t - 16) / 8);
+      var inf1 = evalStatus(a1);
+      var msg1 = Math.abs(a1 + 4.0) < 0.14
+        ? '右端实心碰撞：当 ' + M('<mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn>') + ' 时，' + M('<mi>g</mi><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo><mo>=</mo><mn>8</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>4</mn>') + ' 是<strong>实心点</strong>，刚好接住 ' + M('<mn>4</mn><mo>&#x2208;</mo><mi>A</mi>') + '，可取等。'
+        : a1 < -4.05
+          ? '继续往下滑至 ' + M('<mi>a</mi><mo>&lt;</mo><mo>−</mo><mn>4</mn>') + '，实心上限 ' + M('<mn>8</mn><mo>+</mo><mi>a</mi>') + ' 跌破 ' + M('<mn>4</mn>') + '，顶部开始露空超界。'
+          : '下滑测试右界：让 ' + M('<mi>B</mi>') + ' 的实心顶端 ' + M('<mn>8</mn><mo>+</mo><mi>a</mi>') + ' 贴近 ' + M('<mn>4</mn>') + '，验证能否踩线取等。';
+      return { sceneIdx: 1, a: a1, probeX1: 2.0, info: inf1, noteHtml: msg1 };
+    }
+
+    if (sceneIdx === 2) {
+      // Sweep up to exact a = 1.00 at t = 30
+      var a2 = t <= 30 ? lerp(-0.5, 1.0, clamp((t - 24) / 6, 0, 1)) : lerp(1.0, 1.65, (t - 30) / 6);
+      var inf2 = evalStatus(a2);
+      var msg2 = Math.abs(a2 - 1.0) < 0.08
+        ? '左端空心陷阱 ' + M('<mi>a</mi><mo>=</mo><mn>1</mn>') + '：' + M('<mn>2</mn><mo>+</mo><mi>a</mi><mo>=</mo><mn>3</mn>') + ' 处为空心圆，' + M('<mi>B</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo>,</mo><mn>9</mn><mo stretchy="false">]</mo></mrow>') + ' 接不住实心 ' + M('<mn>3</mn><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo>') + '，必须严格 ' + M('<mi>a</mi><mo>&lt;</mo><mn>1</mn>') + '。'
+        : a2 > 1.05
+          ? '超过 ' + M('<mn>1</mn>') + ' 后，整个空心底端悬到 ' + M('<mn>3</mn>') + ' 上方，' + M('<mi>A</mi>') + ' 的下端彻底漏在外面。'
+          : '上推参数 ' + M('<mi>a</mi>') + ' 逼近 ' + M('<mn>1</mn>') + '，紧盯空心下界 ' + M('<mn>2</mn><mo>+</mo><mi>a</mi>') + ' 怎样靠近 ' + M('<mn>3</mn>') + '。';
+      return { sceneIdx: 2, a: a2, probeX1: 1.0, info: inf2, noteHtml: msg2 };
+    }
+
+    var a3 = lerp(-4.0, 0.95, 0.5 - 0.5 * Math.cos(((t - 36) / 12) * Math.PI * 1.3));
+    return {
+      sceneIdx: 3,
+      a: a3,
+      probeX1: 1.0,
+      info: evalStatus(a3),
+      noteHtml: '把实心底 ' + M('<mn>3</mn>') + ' 照进空心门 ' + M('<mn>2</mn><mo>+</mo><mi>a</mi><mo>&lt;</mo><mn>3</mn>') + '（开），把实心顶 ' + M('<mn>4</mn>') + ' 塞进实心顶 ' + M('<mn>8</mn><mo>+</mo><mi>a</mi><mo>&#x2265;</mo><mn>4</mn>') + '（闭），合并即得 ' + M('<mrow><mo stretchy="false">[</mo><mo>−</mo><mn>4</mn><mo>,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow>') + '（选 B）。'
+    };
+  }
+
+  function setupCanvasSize() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var rect = canvas.getBoundingClientRect();
+    var cssW = Math.max(280, Math.round(rect.width || 440));
+    var cssH = Math.max(200, Math.round(rect.height || 296));
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: cssW, H: cssH };
+  }
+
+  function makeRectTransform(left, top, width, height, xMin, xMax, yMin, yMax) {
+    return {
+      mx: function (x) { return left + ((x - xMin) / (xMax - xMin)) * width; },
+      my: function (y) { return top + ((yMax - y) / (yMax - yMin)) * height; }
+    };
+  }
+
+  function drawDot(x, y, r, fill, stroke, lineW) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (stroke) {
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = lineW || 1.5;
+      ctx.stroke();
+    }
+  }
+
+  function renderScene(st, W, H) {
+    var thermoW = clamp(Math.round(W * 0.35), 116, 168);
+    var plotL = 24, plotT = 18, plotW = W - thermoW - plotL - 12, plotH = H - plotT - 24;
+    var xMin = -0.30, xMax = 3.35, yMin = -3.4, yMax = 11.4;
+    var T = makeRectTransform(plotL, plotT, plotW, plotH, xMin, xMax, yMin, yMax);
+
+    // Horizontal value-range strip for A = [3, 4] across left plot
+    ctx.fillStyle = 'rgba(168, 56, 37, 0.065)';
+    ctx.fillRect(plotL, T.my(4), plotW, T.my(3) - T.my(4));
+
+    // Faint grid lines at key heights y = 0, 3, 4
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.42)';
+    ctx.lineWidth = 1.05;
+    ctx.beginPath(); ctx.moveTo(plotL, T.my(0)); ctx.lineTo(plotL + plotW, T.my(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(T.mx(0), plotT); ctx.lineTo(T.mx(0), plotT + plotH); ctx.stroke();
+
+    ctx.fillStyle = '#6b5f52';
+    ctx.font = 'italic 11px Georgia, serif';
+    ctx.fillText('x', plotL + plotW - 9, T.my(0) - 5);
+    ctx.fillText('y', T.mx(0) + 5, plotT + 10);
+
+    // Domain vertical guides x=1, 2, 3
+    [1, 2, 3].forEach(function (xv) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(125, 92, 70, 0.25)';
+      ctx.setLineDash([2, 3]);
+      ctx.beginPath(); ctx.moveTo(T.mx(xv), plotT); ctx.lineTo(T.mx(xv), plotT + plotH); ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = '#6f6254';
+      ctx.font = '500 9.5px ui-monospace, Menlo, monospace';
+      ctx.fillText(String(xv), T.mx(xv) - 3, T.my(0) + 11);
+    });
+    ctx.fillText('3', T.mx(0) - 11, T.my(3) + 3);
+    ctx.fillText('4', T.mx(0) - 11, T.my(4) + 3);
+
+    // Horizontal guide lines from [3, 4] and (2+a, 8+a] toward thermometer
+    var thermoX = W - thermoW - 6;
+    [3, 4].forEach(function (yv) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(168, 56, 37, 0.36)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(plotL, T.my(yv)); ctx.lineTo(thermoX + 20, T.my(yv)); ctx.stroke();
+      ctx.restore();
+    });
+    [st.info.bLo, st.info.bHi].forEach(function (yv) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(53, 80, 112, 0.34)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(T.mx(1), T.my(yv)); ctx.lineTo(thermoX + thermoW - 14, T.my(yv)); ctx.stroke();
+      ctx.restore();
+    });
+
+    // Plot f(x) = x^2 - 2x + 4 on [0, 2] (vermilion)
+    ctx.save();
+    ctx.strokeStyle = '#a83825';
+    ctx.lineWidth = 2.4;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    for (var i = 0; i <= 80; i++) {
+      var fx = (2 * i) / 80;
+      var fy = fx * fx - 2 * fx + 4;
+      if (i === 0) ctx.moveTo(T.mx(fx), T.my(fy));
+      else ctx.lineTo(T.mx(fx), T.my(fy));
+    }
+    ctx.stroke();
+    ctx.restore();
+    drawDot(T.mx(0), T.my(4), 3.6, '#a83825', '#faf6ee');
+    drawDot(T.mx(1), T.my(3), 3.6, '#a83825', '#faf6ee');
+    drawDot(T.mx(2), T.my(4), 3.6, '#a83825', '#faf6ee');
+
+    ctx.fillStyle = '#a83825';
+    ctx.font = '600 10.5px Georgia, serif';
+    ctx.fillText('f(x) [0,2]', T.mx(0.1), T.my(4) - 8);
+
+    // Plot g(x) = 2^x + a on (1, 3] (indigo)
+    ctx.save();
+    ctx.strokeStyle = '#355070';
+    ctx.lineWidth = 2.4;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    for (var j = 0; j <= 80; j++) {
+      var gx = 1 + (2 * j) / 80;
+      var gy = Math.pow(2, gx) + st.a;
+      if (j === 0) ctx.moveTo(T.mx(gx), T.my(gy));
+      else ctx.lineTo(T.mx(gx), T.my(gy));
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // Left endpoint (1, 2+a) HOLLOW vs Right endpoint (3, 8+a) SOLID
+    drawDot(T.mx(1), T.my(st.info.bLo), 4.2, '#faf6ee', '#355070', 2.0);
+    drawDot(T.mx(3), T.my(st.info.bHi), 4.2, '#355070', '#faf6ee', 1.4);
+
+    ctx.fillStyle = '#355070';
+    ctx.font = '600 10.5px Georgia, serif';
+    ctx.fillText('g(x) (1,3]', T.mx(1.82), T.my(Math.pow(2, 2.3) + st.a) + 14);
+
+    // Horizontal correspondence tie-line from probe x1 on f to g
+    var x1 = st.probeX1;
+    var yProbe = x1 * x1 - 2 * x1 + 4;
+    var diff = yProbe - st.a;
+    if (st.info.ok && diff > 2 && diff <= 8) {
+      var x2 = Math.log(diff) / Math.LN2;
+      ctx.save();
+      ctx.strokeStyle = '#b07d2b';
+      ctx.lineWidth = 1.4;
+      ctx.setLineDash([4, 2]);
+      ctx.beginPath(); ctx.moveTo(T.mx(x1), T.my(yProbe)); ctx.lineTo(T.mx(x2), T.my(yProbe)); ctx.stroke();
+      ctx.restore();
+      drawDot(T.mx(x1), T.my(yProbe), 4.0, '#b07d2b', '#faf6ee');
+      drawDot(T.mx(x2), T.my(yProbe), 4.0, '#b07d2b', '#faf6ee');
+    } else if (st.info.bLo >= 3 - 1e-6) {
+      // Highlight hollow miss at y = 3
+      ctx.save();
+      ctx.strokeStyle = '#a83825';
+      ctx.lineWidth = 1.7;
+      ctx.beginPath(); ctx.arc(T.mx(1), T.my(st.info.bLo), 9.0, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+    }
+
+    // Right Panel: Vertical Value-Range Thermometer aligned with T.my(y)
+    var rx = thermoX, rw = thermoW;
+    ctx.save();
+    ctx.fillStyle = '#f9f5ec';
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.24)';
+    ctx.lineWidth = 1;
+    ctx.fillRect(rx, 14, rw, H - 24);
+    ctx.strokeRect(rx, 14, rw, H - 24);
+
+    // Header badge
+    ctx.fillStyle = st.info.ok ? '#355070' : '#a83825';
+    ctx.font = '700 10.5px -apple-system, "PingFang SC", sans-serif';
+    var badge = st.info.reason === 'edge-closed'
+      ? '边界压实: 4∈B'
+      : st.info.ok
+        ? '值域包含 A ⊆ B'
+        : st.info.reason === 'trap-open'
+          ? '撞空心: 3∉(3,9]'
+          : st.info.reason === 'fail-low'
+            ? '下界露空: 2+a≥3'
+            : '上界露空: 8+a<4';
+    ctx.fillText(badge, rx + 8, 29);
+
+    var trackAX = rx + Math.round(rw * 0.30);
+    var trackBX = rx + Math.round(rw * 0.68);
+
+    // Uncovered red shading if A not subset of B
+    if (!st.info.ok) {
+      if (st.info.bLo >= 3) {
+        var topUnc = Math.min(4, st.info.bLo);
+        ctx.fillStyle = 'rgba(168, 56, 37, 0.16)';
+        ctx.fillRect(rx + 6, T.my(topUnc), rw - 12, T.my(3) - T.my(topUnc));
+      }
+      if (st.info.bHi < 4) {
+        var botUnc = Math.max(3, st.info.bHi);
+        ctx.fillStyle = 'rgba(168, 56, 37, 0.16)';
+        ctx.fillRect(rx + 6, T.my(4), rw - 12, T.my(botUnc) - T.my(4));
+      }
+    }
+
+    // Track A = [3, 4]
+    ctx.strokeStyle = '#a83825';
+    ctx.lineWidth = 4.4;
+    ctx.lineCap = 'butt';
+    ctx.beginPath(); ctx.moveTo(trackAX, T.my(3)); ctx.lineTo(trackAX, T.my(4)); ctx.stroke();
+    drawDot(trackAX, T.my(3), 4.2, '#a83825', '#faf6ee', 1.4);
+    drawDot(trackAX, T.my(4), 4.2, '#a83825', '#faf6ee', 1.4);
+
+    ctx.fillStyle = '#a83825';
+    ctx.font = '700 10px ui-monospace, Menlo, monospace';
+    ctx.fillText('A', trackAX - 3, H - 15);
+    ctx.fillText('4', trackAX - 14, T.my(4) + 3);
+    ctx.fillText('3', trackAX - 14, T.my(3) + 3);
+
+    // Track B = (2+a, 8+a]
+    ctx.strokeStyle = '#355070';
+    ctx.lineWidth = 4.4;
+    ctx.beginPath(); ctx.moveTo(trackBX, T.my(st.info.bLo)); ctx.lineTo(trackBX, T.my(st.info.bHi)); ctx.stroke();
+    // HOLLOW at bottom (2+a), SOLID at top (8+a)
+    drawDot(trackBX, T.my(st.info.bLo), 4.6, '#f9f5ec', '#355070', 2.1);
+    drawDot(trackBX, T.my(st.info.bHi), 4.6, '#355070', '#f9f5ec', 1.4);
+
+    if (showWrongRings && st.info.reason === 'trap-open') {
+      ctx.strokeStyle = '#a83825';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath(); ctx.arc(trackBX, T.my(st.info.bLo), 9.5, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    ctx.fillStyle = '#355070';
+    ctx.font = '700 10px ui-monospace, Menlo, monospace';
+    ctx.fillText('B', trackBX - 3, H - 15);
+    ctx.fillText(st.info.bHi.toFixed(1), trackBX + 8, T.my(st.info.bHi) + 3);
+    ctx.fillText(st.info.bLo.toFixed(1), trackBX + 8, T.my(st.info.bLo) + 3);
+    ctx.restore();
+  }
+
+  function render() {
+    var st = computeState();
+    openBetBtn.textContent = betOverlay.hidden ? '自测一下' : '收起自测';
+    var size = setupCanvasSize();
+    ctx.clearRect(0, 0, size.W, size.H);
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, size.W, size.H);
+
+    renderScene(st, size.W, size.H);
+
+    var tag = st.info.ok ? '<strong>A &#x2286; B 成立</strong>' : '<strong>A &#x2288; B 失守</strong>';
+    liveEl.innerHTML = M('<mi>a</mi><mo>=</mo><mn>' + st.a.toFixed(2) + '</mn>') + ' · ' + M('<mi>B</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>' + st.info.bLo.toFixed(2) + '</mn><mo>,</mo><mn>' + st.info.bHi.toFixed(2) + '</mn><mo stretchy="false">]</mo></mrow>') + ' · ' + tag;
+
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
+    timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
+    timeline.value = t.toFixed(2);
+    aSlider.value = clamp(st.a, -5.00, 3.00).toFixed(2);
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
+
+    for (var i = 0; i < stepEls.length; i++) {
+      stepEls[i].setAttribute('data-active', i === st.sceneIdx ? 'true' : 'false');
+    }
+
+    if (window.notara && typeof window.notara.setState === 'function') {
+      window.notara.setState({
+        summary: '图解《第18讲·例1 双量词值域包含》停在 ' + formatTime(t) + '（a=' + st.a.toFixed(2) + '，B=(' + st.info.bLo.toFixed(2) + ', ' + st.info.bHi.toFixed(2) + ']，包含=' + st.info.ok + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          a: Number(st.a.toFixed(2)),
+          bLo: Number(st.info.bLo.toFixed(2)),
+          bHi: Number(st.info.bHi.toFixed(2)),
+          contained: st.info.ok,
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
+    }
+  }
+
+  function showBetCheckpoint() {
+    playing = false;
+    betOverlay.hidden = false;
+    betFeedback.hidden = true;
+    render();
+  }
+
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object' && typeof detail.params.a === 'number') {
+        manualA = clamp(detail.params.a, -5.00, 3.00);
+        interactiveOverride = true;
+      }
+      render();
+    });
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    var prevT = t;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
+    lastTs = ts;
+    t += dt;
+    if (!betFiredDuringPlay && prevT < 30.0 && t >= 30.0) {
+      t = 30.0;
+      betFiredDuringPlay = true;
+      showBetCheckpoint();
+      return;
+    }
+    if (t >= TOTAL) { t = TOTAL; playing = false; }
+    render();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener('click', function () {
+    if (playing) {
+      playing = false;
+      interactiveOverride = true;
+      manualA = computeState().a;
+      render();
+    } else {
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      if (t >= TOTAL - 0.1) { t = 0; betFiredDuringPlay = false; }
+      interactiveOverride = false;
+      playing = true;
+      lastTs = 0;
+      render();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  timeline.addEventListener('input', function () {
+    t = Number(timeline.value) || 0;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = false;
+    if (t < 29) betFiredDuringPlay = false;
+    render();
+  });
+
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
+      showWrongRings = false;
+      interactiveOverride = false;
+      t = Number(el.dataset.jump) || 0;
+      betOverlay.hidden = true;
+      render();
+    });
+  });
+
+  aSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = true;
+    manualA = clamp(Number(aSlider.value) || -1.50, -5.00, 3.00);
+    render();
+  });
+
+  openBetBtn.addEventListener('click', function () {
+    if (!betOverlay.hidden) {
+      betOverlay.hidden = true;
+      render();
+      return;
+    }
+    t = 30.0;
+    interactiveOverride = true;
+    manualA = 1.00;
+    showWrongRings = false;
+    showBetCheckpoint();
+  });
+
+  betSkip.addEventListener('click', function () {
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = false;
+    if (t < 36) t = 36.0;
+    playing = true;
+    lastTs = 0;
+    render();
+    requestAnimationFrame(tick);
+  });
+
+  betBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
+      betFeedback.hidden = false;
+      interactiveOverride = true;
+      t = 30.0;
+      if (ans === 'wrong') {
+        manualA = 1.00;
+        showWrongRings = true;
+        betFeedback.innerHTML = '<strong>易错提醒：</strong>已在温度计上标出 ' + M('<mi>a</mi><mo>=</mo><mn>1</mn>') + ' 的空心碰撞：' + M('<mi>B</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo>,</mo><mn>9</mn><mo stretchy="false">]</mo></mrow>') + ' 取不到 ' + M('<mn>3</mn>') + '，故右端必开；而 ' + M('<mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn>') + ' 实心踩实 ' + M('<mn>4</mn>') + '，左端必闭。';
+      } else {
+        manualA = -4.00;
+        showWrongRings = false;
+        betFeedback.innerHTML = '<strong>判断准确：</strong>空心挡实心则严格小于，实心接实心可取等号。代回口算 ' + M('<mi>a</mi><mo>=</mo><mo>−</mo><mn>4</mn><mo>&#x21D2;</mo><mrow><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>4</mn><mo stretchy="false">]</mo></mrow>') + '、' + M('<mi>a</mi><mo>=</mo><mn>1</mn><mo>&#x21D2;</mo><mrow><mo stretchy="false">(</mo><mn>3</mn><mo>,</mo><mn>9</mn><mo stretchy="false">]</mo></mrow>') + '，5 秒定输赢。';
+      }
+      render();
+    });
+  });
+
+  document.getElementById('quote-btn').addEventListener('click', function () {
+    playing = false;
+    var st = computeState();
+    var msg = '我在《第18讲·例1 双量词值域包含》第 ' + formatTime(t) + ' 暂停了（a=' + st.a.toFixed(2) + '，B=(' + st.info.bLo.toFixed(2) + ', ' + st.info.bHi.toFixed(2) + ']），请带我再口算检验一次“谁带任意在子集侧”和开闭边界。';
+    if (window.notara && typeof window.notara.quoteState === 'function') {
+      window.notara.quoteState({
+        summary: msg,
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          a: Number(st.a.toFixed(2)),
+          contained: st.info.ok
+        }
+      });
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
+    } else {
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，a=' + st.a.toFixed(2) + '）。';
+    }
+    render();
+  });
+
+  window.addEventListener('resize', render);
+  render();
+})();
+</script>
+</body>
+</html>

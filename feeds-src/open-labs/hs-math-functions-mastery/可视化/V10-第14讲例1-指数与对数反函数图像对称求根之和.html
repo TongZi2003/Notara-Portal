@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第14讲·例1 · 指数与对数反函数图像对称求根之和</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
+    overflow: hidden;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
+  }
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
+  }
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 296px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2b251f;
+  }
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sol-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.54;
+    cursor: pointer;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .sol-step:hover { opacity: 0.86; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #355070;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13.2px;
+    color: #25201b;
+    line-height: 1.62;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.2px;
+    color: #2b251f;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.58;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
+
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+  }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+    margin-top: 4px;
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 74px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #355070;
+  }
+
+  @media (max-width: 700px) {
+    .sheet-head { padding: 9px 14px; }
+    .sheet-title { font-size: 14px; }
+    .sheet-live { font-size: 12px; }
+    .sheet-grid { grid-template-columns: 1.04fr 1fr; min-height: 318px; }
+    .sheet-left { padding: 10px 12px 11px; }
+    canvas { height: 242px; }
+    .sheet-note { font-size: 11.8px; line-height: 1.6; padding-top: 7px; }
+    .sheet-right { padding: 11px 13px 10px; }
+    .sol-steps { gap: 5px; }
+    .sol-step { padding: 4px 6px 4px 9px; }
+    .sol-step-top { font-size: 11.5px; margin-bottom: 1px; }
+    .sol-eq { font-size: 12px; line-height: 1.48; }
+    .sheet-foot { padding: 8px 14px; gap: 10px; }
+    .foot-transport { min-width: 170px; gap: 8px; }
+    .play-btn { padding: 4px 10px; font-size: 11.5px; }
+    .foot-params { gap: 9px; }
+    .param-pair input[type="range"] { width: 52px; }
+  }
+
+  @media (max-width: 470px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">第14讲·例1 · 指数与对数反函数图像对称求根之和</h1>
+    <div class="sheet-live" id="live-readout"></div>
+  </header>
+
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
+    </div>
+
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>同构脱壳与积和定界</h2>
+          <span class="sol-total mono">第14讲·例1</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0" data-active="true">
+            <div class="sol-step-top"><span>（一）同构母函数 <math display="inline"><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><msup><mn>2</mn><mi>t</mi></msup><mo>+</mo><mi>t</mi></math></span><span class="sol-pts mono">00:04</span></div>
+            <div class="sol-eq"><math display="inline"><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>g</mi><mrow><mo stretchy="false">(</mo><msub><mi>log</mi><mn>2</mn></msub><mo>&#x2061;</mo><mi>b</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>c</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mo>=</mo><mn>5</mn></math></div>
+          </li>
+          <li class="sol-step" data-jump="16" data-step="1">
+            <div class="sol-step-top"><span>（二）镜像对称与左移 1 位</span><span class="sol-pts mono">00:16</span></div>
+            <div class="sol-eq"><math display="inline"><mi>a</mi><mo>=</mo><msub><mi>log</mi><mn>2</mn></msub><mo>&#x2061;</mo><mi>b</mi><mo>=</mo><mi>c</mi><mo>+</mo><mn>1</mn><mo>⇒</mo><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>5</mn></math>，<math display="inline"><mi>c</mi><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mi>b</mi></math></div>
+          </li>
+          <li class="sol-step" data-jump="30" data-step="2">
+            <div class="sol-step-top"><span>（三）平方缩界：<math display="inline"><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn></math></span><span class="sol-pts mono">00:30</span></div>
+            <div class="sol-eq"><math display="inline"><msup><mrow><mo stretchy="false">(</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>8</mn><mo>&lt;</mo><mfrac><mn>49</mn><mn>4</mn></mfrac><mo>⇒</mo><mi>g</mi><mrow><mo stretchy="false">(</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo stretchy="false">)</mo></mrow><mo>&lt;</mo><mn>5</mn><mo>&lt;</mo><mi>g</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></math></div>
+          </li>
+          <li class="sol-step" data-jump="44" data-step="3">
+            <div class="sol-step-top"><span>（四）二次单调锁定 <math display="inline"><mn>5</mn><mo>&lt;</mo><mi>a</mi><mi>b</mi><mo>&lt;</mo><mn>6</mn></math></span><span class="sol-pts mono">00:44</span></div>
+            <div class="sol-eq"><math display="inline"><mi>a</mi><mi>b</mi><mo>=</mo><mi>a</mi><mrow><mo stretchy="false">(</mo><mn>5</mn><mo>−</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><mo>∈</mo><mrow><mo stretchy="false">(</mo><mfrac><mn>21</mn><mn>4</mn></mfrac><mo>,</mo><mn>6</mn><mo stretchy="false">)</mo></mrow></math>，选 B</div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>易错自测 · 00:30</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <div style="font-size:12px;color:#3a332c;margin-bottom:4px;">已知 <math display="inline"><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>5</mn></math> 且先看出 <math display="inline"><mn>1</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn></math>，如何锁定 <math display="inline"><mi>a</mi><mi>b</mi></math> 范围：</div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：直接代整数端 <math display="inline"><mn>1</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn></math>，放缩成 <math display="inline"><mn>1</mn><mo>×</mo><mn>3</mn><mo>&lt;</mo><mi>a</mi><mi>b</mi><mo>&lt;</mo><mn>2</mn><mo>×</mo><mn>4</mn></math> 或猜 <math display="inline"><mi>a</mi><mi>b</mi><mo>&gt;</mo><mn>6</mn></math></button>
+          <button type="button" class="bet-choice" data-bet="right">乙：取中点 <math display="inline"><mfrac><mn>3</mn><mn>2</mn></mfrac></math> 验平方得 <math display="inline"><mfrac><mn>3</mn><mn>2</mn></mfrac><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn></math>，沿 <math display="inline"><mi>a</mi><mrow><mo stretchy="false">(</mo><mn>5</mn><mo>−</mo><mi>a</mi><mo stretchy="false">)</mo></mrow></math> 单增得 <math display="inline"><mfrac><mn>21</mn><mn>4</mn></mfrac><mo>&lt;</mo><mi>a</mi><mi>b</mi><mo>&lt;</mo><mn>6</mn></math></button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
+      </div>
+
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">自测一下</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="4.0" aria-label="时间轴">
+      <span class="clock mono" id="time-readout"><span id="clock">00:04 / 00:48</span></span>
+    </div>
+    <div class="foot-params">
+      <label class="param-pair" title="拖动常数 k 平移直线 y = k - x 与 y = (k-1) - x，保持 a+b=k">
+        <span>常数 <math display="inline"><mi>k</mi></math></span>
+        <input type="range" class="hairline-range" id="k-slider" data-param="line_k" min="3.0" max="7.0" step="0.1" value="5.0">
+      </label>
+      <label class="param-pair" title="拖动试探点 t 检验 g(t)=2^t+t 与 k 的高低并观察乘积 h(t)">
+        <span>试探 <math display="inline"><mi>t</mi></math></span>
+        <input type="range" class="hairline-range" id="t-slider" data-param="probe_t" min="0.50" max="2.50" step="0.05" value="1.50">
+      </label>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 48;
+  var playing = false;
+  var interactiveOverride = false;
+  var betFiredDuringPlay = false;
+  var showWrongBand = false;
+  var betResult = '';
+  var t = 4.0;
+  var manualK = 5.0;
+  var manualProbeT = 1.50;
+  var lastTs = 0;
+
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+  var playBtn = document.getElementById('play-btn');
+  var timeline = document.getElementById('timeline');
+  var timeEl = document.getElementById('clock');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
+  var kSlider = document.getElementById('k-slider');
+  var tSlider = document.getElementById('t-slider');
+  var betOverlay = document.getElementById('bet-overlay');
+  var betFeedback = document.getElementById('bet-feedback');
+  var betSkip = document.getElementById('bet-skip');
+  var openBetBtn = document.getElementById('open-bet-btn');
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
+  var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function frac(a, b) { return '<mfrac><mrow>' + a + '</mrow><mrow>' + b + '</mrow></mfrac>'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function smoothstep(u) { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); }
+  function formatTime(sec) {
+    var s = Math.max(0, Math.floor(sec));
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function gFunc(x) { return Math.pow(2, x) + x; }
+
+  function solveA(k) {
+    var lo = -2.0, hi = 4.5;
+    for (var i = 0; i < 56; i++) {
+      var mid = 0.5 * (lo + hi);
+      if (gFunc(mid) < k) lo = mid;
+      else hi = mid;
+    }
+    return 0.5 * (lo + hi);
+  }
+
+  function computeState() {
+    var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
+    if (interactiveOverride) {
+      var aK = solveA(manualK);
+      var bK = manualK - aK;
+      var cK = aK - 1;
+      return {
+        sceneIdx: Math.abs(manualK - 5.0) < 0.05 ? 2 : 1,
+        k: manualK,
+        probeT: manualProbeT,
+        a: aK, b: bK, c: cK,
+        showShift: true,
+        showParabola: true,
+        noteHtml: '直线 ' + M('<mi>y</mi><mo>=</mo>' + manualK.toFixed(1) + '<mo>−</mo><mi>x</mi>') + ' 与对称曲线相交于 ' + M('<mi>A</mi><mrow><mo stretchy="false">(</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false">)</mo></mrow>') + '、' + M('<mi>B</mi><mrow><mo stretchy="false">(</mo><mi>b</mi><mo>,</mo><mi>a</mi><mo stretchy="false">)</mo></mrow>') + '，故 ' + M('<mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>' + manualK.toFixed(1) + '</mn>') + '；试探 ' + M('<mi>g</mi><mrow><mo stretchy="false">(</mo>' + manualProbeT.toFixed(2) + '<mo stretchy="false">)</mo></mrow><mo>≈</mo><mn>' + gFunc(manualProbeT).toFixed(2) + '</mn>') + '。'
+      };
+    }
+
+    if (sceneIdx === 0) {
+      var k0 = t <= 5 ? lerp(3.8, 5.0, smoothstep(t / 4.0)) : 5.0;
+      var a0 = solveA(k0), b0 = k0 - a0, c0 = a0 - 1;
+      return {
+        sceneIdx: 0,
+        k: k0,
+        probeT: 1.50,
+        a: a0, b: b0, c: c0,
+        showShift: t >= 7,
+        showParabola: false,
+        noteHtml: '把三式统一改写进严增母函数 ' + M('<mi>g</mi><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><msup><mn>2</mn><mi>t</mi></msup><mo>+</mo><mi>t</mi>') + '：' + M('<mi>g</mi><mrow><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>g</mi><mrow><mo stretchy="false">(</mo><msub><mi>log</mi><mn>2</mn></msub><mo>&#x2061;</mo><mi>b</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>g</mi><mrow><mo stretchy="false">(</mo><mi>c</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mo>=</mo><mn>5</mn>') + '。'
+      };
+    }
+
+    if (sceneIdx === 1) {
+      var a1 = solveA(5.0), b1 = 5.0 - a1, c1 = a1 - 1;
+      return {
+        sceneIdx: 1,
+        k: 5.0,
+        probeT: 1.50,
+        a: a1, b: b1, c: c1,
+        showShift: true,
+        showParabola: false,
+        noteHtml: '直线 ' + M('<mi>y</mi><mo>=</mo><mn>5</mn><mo>−</mo><mi>x</mi>') + ' 垂直于镜面 ' + M('<mi>y</mi><mo>=</mo><mi>x</mi>') + '，故 ' + M('<mi>A</mi><mrow><mo stretchy="false">(</mo><mi>a</mi><mo>,</mo><msup><mn>2</mn><mi>a</mi></msup><mo stretchy="false">)</mo></mrow>') + ' 与 ' + M('<mi>B</mi><mrow><mo stretchy="false">(</mo><mi>b</mi><mo>,</mo><msub><mi>log</mi><mn>2</mn></msub><mo>&#x2061;</mo><mi>b</mi><mo stretchy="false">)</mo></mrow>') + ' 互换坐标得 ' + M('<mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>5</mn>') + '；将 ' + M('<mi>A</mi>') + ' 左移 1 即 ' + M('<mi>C</mi><mrow><mo stretchy="false">(</mo><mi>c</mi><mo>,</mo><msup><mn>2</mn><mrow><mi>c</mi><mo>+</mo><mn>1</mn></mrow></msup><mo stretchy="false">)</mo></mrow>') + '。'
+      };
+    }
+
+    if (sceneIdx === 2) {
+      var a2 = solveA(5.0), b2 = 5.0 - a2, c2 = a2 - 1;
+      var pt2 = t <= 30 ? lerp(1.0, 1.50, smoothstep((t - 24) / 5)) : lerp(1.50, 2.00, smoothstep((t - 30) / 5));
+      return {
+        sceneIdx: 2,
+        k: 5.0,
+        probeT: pt2,
+        a: a2, b: b2, c: c2,
+        showShift: true,
+        showParabola: true,
+        noteHtml: '检试 ' + M('<mi>g</mi><mrow><mo stretchy="false">(</mo>' + frac('<mn>3</mn>', '<mn>2</mn>') + '<mo stretchy="false">)</mo></mrow><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mo>+</mo>' + frac('<mn>3</mn>', '<mn>2</mn>') + '<mo>&lt;</mo>' + frac('<mn>7</mn>', '<mn>2</mn>') + '+' + frac('<mn>3</mn>', '<mn>2</mn>') + '<mo>=</mo><mn>5</mn>') + ' 与 ' + M('<mi>g</mi><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mo>=</mo><mn>6</mn><mo>&gt;</mo><mn>5</mn>') + '，精准卡死 ' + M(frac('<mn>3</mn>', '<mn>2</mn>') + '<mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn>') + '。'
+      };
+    }
+
+    var a3 = solveA(5.0), b3 = 5.0 - a3, c3 = a3 - 1;
+    return {
+      sceneIdx: 3,
+      k: 5.0,
+      probeT: a3,
+      a: a3, b: b3, c: c3,
+      showShift: true,
+      showParabola: true,
+      noteHtml: '在对称轴 ' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>5</mn>', '<mn>2</mn>')) + ' 左侧 ' + M('<mrow><mo stretchy="false">(</mo>' + frac('<mn>3</mn>', '<mn>2</mn>') + '<mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow>') + ' 上 ' + M('<mi>h</mi><mrow><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>a</mi><mrow><mo stretchy="false">(</mo><mn>5</mn><mo>−</mo><mi>a</mi><mo stretchy="false">)</mo></mrow>') + ' 严增，得 ' + M(frac('<mn>21</mn>', '<mn>4</mn>') + '<mo>&lt;</mo><mi>a</mi><mi>b</mi><mo>&lt;</mo><mn>6</mn>') + '，与 ' + M('<mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>5</mn>') + ' 共同锁定选项 <strong>B</strong>。'
+    };
+  }
+
+  function setupCanvasSize() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var rect = canvas.getBoundingClientRect();
+    var cssW = Math.max(280, Math.round(rect.width || 440));
+    var cssH = Math.max(200, Math.round(rect.height || 296));
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: cssW, H: cssH };
+  }
+
+  function drawDot(x, y, r, fill, ring) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (ring) {
+      ctx.strokeStyle = ring;
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+    }
+  }
+
+  function plotCurve(fn, t0, t1, steps, mx, my, xMin, xMax, yMin, yMax, color, width, dash) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    if (dash) ctx.setLineDash(dash);
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    var pen = false;
+    for (var i = 0; i <= steps; i++) {
+      var u = t0 + ((t1 - t0) * i) / steps;
+      var pt = fn(u);
+      if (!pt || !isFinite(pt.x) || !isFinite(pt.y)) { pen = false; continue; }
+      if (pt.x < xMin - 0.1 || pt.x > xMax + 0.1 || pt.y < yMin - 0.2 || pt.y > yMax + 0.2) {
+        pen = false;
+        continue;
+      }
+      var px = mx(pt.x), py = my(pt.y);
+      if (!pen) { ctx.moveTo(px, py); pen = true; }
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawScene(st, W, H) {
+    var hasRightPanel = W >= 310 && (st.showParabola || W >= 380);
+    var sideW = hasRightPanel ? clamp(Math.round(W * 0.36), 112, 168) : 0;
+    var leftW = hasRightPanel ? (W - sideW - 10) : W;
+
+    // Isotropic 1:1 plot on left so y=x is strictly 45 degrees
+    var xMin = -0.9;
+    var maxSpan = Math.max(4.6, st.k + 0.3);
+    var xMax = maxSpan;
+    var yMin = -0.7;
+    var yMax = maxSpan;
+    var padL = 24, padR = 10, padT = 16, padB = 20;
+    var uw = (leftW - padL - padR) / (xMax - xMin);
+    var uh = (H - padT - padB) / (yMax - yMin);
+    var u = Math.min(uw, uh);
+    var cx = padL + (leftW - padL - padR - u * (xMax - xMin)) * 0.5;
+    var cy = padT + (H - padT - padB - u * (yMax - yMin)) * 0.5;
+    function mx(x) { return cx + (x - xMin) * u; }
+    function my(y) { return cy + (yMax - y) * u; }
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(mx(xMin) - 2, my(yMax) - 2, mx(xMax) - mx(xMin) + 4, my(yMin) - my(yMax) + 4);
+    ctx.clip();
+
+    // Grid
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.08)';
+    ctx.lineWidth = 0.7;
+    for (var gx = 0; gx <= xMax; gx += 1) {
+      if (gx === 0) continue;
+      ctx.beginPath(); ctx.moveTo(mx(gx), my(yMin)); ctx.lineTo(mx(gx), my(yMax)); ctx.stroke();
+    }
+    for (var gy = 0; gy <= yMax; gy += 1) {
+      if (gy === 0) continue;
+      ctx.beginPath(); ctx.moveTo(mx(xMin), my(gy)); ctx.lineTo(mx(xMax), my(gy)); ctx.stroke();
+    }
+
+    // Axes
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.44)';
+    ctx.lineWidth = 1.05;
+    ctx.beginPath(); ctx.moveTo(mx(xMin), my(0)); ctx.lineTo(mx(xMax), my(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(mx(0), my(yMin)); ctx.lineTo(mx(0), my(yMax)); ctx.stroke();
+
+    // Mirror y = x
+    plotCurve(function (x) { return { x: x, y: x }; }, xMin, xMax, 2, mx, my, xMin, xMax, yMin, yMax, 'rgba(125, 92, 70, 0.56)', 1.2, [5, 4]);
+
+    // Line y = k - x (ochre/sepia)
+    plotCurve(function (x) { return { x: x, y: st.k - x }; }, xMin, xMax, 2, mx, my, xMin, xMax, yMin, yMax, '#b07d2b', 1.7);
+
+    // Optional shifted curves: y = 2^{x+1} (plum) and y = (k-1) - x
+    if (st.showShift) {
+      plotCurve(function (x) { return { x: x, y: Math.pow(2, x + 1) }; }, xMin, xMax, 140, mx, my, xMin, xMax, yMin, yMax, 'rgba(107, 76, 122, 0.78)', 1.65, [4, 3]);
+      plotCurve(function (x) { return { x: x, y: st.k - 1 - x }; }, xMin, xMax, 2, mx, my, xMin, xMax, yMin, yMax, 'rgba(176, 125, 43, 0.55)', 1.2, [3, 3]);
+    }
+
+    // Primary curves: y = 2^x (vermilion) and y = log_2 x (indigo)
+    plotCurve(function (x) { return { x: x, y: Math.pow(2, x) }; }, xMin, xMax, 160, mx, my, xMin, xMax, yMin, yMax, '#a83825', 2.25);
+    plotCurve(function (x) { return x <= 0.01 ? null : { x: x, y: Math.log(x) / Math.LN2 }; }, 0.02, xMax, 160, mx, my, xMin, xMax, yMin, yMax, '#355070', 2.25);
+
+    // Mirror chord A(a, b) <-> B(b, a)
+    ctx.save();
+    ctx.strokeStyle = 'rgba(168, 56, 37, 0.45)';
+    ctx.lineWidth = 1.1;
+    ctx.setLineDash([2, 3]);
+    ctx.beginPath(); ctx.moveTo(mx(st.a), my(st.b)); ctx.lineTo(mx(st.b), my(st.a)); ctx.stroke();
+    ctx.restore();
+
+    // Midpoint (k/2, k/2) on y = x
+    var mid = st.k * 0.5;
+    drawDot(mx(mid), my(mid), 3.3, '#7d5c46', '#faf6ee');
+
+    // Horizontal shift arrow C(c, b) <-- A(a, b)
+    if (st.showShift) {
+      ctx.save();
+      ctx.strokeStyle = '#6b4c7a';
+      ctx.lineWidth = 1.35;
+      ctx.beginPath(); ctx.moveTo(mx(st.a) - 5, my(st.b)); ctx.lineTo(mx(st.c) + 5, my(st.b)); ctx.stroke();
+      // small arrowhead at C
+      ctx.beginPath();
+      ctx.moveTo(mx(st.c) + 5, my(st.b));
+      ctx.lineTo(mx(st.c) + 10, my(st.b) - 3);
+      ctx.lineTo(mx(st.c) + 10, my(st.b) + 3);
+      ctx.closePath();
+      ctx.fillStyle = '#6b4c7a';
+      ctx.fill();
+      ctx.restore();
+
+      drawDot(mx(st.c), my(st.b), 4.2, '#6b4c7a', '#faf6ee');
+      ctx.fillStyle = '#6b4c7a';
+      ctx.font = '600 10.5px ui-monospace, Menlo, monospace';
+      ctx.fillText('C(c,b)', mx(st.c) - 34, my(st.b) - 7);
+    }
+
+    // Drop vertical guides to x-axis for c, a, b
+    [{ x: st.a, col: 'rgba(168,56,37,0.35)' }, { x: st.b, col: 'rgba(53,80,112,0.35)' }].forEach(function (g) {
+      ctx.save();
+      ctx.strokeStyle = g.col;
+      ctx.lineWidth = 0.9;
+      ctx.setLineDash([2, 3]);
+      ctx.beginPath(); ctx.moveTo(mx(g.x), my(0)); ctx.lineTo(mx(g.x), my(g.x === st.a ? st.b : st.a)); ctx.stroke();
+      ctx.restore();
+    });
+    if (st.showShift) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(107, 76, 122, 0.35)';
+      ctx.lineWidth = 0.9;
+      ctx.setLineDash([2, 3]);
+      ctx.beginPath(); ctx.moveTo(mx(st.c), my(0)); ctx.lineTo(mx(st.c), my(st.b)); ctx.stroke();
+      ctx.restore();
+    }
+
+    // Points A(a,b) and B(b,a)
+    drawDot(mx(st.a), my(st.b), 4.5, '#a83825', '#faf6ee');
+    drawDot(mx(st.b), my(st.a), 4.5, '#355070', '#faf6ee');
+
+    ctx.font = '600 10.5px ui-monospace, Menlo, monospace';
+    ctx.fillStyle = '#a83825';
+    ctx.fillText('A(a,b)', mx(st.a) + 6, my(st.b) - 6);
+    ctx.fillStyle = '#355070';
+    ctx.fillText('B(b,a)', mx(st.b) + 6, my(st.a) + 12);
+
+    ctx.fillStyle = '#6f6254';
+    ctx.fillText('a', mx(st.a) - 3, my(0) + 12);
+    ctx.fillText('b', mx(st.b) - 3, my(0) + 12);
+    if (st.showShift) ctx.fillText('c', mx(st.c) - 3, my(0) + 12);
+
+    // Compact legend top-right with paper backing so dashed y=x never crosses text
+    ctx.fillStyle = 'rgba(250, 246, 238, 0.92)';
+    ctx.fillRect(mx(xMax) - 58, my(yMax) + 3, 56, 44);
+    ctx.font = '600 10.5px Georgia, serif';
+    ctx.fillStyle = '#a83825';
+    ctx.fillText('2^x', mx(xMax) - 26, my(yMax) + 14);
+    ctx.fillStyle = '#355070';
+    ctx.fillText('log_2 x', mx(xMax) - 44, my(yMax) + 28);
+    ctx.fillStyle = '#b07d2b';
+    ctx.fillText('y=' + st.k.toFixed(1) + '-x', mx(xMax) - 54, my(yMax) + 42);
+
+    ctx.restore();
+
+    // Right side panel: top box g(t)=2^t+t bracketing, bottom box h(t)=t(k-t) parabola
+    if (hasRightPanel) {
+      var rx = leftW + 4;
+      var rw = W - rx - 6;
+      var topH = Math.round((H - 22) * 0.46);
+      var botY = 12 + topH + 10;
+      var botH = H - botY - 12;
+
+      // Top box: g(t) = 2^t + t
+      ctx.fillStyle = '#fbf7ef';
+      ctx.strokeStyle = 'rgba(92, 76, 58, 0.25)';
+      ctx.lineWidth = 1;
+      ctx.fillRect(rx, 10, rw, topH);
+      ctx.strokeRect(rx, 10, rw, topH);
+
+      ctx.fillStyle = '#26211c';
+      ctx.font = '600 10.5px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('同构标尺 g(t)=2^t+t', rx + 7, 24);
+
+      var gxMin = 0.8, gxMax = 2.5, gyMin = 2.0, gyMax = 8.2;
+      function gmx(x) { return rx + 12 + ((x - gxMin) / (gxMax - gxMin)) * (rw - 20); }
+      function gmy(y) { return 30 + ((gyMax - y) / (gyMax - gyMin)) * (topH - 40); }
+
+      // k horizontal benchmark
+      if (st.k >= gyMin && st.k <= gyMax) {
+        ctx.save();
+        ctx.strokeStyle = '#b07d2b';
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(rx + 8, gmy(st.k)); ctx.lineTo(rx + rw - 6, gmy(st.k)); ctx.stroke();
+        ctx.restore();
+      }
+      plotCurve(function (x) { return { x: x, y: gFunc(x) }; }, gxMin, gxMax, 60, gmx, gmy, gxMin, gxMax, gyMin, gyMax, '#a83825', 1.8);
+
+      // Bracket markers at t=1.5 and t=2.0 when k near 5
+      [1.5, 2.0].forEach(function (tv) {
+        var gv = gFunc(tv);
+        if (gv <= gyMax) drawDot(gmx(tv), gmy(gv), 2.8, '#355070', '#fbf7ef');
+      });
+      if (st.a >= gxMin && st.a <= gxMax) {
+        drawDot(gmx(st.a), gmy(st.k), 3.6, '#a83825', '#fbf7ef');
+      }
+      var gp = gFunc(st.probeT);
+      if (st.probeT >= gxMin && st.probeT <= gxMax && gp >= gyMin && gp <= gyMax) {
+        drawDot(gmx(st.probeT), gmy(gp), 3.5, '#2c2722', '#fbf7ef');
+        ctx.fillStyle = '#2c2722';
+        ctx.font = '600 9.5px ui-monospace, Menlo, monospace';
+        ctx.fillText('g(' + st.probeT.toFixed(2) + ')=' + gp.toFixed(2), rx + 7, 10 + topH - 6);
+      }
+
+      // Bottom box: h(t) = t(k - t) parabola
+      ctx.fillStyle = '#fbf7ef';
+      ctx.strokeStyle = 'rgba(92, 76, 58, 0.25)';
+      ctx.fillRect(rx, botY, rw, botH);
+      ctx.strokeRect(rx, botY, rw, botH);
+
+      ctx.fillStyle = '#26211c';
+      ctx.font = '600 10.5px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText('积函数 h(a)=a(' + st.k.toFixed(1) + '-a)', rx + 7, botY + 14);
+
+      var hxMin = 0.8, hxMax = Math.max(3.2, st.k * 0.65);
+      var hyPeak = st.k * st.k * 0.25;
+      var hyMin = Math.max(1.0, hyPeak - 4.2);
+      var hyMax = hyPeak + 0.6;
+      function hmx(x) { return rx + 12 + ((x - hxMin) / (hxMax - hxMin)) * (rw - 20); }
+      function hmy(y) { return botY + 22 + ((hyMax - y) / (hyMax - hyMin)) * (botH - 34); }
+
+      // Highlight tight interval [1.5, 2.0] when k=5
+      if (Math.abs(st.k - 5.0) < 0.05) {
+        if (showWrongBand) {
+          ctx.fillStyle = 'rgba(168, 56, 37, 0.14)';
+          ctx.fillRect(hmx(1.0), hmy(6.25), hmx(2.0) - hmx(1.0), hmy(4.0) - hmy(6.25));
+        }
+        ctx.fillStyle = 'rgba(53, 80, 112, 0.12)';
+        ctx.fillRect(hmx(1.5), hmy(6.0), hmx(2.0) - hmx(1.5), hmy(5.25) - hmy(6.0));
+        // y=5 and y=6 guides
+        [5.0, 6.0].forEach(function (yv) {
+          ctx.save();
+          ctx.strokeStyle = yv === 5.0 ? 'rgba(125, 92, 70, 0.45)' : 'rgba(176, 125, 43, 0.55)';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([3, 3]);
+          ctx.beginPath(); ctx.moveTo(rx + 6, hmy(yv)); ctx.lineTo(rx + rw - 6, hmy(yv)); ctx.stroke();
+          ctx.restore();
+        });
+      }
+
+      plotCurve(function (x) { return { x: x, y: x * (st.k - x) }; }, hxMin, hxMax, 70, hmx, hmy, hxMin, hxMax, hyMin, hyMax, '#355070', 1.85);
+
+      var prodVal = st.a * st.b;
+      if (st.a >= hxMin && st.a <= hxMax && prodVal >= hyMin && prodVal <= hyMax) {
+        drawDot(hmx(st.a), hmy(prodVal), 3.9, '#a83825', '#fbf7ef');
+      }
+      ctx.fillStyle = '#a83825';
+      ctx.font = '600 9.5px ui-monospace, Menlo, monospace';
+      ctx.fillText('ab≈' + prodVal.toFixed(2) + (Math.abs(st.k - 5.0) < 0.05 ? ' ∈(5.25,6)' : ''), rx + 7, botY + botH - 6);
+    }
+  }
+
+  function render() {
+    var st = computeState();
+    openBetBtn.textContent = betOverlay.hidden ? '自测一下' : '收起自测';
+    var size = setupCanvasSize();
+    ctx.clearRect(0, 0, size.W, size.H);
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, size.W, size.H);
+
+    drawScene(st, size.W, size.H);
+
+    liveEl.innerHTML = M('<mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mn>' + st.k.toFixed(1) + '</mn>') + ' · <strong>' + M('<mi>a</mi><mi>b</mi><mo>≈</mo><mn>' + (st.a * st.b).toFixed(2) + '</mn>') + '</strong>';
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
+    timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
+    timeline.value = t.toFixed(2);
+    kSlider.value = clamp(st.k, 3.0, 7.0).toFixed(1);
+    tSlider.value = clamp(st.probeT, 0.5, 2.5).toFixed(2);
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
+
+    for (var i = 0; i < stepEls.length; i++) {
+      stepEls[i].setAttribute('data-active', i === st.sceneIdx ? 'true' : 'false');
+    }
+
+    if (window.notara && typeof window.notara.setState === 'function') {
+      window.notara.setState({
+        summary: '图解《第14讲·例1 指数对数同构对称》停在 ' + formatTime(t) + '（第 ' + (st.sceneIdx + 1) + ' 步，k=' + st.k.toFixed(1) + '，a≈' + st.a.toFixed(3) + '，b≈' + st.b.toFixed(3) + '，ab≈' + (st.a * st.b).toFixed(3) + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          line_k: Number(st.k.toFixed(1)),
+          probe_t: Number(st.probeT.toFixed(2)),
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
+    }
+  }
+
+  function showBetCheckpoint() {
+    playing = false;
+    betOverlay.hidden = false;
+    betFeedback.hidden = true;
+    render();
+  }
+
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showWrongBand = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object') {
+        if (typeof detail.params.line_k === 'number') {
+          manualK = clamp(detail.params.line_k, 3.0, 7.0);
+          interactiveOverride = true;
+        }
+        if (typeof detail.params.probe_t === 'number') {
+          manualProbeT = clamp(detail.params.probe_t, 0.5, 2.5);
+          interactiveOverride = true;
+        }
+      }
+      render();
+    });
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    var prevT = t;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
+    lastTs = ts;
+    t += dt;
+    if (!betFiredDuringPlay && prevT < 30.0 && t >= 30.0) {
+      t = 30.0;
+      betFiredDuringPlay = true;
+      showBetCheckpoint();
+      return;
+    }
+    if (t >= TOTAL) { t = TOTAL; playing = false; }
+    render();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener('click', function () {
+    if (playing) {
+      playing = false;
+      interactiveOverride = true;
+      var st = computeState();
+      manualK = st.k;
+      manualProbeT = st.probeT;
+      render();
+    } else {
+      betOverlay.hidden = true;
+      showWrongBand = false;
+      if (t >= TOTAL - 0.1) { t = 0; betFiredDuringPlay = false; }
+      interactiveOverride = false;
+      playing = true;
+      lastTs = 0;
+      render();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  timeline.addEventListener('input', function () {
+    t = Number(timeline.value) || 0;
+    betOverlay.hidden = true;
+    showWrongBand = false;
+    interactiveOverride = false;
+    if (t < 29) betFiredDuringPlay = false;
+    render();
+  });
+
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
+      showWrongBand = false;
+      interactiveOverride = false;
+      t = Number(el.dataset.jump) || 0;
+      betOverlay.hidden = true;
+      render();
+    });
+  });
+
+  kSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongBand = false;
+    interactiveOverride = true;
+    manualK = clamp(Number(kSlider.value) || 5.0, 3.0, 7.0);
+    render();
+  });
+
+  tSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongBand = false;
+    interactiveOverride = true;
+    manualProbeT = clamp(Number(tSlider.value) || 1.5, 0.5, 2.5);
+    render();
+  });
+
+  openBetBtn.addEventListener('click', function () {
+    if (!betOverlay.hidden) {
+      betOverlay.hidden = true;
+      render();
+      return;
+    }
+    t = 30.0;
+    interactiveOverride = false;
+    showWrongBand = false;
+    showBetCheckpoint();
+  });
+
+  betSkip.addEventListener('click', function () {
+    betOverlay.hidden = true;
+    showWrongBand = false;
+    interactiveOverride = false;
+    if (t < 36) t = 36.0;
+    playing = true;
+    lastTs = 0;
+    render();
+    requestAnimationFrame(tick);
+  });
+
+  betBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
+      betFeedback.hidden = false;
+      interactiveOverride = true;
+      manualK = 5.0;
+      manualProbeT = 1.50;
+      t = 30.0;
+      if (ans === 'wrong') {
+        showWrongBand = true;
+        betFeedback.innerHTML = '<strong>易错提醒：</strong>仅用 ' + M('<mn>1</mn><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn>') + ' 会把 ' + M('<mi>a</mi><mi>b</mi>') + ' 放大到 ' + M('<mrow><mo stretchy="false">(</mo><mn>3</mn><mo>,</mo><mn>8</mn><mo stretchy="false">)</mo></mrow>') + '，分不出 ' + M('<mn>5</mn><mo>&lt;</mo><mi>a</mi><mi>b</mi><mo>&lt;</mo><mn>6</mn>') + ' 还是 ' + M('<mi>a</mi><mi>b</mi><mo>&gt;</mo><mn>6</mn>') + '；用 ' + M('<mi>a</mi><mrow><mo stretchy="false">(</mo><mn>5</mn><mo>−</mo><mi>a</mi><mo stretchy="false">)</mo></mrow>') + ' 配 ' + M('<mfrac><mn>3</mn><mn>2</mn></mfrac><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mn>2</mn>') + ' 才能一口定界。';
+      } else {
+        showWrongBand = false;
+        betFeedback.innerHTML = '<strong>判断准确：</strong>' + M('<mi>b</mi><mo>=</mo><mn>5</mn><mo>−</mo><mi>a</mi>') + ' 后，' + M('<mi>h</mi><mrow><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></mrow>') + ' 在对称轴左侧 ' + M('<mrow><mo stretchy="false">(</mo>' + frac('<mn>3</mn>', '<mn>2') + '<mo>,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow>') + ' 严增，给出 ' + M(frac('<mn>21</mn>', '<mn>4</mn>') + '<mo>&lt;</mo><mi>a</mi><mi>b</mi><mo>&lt;</mo><mn>6</mn>') + '。';
+      }
+      render();
+    });
+  });
+
+  document.getElementById('quote-btn').addEventListener('click', function () {
+    playing = false;
+    var st = computeState();
+    var msg = '我在图解《第14讲·例1 指数对数同构对称》第 ' + formatTime(t) + ' 暂停了（k=' + st.k.toFixed(1) + '，试探 t=' + st.probeT.toFixed(2) + '），请带我核对为什么 y=k-x 对称直接给出 a+b=k 以及平方缩界技巧。';
+    if (window.notara && typeof window.notara.quoteState === 'function') {
+      window.notara.quoteState({
+        summary: msg,
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          line_k: Number(st.k.toFixed(1)),
+          probe_t: Number(st.probeT.toFixed(2))
+        }
+      });
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
+    } else {
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，k=' + st.k.toFixed(1) + '）。';
+    }
+    render();
+  });
+
+  window.addEventListener('resize', render);
+  render();
+})();
+</script>
+</body>
+</html>

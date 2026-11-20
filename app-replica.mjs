@@ -1181,7 +1181,7 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
         <div class="market-subscribe-bar">
           <div class="market-sub-copy">
             <strong>真实公网开放源已上线（<code>.notara-pack</code> / <code>catalog.json</code>）：</strong>
-            <span>桌面端直接粘贴 <code>https://learn.oh-my-student.com/feeds/open-labs/catalog.json</code> 即可免登录订阅公开「代码视频」微课源并无损合入本地图谱。</span>
+            <span>桌面端已默认内置公开连接器 <code>https://packs.oh-my-student.com/public/feeds/open-labs/catalog.json</code>，开箱即可免登录试用「代码视频」微课并无损合入本地图谱。</span>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;flex:none;">
             <a class="pa-sdoc-secondary-btn" href="/code-video/" style="text-decoration:none;flex:none;">

@@ -1,0 +1,96 @@
+{
+  "nodes": [
+    {
+      "id": "ef-hub",
+      "type": "text",
+      "x": 140,
+      "y": -20,
+      "width": 390,
+      "height": 150,
+      "color": "2",
+      "text": "### 基本初等函数全景：指 · 对 · 幂\n\n不要把三类函数当成三套孤立表格：\n1. **指数与对数**互为反函数（沿 $y=x$ 镜像，单调轴同生共翻）；\n2. **幂函数**固定在第一象限 $(1,1)$ 处发生“过一翻转”。"
+    },
+    {
+      "id": "ef-exp-log",
+      "type": "text",
+      "x": -220,
+      "y": 195,
+      "width": 340,
+      "height": 205,
+      "color": "1",
+      "text": "### 分支一 · 指数 $y=a^x$ 与对数 $y=\\log_a x$\n\n- **定点互换**：$(0,1) \\leftrightarrow (1,0)$\n- **渐近线互换**：$y=0 \\leftrightarrow x=0$\n- **一秒定底数大小**：指数族看 $x=1$ 交点高低；对数族看 $y=1$ 交点左右。\n- **单调联动**：同为增（$a>1$）或同为减（$0<a<1$）。"
+    },
+    {
+      "id": "ef-power",
+      "type": "text",
+      "x": 170,
+      "y": 195,
+      "width": 340,
+      "height": 205,
+      "color": "5",
+      "text": "### 分支二 · 幂函数 $y=x^\\alpha$ 的第一象限法则\n\n- **枢纽 $(1,1)$ 翻转**：在 $(0,1)$ 内 $\\alpha$ 越大越低；在 $(1,+\\infty)$ 内 $\\alpha$ 越大越高。\n- **三档弯曲**：$\\alpha>1$ 下凹增、$0<\\alpha<1$ 上凸增、$\\alpha<0$ 递减贴轴。\n- **分数指数防错**：必须先约分最简 $p/q$，再看 $q$ 奇偶定定义域、$p$ 奇偶定奇偶性。"
+    },
+    {
+      "id": "ef-trap",
+      "type": "text",
+      "x": -220,
+      "y": 465,
+      "width": 340,
+      "height": 200,
+      "color": "6",
+      "text": "### 分支三 · 易错反例：$a^x = \\log_a x$ 有几根？\n\n- **$a>1$（必在 $y=x$）**：临界 $e^{1/e}\\approx 1.445$（$0/1/2$ 根）。\n- **$0<a<1$（可偏离 $y=x$）**：临界 $e^{-e}\\approx 0.066$！\n- **秒杀口算**：取 $a=\\frac{1}{16}<e^{-e}$，对称裂出 $(\\frac{1}{4},\\frac{1}{2}), (\\frac{1}{2},\\frac{1}{4})$ 与对角 $(x_0,x_0)$ 共 **3 根**。"
+    },
+    {
+      "id": "ef-compare",
+      "type": "text",
+      "x": 170,
+      "y": 465,
+      "width": 340,
+      "height": 200,
+      "color": "3",
+      "text": "### 实战落点 · 比大小三阶决策树\n\n1. **第一阶（0/1 隔断）**：用 $0, 1$ 直接分箱秒杀。\n2. **第二阶（中间桥）**：构 $a_{\\text{左}}^{b_{\\text{右}}}$ 或 $0.5, 0.75$ 有理桥连接同区间的指对幂。\n3. **第三阶（放缩）**：切线 $e^t>1+t>\\ln(1+t)$ 或作商求导。"
+    }
+  ],
+  "edges": [
+    {
+      "id": "ef-e1",
+      "fromNode": "ef-hub",
+      "fromSide": "bottom",
+      "toNode": "ef-exp-log",
+      "toSide": "top",
+      "label": "反函数镜面"
+    },
+    {
+      "id": "ef-e2",
+      "fromNode": "ef-hub",
+      "fromSide": "bottom",
+      "toNode": "ef-power",
+      "toSide": "top",
+      "label": "(1,1) 枢纽族"
+    },
+    {
+      "id": "ef-e3",
+      "fromNode": "ef-exp-log",
+      "fromSide": "bottom",
+      "toNode": "ef-trap",
+      "toSide": "top",
+      "label": "减函数可裂出对称双根"
+    },
+    {
+      "id": "ef-e4",
+      "fromNode": "ef-power",
+      "fromSide": "bottom",
+      "toNode": "ef-compare",
+      "toSide": "top",
+      "label": "指幂单调双桥"
+    },
+    {
+      "id": "ef-e5",
+      "fromNode": "ef-exp-log",
+      "fromSide": "right",
+      "toNode": "ef-compare",
+      "toSide": "left",
+      "label": "0/1 定界"
+    }
+  ]
+}

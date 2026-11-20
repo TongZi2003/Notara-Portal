@@ -133,6 +133,88 @@ export const OPEN_LABS_PACK_DEFS = Object.freeze([
       },
     ],
   }),
+  Object.freeze({
+    id: 'code-video-elementary-functions',
+    version: '1.0.0',
+    updatedAt: '2026-11-19',
+    updateCadence: '高中数学开放源 · 随专题反例持续增补',
+    subjectKey: 'hs-elementary-functions',
+    title: '代码微课 · 基本初等函数图像、对称与比大小',
+    stage: '高中',
+    subject: '高中数学 · 基本初等函数（指对幂 × 比大小）',
+    entryPath: '00-导读-基本初等函数图像与比大小导读.md',
+    description:
+      '48 秒矢量交互代码微课：一镜看穿指对反函数镜像对称、幂函数第一象限“过一翻转”、a=1/16 指对交点裂出 3 根的高考经典反例，以及“0/1 隔断 → 中间桥 → 切线放缩”比大小三阶通法。',
+    prerequisites: ['指数与对数的基本运算、一次与二次函数图像常识'],
+    chapters: [
+      '第 1–2 幕：指对反函数关于 y=x 镜面对称与幂函数 (1,1) 过一翻转',
+      '第 3–4 幕：a=1/16 指对分裂 3 交点朱笔排雷与比大小三阶通法',
+    ],
+    tags: ['免费试用', '代码视频', '高中数学', '基本初等函数', '比大小', '反例'],
+    recommendedClub: {
+      defaultTeacherKey: 'teacher-shirakawa',
+      defaultCompanionPreset: 'companion-deepseek',
+    },
+    accessTier: 'free',
+    creditCost: 0,
+    priceCny: 0,
+    requiresAccount: false,
+    demoHtmlRelPath: '可视化/基本初等函数代码视频.html',
+    demoSlug: 'elementary-functions',
+    demoHeight: 472,
+    changelog: [
+      {
+        version: '1.0.0',
+        date: '2026-11-19',
+        tag: '高中数学基础核心试用集',
+        highlights: [
+          '内置 4 幕 48 秒宣纸交互代码微课，支持随时拖动底数 a（含临界 e^{-e} 与 e^{1/e}）与幂指 α。',
+          '第 3 幕自带“a=1/16 指对交点裂为 3 根”朱笔押注断点，并配 4 张精选概念/方法/反例卡与 JSON Canvas 决策树白板。',
+        ],
+      },
+    ],
+  }),
+  Object.freeze({
+    id: 'hs-math-functions-mastery',
+    version: '1.0.0',
+    updatedAt: '2026-11-20',
+    updateCadence: '高一数学开放源 · 按必修第一册专题整理',
+    subjectKey: 'hs-math-functions',
+    title: '高一数学 · 函数与基本初等函数中难题攻坚',
+    stage: '高中',
+    subject: '高中数学 · 必修第一册函数综合（19 讲 7 阶）',
+    entryPath: '00-导读-高一函数与基本初等函数中难题攻坚导读.md',
+    description:
+      '面向高一必修第一册的函数中难题公开学习集，按 7 阶 19 讲编排 37 张概念方法与误区卡、16 道配宣纸分步演示的典型例题和 107 道分级练习（含 63 个可拖动参数或逐步构图的内嵌交互图），支持免登录订阅与无损合入本地书房。',
+    prerequisites: ['集合与常用逻辑用语、一元二次方程与基本不等式、一次与二次函数基础图像'],
+    chapters: [
+      '第一至三阶（第 1–10 讲）：定义域值域、分段与动轴二次、单调奇偶对称与周期',
+      '第四至七阶（第 11–19 讲）：幂指对运算图像比大小、分段嵌套零点、双量词与含参最值',
+    ],
+    tags: ['免费试用', '高中数学', '高一函数', '必修第一册', '参数图像', '零覆盖 Merge'],
+    recommendedClub: {
+      defaultTeacherKey: 'teacher-shirakawa',
+      defaultCompanionPreset: 'companion-deepseek',
+    },
+    accessTier: 'free',
+    creditCost: 0,
+    priceCny: 0,
+    requiresAccount: false,
+    demoHtmlRelPath: '可视化/V01-第02讲例1-两个二次根式和与差的几何构造.html',
+    demoSlug: 'hs-math-functions-mastery',
+    demoHeight: 472,
+    changelog: [
+      {
+        version: '1.0.0',
+        date: '2026-11-20',
+        tag: '高一函数中难题完整开放学习集',
+        highlights: [
+          '收录 7 阶分阶导读、37 张概念方法与易错辨析卡、2 张 JSON Canvas 结构白板与 123 道精选题卡。',
+          '16 道例题配分步宣纸演示，63 道需借助图像或参数变化的练习内嵌极简参数滑块与构图微件，纯代数题保持干净文字推导。',
+        ],
+      },
+    ],
+  }),
 ]);
 
 async function collectFilesRecursive(rootDir, currentDir = rootDir, acc = []) {
@@ -266,7 +348,12 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
     .filter((it) => it.id === 'exam-video-magnetic-dynamic-circle')
     .map((it) => ({ ...it, bundleUrl: `../open-labs/bundles/${it.id}.notara-pack.json` }));
   const hsItems = catalogItems
-    .filter((it) => it.id === 'code-video-secant-to-tangent')
+    .filter(
+      (it) =>
+        it.id === 'code-video-secant-to-tangent' ||
+        it.id === 'code-video-elementary-functions' ||
+        it.id === 'hs-math-functions-mastery'
+    )
     .map((it) => ({ ...it, bundleUrl: `../open-labs/bundles/${it.id}.notara-pack.json` }));
   const uniItems = catalogItems
     .filter((it) => it.id === 'code-video-eigen-geometry')
@@ -297,7 +384,7 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
         id: 'notara-hs-math-feed',
         label: '高中导数与函数代码微课源',
         author: 'Notara 官方公开教研站',
-        description: '聚焦高中导数极限、切线放缩与凹凸失效边界的公开代码视频微课源，支持免登录订阅与无损 Merge。',
+        description: '收录高一函数中难题攻坚学习集、基本初等函数与导数切线公开微课，支持免登录订阅与无损 Merge。',
         items: hsItems,
       },
       null,
@@ -333,7 +420,7 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
         subject: '数学 / 线性代数 · 代码视频微课',
         updateCadence: '随公开微课脚本持续追更（免登录直连）',
         description:
-          '真实公网托管的开放连接器总源：含《割线逼近切线与凹凸失效边界》《特征值拉伸与二次型几何直觉》两套矢量交互代码视频微课包，支持一键预览、建集与三路哈希无损追更。',
+          '真实公网托管的开放连接器总源：内置高中物理《磁场动态圆》、高中数学《高一函数与基本初等函数中难题攻坚》《基本初等函数》《割线逼近切线》与大学线代《特征值几何》学习集与交互代码微课包，支持一键预览、建集与三路哈希无损追更。',
         catalogUrl: OPEN_LABS_FEED_URL,
         packCountHint: catalogItems.length,
         tags: ['真实公网源', '代码视频', '免登录', '零覆盖 Merge'],
@@ -353,13 +440,13 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
       },
       {
         id: 'notara-hs-math-feed',
-        label: '高中导数与函数代码微课源',
+        label: '高中数学 · 函数与导数代码微课源',
         author: 'Notara 官方公开教研站',
         stage: '高中',
-        subject: '数学 · 导数与放缩边界',
+        subject: '数学 · 基本初等函数 × 导数与放缩',
         updateCadence: '按专题微课持续增补',
         description:
-          '收录可随时暂停拖动间距 h 的割线逼近切线代码视频、三次函数拐点反例卡与 JSON Canvas 推演白板。',
+          '收录《高一函数与基本初等函数中难题攻坚》《基本初等函数图像、对称与比大小》与《割线逼近切线》学习集及交互代码视频、题卡与 JSON Canvas 决策白板。',
         catalogUrl: HS_MATH_FEED_URL,
         packCountHint: hsItems.length,
         tags: ['高中数学', '代码视频', '切线放缩'],

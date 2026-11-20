@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第17讲·例2 · 含参二次函数双层复合等于x的根变化</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f6f1e6;
+    color: #2c2722;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  }
+  .mono {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  math {
+    font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", "Songti SC", serif;
+    font-size: 1.04em;
+    color: inherit;
+  }
+  math[display="inline"] { vertical-align: middle; }
+
+  .sheet {
+    width: 100%;
+    background: #f6f1e6;
+    color: #2c2722;
+    overflow: hidden;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 20px;
+    background: #f9f5ec;
+    border-bottom: 2px double rgba(92, 76, 58, 0.24);
+  }
+  .sheet-title {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #26211c;
+  }
+  .sheet-live {
+    font-size: 13px;
+    color: #6b5f52;
+    white-space: nowrap;
+  }
+  .sheet-live strong {
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    min-height: 368px;
+  }
+  .sheet-left {
+    padding: 12px 18px 14px;
+    background: #faf6ee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 296px;
+  }
+  .sheet-note {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px dashed rgba(92, 76, 58, 0.20);
+    font-size: 13px;
+    line-height: 1.72;
+    color: #3a332c;
+  }
+  .sheet-note-tag {
+    color: #a83825;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .sheet-right {
+    position: relative;
+    border-left: 2px double rgba(92, 76, 58, 0.22);
+    padding: 14px 18px 13px;
+    background: #f5efe2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    border-bottom: 1px solid rgba(92, 76, 58, 0.14);
+  }
+  .sol-head h2 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2b251f;
+  }
+  .sol-total {
+    font-size: 12px;
+    color: #a83825;
+    font-weight: 600;
+  }
+
+  .sol-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sol-step {
+    padding: 6px 8px 6px 11px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    opacity: 0.54;
+    cursor: pointer;
+    transition: opacity 150ms ease, border-color 150ms ease, background 150ms ease;
+  }
+  .sol-step:hover { opacity: 0.86; }
+  .sol-step[data-active="true"] {
+    opacity: 1;
+    border-left-color: #a83825;
+    background: rgba(168, 56, 37, 0.05);
+  }
+  .sol-step-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    color: #6f6254;
+    margin-bottom: 3px;
+  }
+  .sol-step[data-active="true"] .sol-step-top {
+    color: #2b251f;
+    font-weight: 600;
+  }
+  .sol-pts {
+    color: #355070;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .sol-eq {
+    font-size: 13.2px;
+    color: #25201b;
+    line-height: 1.62;
+  }
+
+  .bet-box {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 46px;
+    z-index: 4;
+    padding: 11px 12px;
+    background: #fbf7ef;
+    border: 1px dashed rgba(168, 56, 37, 0.52);
+    border-radius: 5px;
+    box-shadow: 0 10px 26px rgba(44, 39, 34, 0.14);
+  }
+  .bet-box[hidden] { display: none; }
+  .bet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #a83825;
+    margin-bottom: 6px;
+  }
+  .bet-skip {
+    appearance: none;
+    border: none;
+    background: none;
+    color: #7c6f60;
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+  }
+  .bet-skip:hover { color: #2b251f; }
+  .bet-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(92, 76, 58, 0.22);
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12.2px;
+    color: #2b251f;
+    cursor: pointer;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .bet-choice:hover {
+    border-color: #a83825;
+    background: rgba(168, 56, 37, 0.045);
+  }
+  .bet-fb {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.58;
+    color: #a83825;
+  }
+  .bet-fb[hidden] { display: none; }
+
+  .right-actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(92, 76, 58, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .text-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 2px 0;
+    font: 500 12px/1.2 inherit;
+    color: #7c6f60;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .text-link:hover {
+    color: #26211c;
+    border-bottom-color: rgba(44, 39, 34, 0.35);
+  }
+  .red-btn {
+    appearance: none;
+    border: 1px solid rgba(168, 56, 37, 0.45);
+    background: transparent;
+    color: #a83825;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+  }
+  .red-btn:hover { background: rgba(168, 56, 37, 0.06); }
+  .toast {
+    font-size: 11.5px;
+    color: #7c6f60;
+    min-height: 1em;
+    margin-top: 4px;
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 20px;
+    background: #f9f5ec;
+    border-top: 1px solid rgba(92, 76, 58, 0.16);
+    font-size: 12px;
+  }
+  .foot-transport {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .play-btn {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.34);
+    background: #3d352d;
+    color: #faf6ee;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font: 500 12px/1.2 inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .play-btn:hover { background: #2c2620; }
+  .hairline-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: rgba(92, 76, 58, 0.24);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hairline-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a83825;
+    cursor: pointer;
+  }
+  #timeline { flex: 1; }
+  .clock {
+    font-size: 11.5px;
+    color: #7c6f60;
+    white-space: nowrap;
+  }
+  .foot-params {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #6b5f52;
+  }
+  .param-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .param-pair input[type="range"] {
+    width: 78px;
+  }
+  .param-pair input[type="range"]::-webkit-slider-thumb {
+    background: #355070;
+  }
+  .mode-tabs {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .mode-tab {
+    appearance: none;
+    border: 1px solid rgba(92, 76, 58, 0.26);
+    background: transparent;
+    color: #6b5f52;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font: 500 11.5px/1.3 inherit;
+    cursor: pointer;
+  }
+  .mode-tab[data-active="true"] {
+    border-color: #a83825;
+    color: #a83825;
+    background: rgba(168, 56, 37, 0.06);
+  }
+
+  @media (max-width: 700px) {
+    .sheet-head { padding: 9px 14px; }
+    .sheet-title { font-size: 14px; }
+    .sheet-live { font-size: 12px; }
+    .sheet-grid { grid-template-columns: 1.04fr 1fr; min-height: 318px; }
+    .sheet-left { padding: 10px 12px 11px; }
+    canvas { height: 242px; }
+    .sheet-note { font-size: 11.8px; line-height: 1.6; padding-top: 7px; }
+    .sheet-right { padding: 11px 13px 10px; }
+    .sol-steps { gap: 5px; }
+    .sol-step { padding: 4px 6px 4px 9px; }
+    .sol-step-top { font-size: 11.5px; margin-bottom: 1px; }
+    .sol-eq { font-size: 12px; line-height: 1.48; }
+    .sheet-foot { padding: 8px 14px; gap: 10px; }
+    .foot-transport { min-width: 170px; gap: 8px; }
+    .play-btn { padding: 4px 10px; font-size: 11.5px; }
+    .foot-params { gap: 8px; flex-wrap: wrap; }
+    .param-pair input[type="range"] { width: 58px; }
+  }
+
+  @media (max-width: 470px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .sheet-right { border-left: none; border-top: 2px double rgba(92, 76, 58, 0.22); }
+    .sheet-head { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet-head">
+    <h1 class="sheet-title serif">第17讲·例2 · 含参二次函数双层复合等于x的根变化</h1>
+    <div class="sheet-live" id="live-readout"></div>
+  </header>
+
+  <div class="sheet-grid">
+    <div class="sheet-left">
+      <canvas id="stage"></canvas>
+      <div class="sheet-note serif" id="caption"></div>
+    </div>
+
+    <aside class="sheet-right serif">
+      <div>
+        <div class="sol-head">
+          <h2>因式分解与迭代结构</h2>
+          <span class="sol-total mono">4 幕微课</span>
+        </div>
+
+        <ol class="sol-steps" id="rubric-steps">
+          <li class="sol-step" data-jump="4" data-step="0" data-active="true">
+            <div class="sol-step-top"><span>（一）作差消常数提取公因式</span><span class="sol-pts mono">00:04</span></div>
+            <div class="sol-eq"><math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mi>f</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">)</mo></mrow><mo>−</mo><mi>x</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mi>a</mi><mo stretchy="false">)</mo></mrow><mrow><mo stretchy="false">[</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mrow><mo stretchy="false">(</mo><mn>2</mn><mi>a</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">]</mo></mrow></math></div>
+          </li>
+          <li class="sol-step" data-jump="16" data-step="1">
+            <div class="sol-step-top"><span>（二）余因式重根归并入不动点</span><span class="sol-pts mono">00:16</span></div>
+            <div class="sol-eq"><math display="inline"><msub><mi>&#x0394;</mi><mi>Q</mi></msub><mo>=</mo><mn>0</mn></math> 时，<math display="inline"><mi>a</mi><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math> 归于 <math display="inline"><mn>1</mn></math>，<math display="inline"><mi>a</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> 归于 <math display="inline"><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn><mi>a</mi></math></div>
+          </li>
+          <li class="sol-step" data-jump="30" data-step="2">
+            <div class="sol-step-top"><span>（三）越界分裂：成对往返二周期解</span><span class="sol-pts mono">00:30</span></div>
+            <div class="sol-eq"><math display="inline"><msub><mi>&#x0394;</mi><mi>Q</mi></msub><mo>&gt;</mo><mn>0</mn></math> 裂出 <math display="inline"><mi>u</mi><mi>v</mi><mo>=</mo><mn>1</mn></math>，出现两步互跳往返，多出 2 个非不动点根</div>
+          </li>
+          <li class="sol-step" data-jump="44" data-step="3">
+            <div class="sol-step-top"><span>（四）第(2)问：a = 2 拆层求根与总和</span><span class="sol-pts mono">00:44</span></div>
+            <div class="sol-eq"><math display="inline"><mi>t</mi><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>&#x2208;</mo><mrow><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mo>+</mo><mo>&#x221E;</mo><mo stretchy="false">)</mo></mrow></math>，外层 <math display="inline"><mi>t</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>3</mn></math> 截出 4 根，和为 8</div>
+          </li>
+        </ol>
+
+        <div class="bet-box" id="bet-overlay" hidden>
+          <div class="bet-head">
+            <span>易错自测 · 00:30</span>
+            <button type="button" class="bet-skip" id="bet-skip">继续 ▸</button>
+          </div>
+          <div style="font-size:12px;color:#3a332c;margin-bottom:4px;">第 (1) 问使 <math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mi>f</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>x</mi></math> 与 <math display="inline"><mi>f</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi>x</mi></math> 同解，当 <math display="inline"><msub><mi>&#x0394;</mi><mi>Q</mi></msub><mo>=</mo><mn>0</mn></math>（即 <math display="inline"><mi>a</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac></math> 与 <math display="inline"><mi>a</mi><mo>=</mo><mfrac><mn>3</mn><mn>2</mn></mfrac></math>）时：</div>
+          <button type="button" class="bet-choice" data-bet="wrong">甲：余因式 <math display="inline"><mi>Q</mi><mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mn>0</mn></math> 已有实根，必会多出新解，开区间 <math display="inline"><mrow><mo stretchy="false">(</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo stretchy="false">)</mo></mrow></math></button>
+          <button type="button" class="bet-choice" data-bet="right">乙：重根分别落在 <math display="inline"><mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn><mi>a</mi></math> 与 <math display="inline"><mi>x</mi><mo>=</mo><mn>1</mn></math>，已属于 <math display="inline"><mrow><mo stretchy="false">{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mi>a</mi><mo stretchy="false">}</mo></mrow></math>，应取闭区间 <math display="inline"><mrow><mo stretchy="false">[</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo stretchy="false">]</mo></mrow></math></button>
+          <div class="bet-fb" id="bet-feedback" hidden></div>
+        </div>
+      </div>
+
+      <div class="right-actions">
+        <button type="button" class="text-link" id="quote-btn">带入课堂提问 ↗</button>
+        <button type="button" class="red-btn" id="open-bet-btn">自测一下</button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="sheet-foot">
+    <div class="foot-transport">
+      <button type="button" class="play-btn" id="play-btn">▶ 演示</button>
+      <input type="range" class="hairline-range" id="timeline" min="0" max="48" step="0.05" value="4.0" aria-label="时间轴">
+      <span class="clock mono" id="clock"><span id="time-readout">00:04 / 00:48</span></span>
+    </div>
+    <div class="foot-params">
+      <span class="mode-tabs" role="group" aria-label="切换设问">
+        <button type="button" class="mode-tab" id="tab-part1" data-active="true">第(1)问 同解</button>
+        <button type="button" class="mode-tab" id="tab-part2" data-active="false">第(2)问 a=2</button>
+      </span>
+      <label class="param-pair" title="拖动参数 a 验证余因式判别式与二周期点分裂">
+        <span>参数 <math display="inline"><mi>a</mi></math></span>
+        <input type="range" class="hairline-range" id="a-slider" data-param="a" min="-2.00" max="4.00" step="0.05" value="0.60">
+      </label>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var TOTAL = 48;
+  var playing = false;
+  var interactiveOverride = false;
+  var manualMode = 'part1'; // 'part1' | 'part2'
+  var betFiredDuringPlay = false;
+  var showWrongRings = false;
+  var betResult = '';
+  var t = 4.0;
+  var manualA = 0.60;
+  var lastTs = 0;
+
+  var canvas = document.getElementById('stage');
+  var ctx = canvas.getContext('2d');
+  var playBtn = document.getElementById('play-btn');
+  var timeline = document.getElementById('timeline');
+  var timeEl = document.getElementById('time-readout');
+  var liveEl = document.getElementById('live-readout');
+  var captionEl = document.getElementById('caption');
+  var aSlider = document.getElementById('a-slider');
+  var tabPart1 = document.getElementById('tab-part1');
+  var tabPart2 = document.getElementById('tab-part2');
+  var betOverlay = document.getElementById('bet-overlay');
+  var betFeedback = document.getElementById('bet-feedback');
+  var betSkip = document.getElementById('bet-skip');
+  var openBetBtn = document.getElementById('open-bet-btn');
+  var toastEl = document.getElementById('toast');
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('#rubric-steps [data-step]'));
+  var betBtns = Array.prototype.slice.call(document.querySelectorAll('[data-bet]'));
+
+  function M(s) { return '<math display="inline">' + s + '</math>'; }
+  function frac(a, b) { return '<mfrac><mrow>' + a + '</mrow><mrow>' + b + '</mrow></mfrac>'; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function formatTime(sec) {
+    var s = Math.max(0, Math.floor(sec));
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  function fVal(x, a) {
+    return x * x - 2 * a * x + 2 * a;
+  }
+
+  function analyzePart1(a) {
+    var disc = 4 * a * a - 4 * a - 3;
+    var fixed = [1];
+    if (Math.abs(2 * a - 1) > 1e-4) fixed.push(2 * a);
+    var cycle = null;
+    if (disc > 1e-5) {
+      var sq = Math.sqrt(disc);
+      var u = ((2 * a - 1) - sq) * 0.5;
+      var v = ((2 * a - 1) + sq) * 0.5;
+      cycle = { u: u, v: v };
+    }
+    var status = 'inside';
+    if (Math.abs(a - 1.5) < 0.025) status = 'boundary-hi';
+    else if (Math.abs(a + 0.5) < 0.025) status = 'boundary-lo';
+    else if (disc > 1e-5) status = 'split';
+    return { disc: disc, fixed: fixed, cycle: cycle, status: status };
+  }
+
+  function computeState() {
+    var sceneIdx = t < 12 ? 0 : t < 24 ? 1 : t < 36 ? 2 : 3;
+    if (interactiveOverride) {
+      if (manualMode === 'part2') {
+        return {
+          sceneIdx: 3,
+          mode: 'part2',
+          a: 2.0,
+          info: analyzePart1(2.0),
+          noteHtml: '第 (2) 问 ' + M('<mi>a</mi><mo>=</mo><mn>2</mn>') + ' 时 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>') + ' 值域为 ' + M('<mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mo>+</mo><mo>&#x221E;</mo><mo stretchy="false">)</mo>') + '；外层 ' + M('<msub><mi>t</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><msub><mi>t</mi><mn>2</mn></msub><mo>=</mo><mn>3</mn>') + ' 均非负，截出 <strong>4 个互异实根</strong>，对称和为 <strong>8</strong>。'
+        };
+      }
+      var info = analyzePart1(manualA);
+      var note;
+      if (info.status === 'boundary-hi') {
+        note = '右临界 ' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>3</mn>', '<mn>2</mn>')) + '：余因式 ' + M('<mi>Q</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>0</mn>') + ' 唯一重根 ' + M('<mi>x</mi><mo>=</mo><mn>1</mn>') + ' 本就在不动点集 ' + M('<mo stretchy="false">{</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo stretchy="false">}</mo>') + ' 内，仍同解。';
+      } else if (info.status === 'boundary-lo') {
+        note = '左临界 ' + M('<mi>a</mi><mo>=</mo><mo>−</mo>' + frac('<mn>1</mn>', '<mn>2</mn>')) + '：余因式 ' + M('<mi>Q</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>0</mn>') + ' 唯一重根 ' + M('<mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn><mi>a</mi>') + ' 已在不动点集内，仍同解。';
+      } else if (info.status === 'split') {
+        note = '参数 ' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(2) + '</mn>') + ' 越出 ' + M('<mo stretchy="false">[</mo><mo>−</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo>,</mo>' + frac('<mn>3</mn>', '<mn>2</mn>') + '<mo stretchy="false">]</mo>') + '，' + M('<msub><mi>&#x0394;</mi><mi>Q</mi></msub><mo>=</mo><mn>' + info.disc.toFixed(2) + '</mn><mo>&gt;</mo><mn>0</mn>') + '，出现成对往返二周期解 ' + M('<mi>u</mi><mo>&#x2248;</mo><mn>' + info.cycle.u.toFixed(2) + '</mn><mo>,</mo><mi>v</mi><mo>&#x2248;</mo><mn>' + info.cycle.v.toFixed(2) + '</mn>') + '，多出 2 个非不动点根。';
+      } else {
+        note = '参数 ' + M('<mi>a</mi><mo>=</mo><mn>' + manualA.toFixed(2) + '</mn>&#x2208;<mrow><mo stretchy="false">(</mo><mo>−</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo>,</mo>' + frac('<mn>3</mn>', '<mn>2</mn>') + '<mo stretchy="false">)</mo></mrow>') + '，' + M('<msub><mi>&#x0394;</mi><mi>Q</mi></msub><mo>=</mo><mn>' + info.disc.toFixed(2) + '</mn><mo>&lt;</mo><mn>0</mn>') + '，' + M('<mi>y</mi><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo>') + ' 与 ' + M('<mi>y</mi><mo>=</mo><mi>x</mi>') + ' 仅交于不动点。';
+      }
+      return { sceneIdx: info.status === 'split' ? 2 : 0, mode: 'part1', a: manualA, info: info, noteHtml: note };
+    }
+
+    if (sceneIdx === 0) {
+      var a0 = clamp(0.4 + 0.05 * t, 0.2, 1.0);
+      return {
+        sceneIdx: 0,
+        mode: 'part1',
+        a: a0,
+        info: analyzePart1(a0),
+        probeX: 0.35 + 0.08 * (t / 12),
+        noteHtml: '先拿 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>') + ' 消去常数 ' + M('<mn>2</mn><mi>a</mi>') + ' 再凑 ' + M('<mo stretchy="false">(</mo><mi>y</mi><mo>−</mo><mi>x</mi><mo stretchy="false">)</mo>') + '，直接拆出不动点因子 ' + M('<mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mi>a</mi><mo stretchy="false">)</mo>') + ' 与余因式 ' + M('<mi>Q</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>') + '。'
+      };
+    }
+
+    if (sceneIdx === 1) {
+      // Hit a = 1.50 around t=16, then sweep down to -0.50 at t=22
+      var a1 = t <= 17 ? lerp(1.25, 1.50, clamp((t - 12) / 4, 0, 1)) : lerp(1.50, -0.50, clamp((t - 17) / 6, 0, 1));
+      var inf1 = analyzePart1(a1);
+      var msg1 = Math.abs(a1 - 1.5) < 0.08
+        ? '右边界 ' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>3</mn>', '<mn>2</mn>')) + '：' + M('<mi>Q</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>') + ' 仅在已有不动点 ' + M('<mi>x</mi><mo>=</mo><mn>1</mn>') + ' 处相切，并不产生新解。'
+        : Math.abs(a1 + 0.5) < 0.1
+          ? '左边界 ' + M('<mi>a</mi><mo>=</mo><mo>−</mo>' + frac('<mn>1</mn>', '<mn>2</mn>')) + '：' + M('<mi>Q</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>') + ' 唯独相切于 ' + M('<mi>x</mi><mo>=</mo><mo>−</mo><mn>1</mn><mo>=</mo><mn>2</mn><mi>a</mi>') + '，同样已被包含。'
+          : '在 ' + M('<mo stretchy="false">[</mo><mo>−</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo>,</mo>' + frac('<mn>3</mn>', '<mn>2</mn>') + '<mo stretchy="false">]</mo>') + ' 内，余因式没有走出任何异于 ' + M('<mo stretchy="false">{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mi>a</mi><mo stretchy="false">}</mo>') + ' 的新根。';
+      return { sceneIdx: 1, mode: 'part1', a: a1, info: inf1, noteHtml: msg1 };
+    }
+
+    if (sceneIdx === 2) {
+      // Sweep a from 1.50 to 2.00 at t=30, then up to 2.35
+      var a2 = t <= 30 ? lerp(1.50, 2.00, clamp((t - 24) / 6, 0, 1)) : lerp(2.00, 2.35, (t - 30) / 6);
+      var inf2 = analyzePart1(a2);
+      return {
+        sceneIdx: 2,
+        mode: 'part1',
+        a: a2,
+        info: inf2,
+        noteHtml: '一旦 ' + M('<mi>a</mi><mo>&gt;</mo>' + frac('<mn>3</mn>', '<mn>2</mn>')) + '（或 ' + M('<mi>a</mi><mo>&lt;</mo><mo>−</mo>' + frac('<mn>1</mn>', '<mn>2</mn>')) + '），' + M('<mi>Q</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>') + ' 穿轴裂出互逆二周期点 ' + M('<mi>f</mi><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo><mo>=</mo><mi>v</mi><mo>,</mo><mi>f</mi><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo><mo>=</mo><mi>u</mi>') + '，形成两步互跳方环。'
+      };
+    }
+
+    return {
+      sceneIdx: 3,
+      mode: 'part2',
+      a: 2.0,
+      info: analyzePart1(2.0),
+      noteHtml: '第 (2) 问令 ' + M('<mi>t</mi><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>&#x2265;</mo><mn>0</mn>') + '，外层 ' + M('<msup><mrow><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>=</mo><mn>1</mn>') + ' 得 ' + M('<msub><mi>t</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><msub><mi>t</mi><mn>2</mn></msub><mo>=</mo><mn>3</mn>') + '，两线按对称轴 ' + M('<mi>x</mi><mo>=</mo><mn>2</mn>') + ' 截得 4 根，总和 4 + 4 = 8。'
+    };
+  }
+
+  function setupCanvasSize() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var rect = canvas.getBoundingClientRect();
+    var cssW = Math.max(280, Math.round(rect.width || 440));
+    var cssH = Math.max(200, Math.round(rect.height || 296));
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: cssW, H: cssH };
+  }
+
+  function makeIsoTransform(left, top, width, height, xMin, xMax, yMin, yMax) {
+    var uw = width / (xMax - xMin);
+    var uh = height / (yMax - yMin);
+    var u = Math.min(uw, uh);
+    var cx = left + (width - u * (xMax - xMin)) * 0.5;
+    var cy = top + (height - u * (yMax - yMin)) * 0.5;
+    return {
+      mx: function (x) { return cx + (x - xMin) * u; },
+      my: function (y) { return cy + (yMax - y) * u; }
+    };
+  }
+
+  function makeRectTransform(left, top, width, height, xMin, xMax, yMin, yMax) {
+    return {
+      mx: function (x) { return left + ((x - xMin) / (xMax - xMin)) * width; },
+      my: function (y) { return top + ((yMax - y) / (yMax - yMin)) * height; }
+    };
+  }
+
+  function drawDot(x, y, r, fill, ring) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (ring) {
+      ctx.strokeStyle = ring;
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+    }
+  }
+
+  function plotFn(fn, x0, x1, steps, T, xMin, xMax, yMin, yMax, color, width, dash) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    if (dash) ctx.setLineDash(dash);
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    var pen = false;
+    for (var i = 0; i <= steps; i++) {
+      var x = x0 + ((x1 - x0) * i) / steps;
+      var y = fn(x);
+      if (!isFinite(y) || y < yMin - 0.8 || y > yMax + 0.8) { pen = false; continue; }
+      var px = T.mx(x), py = T.my(y);
+      if (!pen) { ctx.moveTo(px, py); pen = true; }
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function renderPart1(st, W, H) {
+    var rightPanelW = clamp(Math.round(W * 0.34), 116, 156);
+    var plotL = 16, plotT = 14, plotW = W - rightPanelW - plotL - 12, plotH = H - 26;
+    var a = st.a;
+    var lo = a < -0.45 ? Math.min(-2.9, 2 * a - 1.2) : -1.5;
+    var hi = a > 1.7 ? Math.max(4.4, 2 * a + 0.9) : 4.4;
+    var span = hi - lo;
+    var step = span > 8 ? 2 : 1;
+    var T = makeIsoTransform(plotL, plotT, plotW, plotH, lo, hi, lo, hi);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(T.mx(lo) - 2, T.my(hi) - 2, T.mx(hi) - T.mx(lo) + 4, T.my(lo) - T.my(hi) + 4);
+    ctx.clip();
+
+    // Grid & axes
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.08)';
+    ctx.lineWidth = 0.7;
+    for (var k = Math.ceil(lo / step) * step; k <= hi; k += step) {
+      if (Math.abs(k) < 1e-4) continue;
+      ctx.beginPath(); ctx.moveTo(T.mx(k), T.my(lo)); ctx.lineTo(T.mx(k), T.my(hi)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(T.mx(lo), T.my(k)); ctx.lineTo(T.mx(hi), T.my(k)); ctx.stroke();
+    }
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.45)';
+    ctx.lineWidth = 1.05;
+    ctx.beginPath(); ctx.moveTo(T.mx(lo), T.my(0)); ctx.lineTo(T.mx(hi), T.my(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(T.mx(0), T.my(lo)); ctx.lineTo(T.mx(0), T.my(hi)); ctx.stroke();
+
+    // Mirror y = x
+    plotFn(function (x) { return x; }, lo, hi, 2, T, lo, hi, lo, hi, 'rgba(125, 92, 70, 0.56)', 1.25, [5, 4]);
+
+    // Iterated curve y = f(f(x)) (indigo)
+    plotFn(function (x) { return fVal(fVal(x, a), a); }, lo, hi, 240, T, lo, hi, lo, hi, '#355070', 1.85);
+
+    // Base curve y = f(x) (vermilion)
+    plotFn(function (x) { return fVal(x, a); }, lo, hi, 180, T, lo, hi, lo, hi, '#a83825', 2.3);
+
+    // Cobweb diagram
+    if (st.info.cycle) {
+      var u = st.info.cycle.u, v = st.info.cycle.v;
+      ctx.save();
+      ctx.strokeStyle = '#b07d2b';
+      ctx.lineWidth = 1.65;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.moveTo(T.mx(u), T.my(u));
+      ctx.lineTo(T.mx(u), T.my(v));
+      ctx.lineTo(T.mx(v), T.my(v));
+      ctx.lineTo(T.mx(v), T.my(u));
+      ctx.closePath();
+      ctx.stroke();
+      ctx.restore();
+
+      drawDot(T.mx(u), T.my(v), 3.6, '#b07d2b', '#faf6ee');
+      drawDot(T.mx(v), T.my(u), 3.6, '#b07d2b', '#faf6ee');
+      drawDot(T.mx(u), T.my(u), 4.6, '#a83825', '#faf6ee');
+      drawDot(T.mx(v), T.my(v), 4.6, '#a83825', '#faf6ee');
+
+      ctx.fillStyle = '#a83825';
+      ctx.font = '600 10.5px ui-monospace, Menlo, monospace';
+      ctx.fillText('u=' + u.toFixed(2), T.mx(u) + 6, T.my(u) - 5);
+      ctx.fillText('v=' + v.toFixed(2), T.mx(v) + 6, T.my(v) + 12);
+    } else if (st.probeX !== undefined) {
+      // Non-closing sample cobweb step to show no extra 2-cycle
+      var px0 = st.probeX;
+      var py0 = fVal(px0, a);
+      var py1 = fVal(py0, a);
+      ctx.save();
+      ctx.strokeStyle = 'rgba(53, 80, 112, 0.52)';
+      ctx.lineWidth = 1.15;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(T.mx(px0), T.my(px0));
+      ctx.lineTo(T.mx(px0), T.my(py0));
+      ctx.lineTo(T.mx(py0), T.my(py0));
+      ctx.lineTo(T.mx(py0), T.my(py1));
+      ctx.stroke();
+      ctx.restore();
+      drawDot(T.mx(px0), T.my(py0), 3.0, '#355070');
+      drawDot(T.mx(py0), T.my(py1), 3.0, '#355070');
+    }
+
+    // Fixed points (1, 1) and (2a, 2a)
+    st.info.fixed.forEach(function (fx) {
+      drawDot(T.mx(fx), T.my(fx), 4.1, '#2c2722', '#faf6ee');
+      if (showWrongRings && ((Math.abs(a - 1.5) < 0.05 && Math.abs(fx - 1) < 0.05) || (Math.abs(a + 0.5) < 0.05 && Math.abs(fx + 1) < 0.05))) {
+        ctx.save();
+        ctx.strokeStyle = '#a83825';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath(); ctx.arc(T.mx(fx), T.my(fx), 9.5, 0, Math.PI * 2); ctx.stroke();
+        ctx.restore();
+        ctx.fillStyle = '#a83825';
+        ctx.font = '600 10.5px -apple-system, "PingFang SC", sans-serif';
+        ctx.fillText('重根归入已有不动点', T.mx(fx) + 10, T.my(fx) - 8);
+      }
+    });
+    ctx.fillStyle = '#2c2722';
+    ctx.font = '600 10px ui-monospace, Menlo, monospace';
+    ctx.fillText('(1,1)', T.mx(1) - 32, T.my(1) - 5);
+    if (Math.abs(2 * a - 1) > 0.25) {
+      var fpLbl = '(' + (2 * a).toFixed(1) + ',' + (2 * a).toFixed(1) + ')';
+      if (2 * a > 2.2) {
+        ctx.textAlign = 'right';
+        ctx.fillText(fpLbl, T.mx(2 * a) - 7, T.my(2 * a) - 5);
+        ctx.textAlign = 'left';
+      } else {
+        ctx.fillText(fpLbl, T.mx(2 * a) + 5, T.my(2 * a) + 12);
+      }
+    }
+    ctx.restore();
+
+    // Legend inside top-left of plot with warm paper backing
+    ctx.save();
+    ctx.fillStyle = 'rgba(250, 246, 238, 0.88)';
+    ctx.fillRect(T.mx(lo) + 4, T.my(hi) + 3, 70, 44);
+    ctx.font = '600 10px Georgia, serif';
+    ctx.fillStyle = '#a83825'; ctx.fillText('y=f(x)', T.mx(lo) + 8, T.my(hi) + 14);
+    ctx.fillStyle = '#355070'; ctx.fillText('y=f(f(x))', T.mx(lo) + 8, T.my(hi) + 28);
+    ctx.fillStyle = '#7d5c46'; ctx.fillText('y=x', T.mx(lo) + 8, T.my(hi) + 42);
+    ctx.restore();
+
+    // Right panel: Q(x) auxiliary quadratic + Delta indicator
+    var rx = W - rightPanelW - 6, rw = rightPanelW;
+    ctx.save();
+    ctx.fillStyle = '#f9f5ec';
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.22)';
+    ctx.lineWidth = 1;
+    ctx.fillRect(rx, 14, rw, H - 24);
+    ctx.strokeRect(rx, 14, rw, H - 24);
+
+    ctx.fillStyle = '#2b251f';
+    ctx.font = '700 10px -apple-system, "PingFang SC", sans-serif';
+    ctx.fillText('余因式 Q(x)', rx + 6, 28);
+    ctx.fillStyle = '#6f6254';
+    ctx.font = '500 9px ui-monospace, Menlo, monospace';
+    ctx.fillText('x^2-(2a-1)x+1', rx + 6, 41);
+
+    var qBoxTop = 52, qBoxH = Math.round((H - 86) * 0.60);
+    var qT = makeRectTransform(rx + 8, qBoxTop, rw - 16, qBoxH, -2.5, 3.5, -2.0, 4.5);
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(rx + 4, qBoxTop, rw - 8, qBoxH);
+    ctx.clip();
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.42)';
+    ctx.lineWidth = 0.9;
+    ctx.beginPath(); ctx.moveTo(rx + 4, qT.my(0)); ctx.lineTo(rx + rw - 4, qT.my(0)); ctx.stroke();
+    ctx.strokeStyle = st.info.disc > 1e-5 ? '#a83825' : '#355070';
+    ctx.lineWidth = 1.75;
+    ctx.beginPath();
+    for (var qi = 0; qi <= 60; qi++) {
+      var qx = -2.5 + 6.0 * (qi / 60);
+      var qy = qx * qx - (2 * a - 1) * qx + 1;
+      if (qi === 0) ctx.moveTo(qT.mx(qx), qT.my(qy));
+      else ctx.lineTo(qT.mx(qx), qT.my(qy));
+    }
+    ctx.stroke();
+    if (st.info.cycle) {
+      drawDot(qT.mx(st.info.cycle.u), qT.my(0), 3.1, '#a83825');
+      drawDot(qT.mx(st.info.cycle.v), qT.my(0), 3.1, '#a83825');
+    }
+    ctx.restore();
+
+    // Bottom status inside right panel
+    var infoY = qBoxTop + qBoxH + 18;
+    ctx.fillStyle = '#5b5045';
+    ctx.font = '600 10px ui-monospace, Menlo, monospace';
+    ctx.fillText('Δ_Q = ' + st.info.disc.toFixed(2), rx + 7, infoY);
+    ctx.fillStyle = st.info.disc > 1e-5 ? '#a83825' : '#355070';
+    ctx.font = '700 10.5px -apple-system, "PingFang SC", sans-serif';
+    var stateText = st.info.status === 'split'
+      ? '分裂出 2 个周期点'
+      : st.info.status.indexOf('boundary') === 0
+        ? '重根归入不动点'
+        : '无新根 · 严格同解';
+    ctx.fillText(stateText, rx + 7, infoY + 16);
+    ctx.fillStyle = '#7c6f60';
+    ctx.font = '500 9px ui-monospace, Menlo, monospace';
+    ctx.fillText('同解 [-0.5, 1.5]', rx + 6, H - 18);
+    ctx.restore();
+  }
+
+  function renderPart2(W, H) {
+    var rightPanelW = clamp(Math.round(W * 0.30), 100, 152);
+    var plotL = 22, plotT = 18, plotW = W - rightPanelW - plotL - 12, plotH = H - 40;
+    var xMin = -0.35, xMax = 4.35, yMin = -0.35, yMax = 4.15;
+    var T = makeRectTransform(plotL, plotT, plotW, plotH, xMin, xMax, yMin, yMax);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(plotL - 4, plotT - 4, plotW + 8, plotH + 8);
+    ctx.clip();
+
+    // Symmetry axis x = 2
+    ctx.save();
+    ctx.strokeStyle = 'rgba(125, 92, 70, 0.5)';
+    ctx.lineWidth = 1.1;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath(); ctx.moveTo(T.mx(2), T.my(yMin)); ctx.lineTo(T.mx(2), T.my(yMax)); ctx.stroke();
+    ctx.restore();
+
+    // Axes
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.45)';
+    ctx.lineWidth = 1.1;
+    ctx.beginPath(); ctx.moveTo(plotL, T.my(0)); ctx.lineTo(plotL + plotW, T.my(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(T.mx(0), plotT); ctx.lineTo(T.mx(0), plotT + plotH); ctx.stroke();
+
+    // Curve f(x) = (x - 2)^2
+    plotFn(function (x) { return (x - 2) * (x - 2); }, xMin, xMax, 180, T, xMin, xMax, yMin, yMax, '#2c2722', 2.3);
+
+    // Horizontal lines t1 = 1 (indigo) and t2 = 3 (vermilion)
+    var s3 = Math.sqrt(3);
+    var lines = [
+      { y: 1, col: '#355070', xs: [1, 3], lbl: 't1=1 -> x=1, 3 (和=4)' },
+      { y: 3, col: '#a83825', xs: [2 - s3, 2 + s3], lbl: 't2=3 -> 2±√3 (和=4)' }
+    ];
+    lines.forEach(function (ln) {
+      ctx.save();
+      ctx.strokeStyle = ln.col;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 3]);
+      ctx.beginPath(); ctx.moveTo(plotL, T.my(ln.y)); ctx.lineTo(plotL + plotW, T.my(ln.y)); ctx.stroke();
+      ctx.restore();
+
+      ln.xs.forEach(function (xv) {
+        drawDot(T.mx(xv), T.my(ln.y), 4.3, ln.col, '#faf6ee');
+      });
+      ctx.fillStyle = ln.col;
+      ctx.font = '600 10px ui-monospace, Menlo, monospace';
+      ctx.fillText(ln.lbl, T.mx(2) - 58, T.my(ln.y) - 6);
+    });
+
+    ctx.fillStyle = '#7d5c46';
+    ctx.font = '600 10px ui-monospace, Menlo, monospace';
+    ctx.fillText('对称轴 x=2', T.mx(2) + 5, plotT + 14);
+    ctx.restore();
+
+    // Right panel summary
+    var rx = W - rightPanelW - 6, rw = rightPanelW;
+    ctx.save();
+    ctx.fillStyle = '#f9f5ec';
+    ctx.strokeStyle = 'rgba(92, 76, 58, 0.22)';
+    ctx.lineWidth = 1;
+    ctx.fillRect(rx, 14, rw, H - 24);
+    ctx.strokeRect(rx, 14, rw, H - 24);
+
+    ctx.fillStyle = '#2b251f';
+    ctx.font = '700 10.5px -apple-system, "PingFang SC", sans-serif';
+    ctx.fillText('第(2)问 拆层求解', rx + 7, 30);
+
+    var linesText = [
+      { t: 'a = 2:', c: '#6f6254' },
+      { t: 't = (x-2)^2 ≥ 0', c: '#2c2722' },
+      { t: '外层 (t-2)^2 = 1', c: '#355070' },
+      { t: 't1 = 1 (2 根)', c: '#355070' },
+      { t: 't2 = 3 (2 根)', c: '#a83825' },
+      { t: '共 4 个不同实根', c: '#a83825' },
+      { t: '所有根之和 = 8', c: '#2c2722' }
+    ];
+    linesText.forEach(function (item, idx) {
+      ctx.fillStyle = item.c;
+      ctx.font = (idx >= 5 ? '700 ' : '500 ') + '10px ui-monospace, Menlo, monospace';
+      ctx.fillText(item.t, rx + 7, 54 + idx * 24);
+    });
+    ctx.restore();
+  }
+
+  function render() {
+    var st = computeState();
+    openBetBtn.textContent = betOverlay.hidden ? '自测一下' : '收起自测';
+    tabPart1.setAttribute('data-active', st.mode === 'part1' ? 'true' : 'false');
+    tabPart2.setAttribute('data-active', st.mode === 'part2' ? 'true' : 'false');
+
+    var size = setupCanvasSize();
+    ctx.clearRect(0, 0, size.W, size.H);
+    ctx.fillStyle = '#faf6ee';
+    ctx.fillRect(0, 0, size.W, size.H);
+
+    if (st.mode === 'part2') renderPart2(size.W, size.H);
+    else renderPart1(st, size.W, size.H);
+
+    if (st.mode === 'part2') {
+      liveEl.innerHTML = '第(2)问 ' + M('<mi>a</mi><mo>=</mo><mn>2</mn>') + ' · <strong>4 根</strong> · 总和 <strong>8</strong>';
+    } else {
+      var extra = st.info.cycle ? 2 : 0;
+      liveEl.innerHTML = M('<mi>a</mi><mo>=</mo><mn>' + st.a.toFixed(2) + '</mn>') + ' · ' + M('<msub><mi>&#x0394;</mi><mi>Q</mi></msub><mo>=</mo><mn>' + st.info.disc.toFixed(2) + '</mn>') + ' · 根数 <strong>' + (st.info.fixed.length + extra) + '</strong>';
+    }
+
+    captionEl.innerHTML = '<span class="sheet-note-tag">批注：</span>' + st.noteHtml;
+    timeEl.textContent = formatTime(t) + ' / ' + formatTime(TOTAL);
+    timeline.value = t.toFixed(2);
+    aSlider.value = clamp(st.a, -2.00, 4.00).toFixed(2);
+    playBtn.textContent = playing ? '❚❚ 暂停' : '▶ 演示';
+
+    for (var i = 0; i < stepEls.length; i++) {
+      stepEls[i].setAttribute('data-active', i === st.sceneIdx ? 'true' : 'false');
+    }
+
+    if (window.notara && typeof window.notara.setState === 'function') {
+      window.notara.setState({
+        summary: '图解《第17讲·例2 含参二次双层复合等于x》停在 ' + formatTime(t) + '（模式=' + st.mode + '，a=' + st.a.toFixed(2) + '，Δ_Q=' + st.info.disc.toFixed(2) + '）。',
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          mode: st.mode,
+          a: Number(st.a.toFixed(2)),
+          deltaQ: Number(st.info.disc.toFixed(2)),
+          betResult: betResult || 'none'
+        }
+      }, { immediate: !playing });
+    }
+  }
+
+  function showBetCheckpoint() {
+    playing = false;
+    betOverlay.hidden = false;
+    betFeedback.hidden = true;
+    render();
+  }
+
+  if (window.notara && typeof window.notara.onSeek === 'function') {
+    window.notara.onSeek(function (detail) {
+      if (!detail || typeof detail !== 'object') return;
+      playing = false;
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      if (typeof detail.time === 'number' && isFinite(detail.time)) {
+        t = clamp(detail.time, 0, TOTAL);
+        interactiveOverride = false;
+      }
+      if (detail.params && typeof detail.params === 'object') {
+        if (detail.params.mode === 'part2') {
+          manualMode = 'part2';
+          interactiveOverride = true;
+        } else if (typeof detail.params.a === 'number') {
+          manualA = clamp(detail.params.a, -2.00, 4.00);
+          manualMode = 'part1';
+          interactiveOverride = true;
+        }
+      }
+      render();
+    });
+  }
+
+  function tick(ts) {
+    if (!playing) return;
+    if (!lastTs) lastTs = ts;
+    var prevT = t;
+    var dt = Math.min(0.08, (ts - lastTs) / 1000);
+    lastTs = ts;
+    t += dt;
+    if (!betFiredDuringPlay && prevT < 30.0 && t >= 30.0) {
+      t = 30.0;
+      betFiredDuringPlay = true;
+      showBetCheckpoint();
+      return;
+    }
+    if (t >= TOTAL) { t = TOTAL; playing = false; }
+    render();
+    if (playing) requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener('click', function () {
+    if (playing) {
+      playing = false;
+      var cur = computeState();
+      interactiveOverride = true;
+      manualMode = cur.mode;
+      manualA = cur.a;
+      render();
+    } else {
+      betOverlay.hidden = true;
+      showWrongRings = false;
+      if (t >= TOTAL - 0.1) { t = 0; betFiredDuringPlay = false; }
+      interactiveOverride = false;
+      playing = true;
+      lastTs = 0;
+      render();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  timeline.addEventListener('input', function () {
+    t = Number(timeline.value) || 0;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = false;
+    if (t < 29) betFiredDuringPlay = false;
+    render();
+  });
+
+  stepEls.forEach(function (el) {
+    el.addEventListener('click', function () {
+      playing = false;
+      showWrongRings = false;
+      interactiveOverride = false;
+      t = Number(el.dataset.jump) || 0;
+      betOverlay.hidden = true;
+      render();
+    });
+  });
+
+  tabPart1.addEventListener('click', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = true;
+    manualMode = 'part1';
+    render();
+  });
+
+  tabPart2.addEventListener('click', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = true;
+    manualMode = 'part2';
+    manualA = 2.0;
+    t = 44.0;
+    render();
+  });
+
+  aSlider.addEventListener('input', function () {
+    playing = false;
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = true;
+    manualMode = 'part1';
+    manualA = clamp(Number(aSlider.value) || 0.60, -2.00, 4.00);
+    render();
+  });
+
+  openBetBtn.addEventListener('click', function () {
+    if (!betOverlay.hidden) {
+      betOverlay.hidden = true;
+      render();
+      return;
+    }
+    t = 30.0;
+    interactiveOverride = true;
+    manualMode = 'part1';
+    manualA = 2.00;
+    showWrongRings = false;
+    showBetCheckpoint();
+  });
+
+  betSkip.addEventListener('click', function () {
+    betOverlay.hidden = true;
+    showWrongRings = false;
+    interactiveOverride = false;
+    if (t < 36) t = 36.0;
+    playing = true;
+    lastTs = 0;
+    render();
+    requestAnimationFrame(tick);
+  });
+
+  betBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var ans = btn.dataset.bet;
+      betResult = ans === 'wrong' ? 'wrong' : 'right';
+      betFeedback.hidden = false;
+      interactiveOverride = true;
+      manualMode = 'part1';
+      t = 30.0;
+      if (ans === 'wrong') {
+        manualA = 1.50;
+        showWrongRings = true;
+        betFeedback.innerHTML = '<strong>易错提醒：</strong>看图可知 ' + M('<mi>a</mi><mo>=</mo>' + frac('<mn>3</mn>', '<mn>2</mn>')) + ' 时 ' + M('<mi>Q</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>') + ' 的重根 ' + M('<mn>1</mn>') + ' 已是原有不动点，并未添新根，两端必须取闭。';
+      } else {
+        manualA = 2.00;
+        showWrongRings = false;
+        betFeedback.innerHTML = '<strong>判断准确：</strong>' + M('<mi>a</mi><mo>=</mo><mo>−</mo>' + frac('<mn>1</mn>', '<mn>2</mn>') + '<mo>,</mo>' + frac('<mn>3</mn>', '<mn>2</mn>')) + ' 时重根均落入 ' + M('<mo stretchy="false">{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mi>a</mi><mo stretchy="false">}</mo>') + '；唯有继续越界（如 ' + M('<mi>a</mi><mo>=</mo><mn>2</mn>') + '）才裂出二周期方环。';
+      }
+      render();
+    });
+  });
+
+  document.getElementById('quote-btn').addEventListener('click', function () {
+    playing = false;
+    var st = computeState();
+    var msg = '我在《第17讲·例2 含参二次双层复合等于x》第 ' + formatTime(t) + ' 暂停了（模式 ' + st.mode + '，a=' + st.a.toFixed(2) + '），请带我再核对一次 Δ_Q=0 的边界归并与第(2)问对称根和。';
+    if (window.notara && typeof window.notara.quoteState === 'function') {
+      window.notara.quoteState({
+        summary: msg,
+        params: {
+          timestamp: formatTime(t),
+          scene: st.sceneIdx + 1,
+          mode: st.mode,
+          a: Number(st.a.toFixed(2)),
+          deltaQ: Number(st.info.disc.toFixed(2))
+        }
+      });
+      toastEl.hidden = false;
+      toastEl.textContent = '已带入课堂草稿。';
+    } else {
+      toastEl.hidden = false;
+      toastEl.textContent = '已记录当前帧（' + formatTime(t) + '，a=' + st.a.toFixed(2) + '）。';
+    }
+    render();
+  });
+
+  window.addEventListener('resize', render);
+  render();
+})();
+</script>
+</body>
+</html>
