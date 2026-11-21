@@ -725,6 +725,8 @@ body,
   color: var(--pa-ink);
   border-color: var(--pa-border-strong);
 }
+.pa-chip-btn.pa-lecture-mode[aria-pressed="true"] { color: var(--pa-ink); font-weight: 650; }
+.pa-doc-panel .react-flow__node.selected .nv-flow-node-header:has(.nv-node-ask) { min-height: 28px; }
 
 /* ============================================================================
    6. CONVERSATION STREAM & MESSAGES
@@ -10509,6 +10511,26 @@ body[data-ds-dark-theme] .nv-block-graph {
 .pa-composer-onboarding-link:hover {
   background: var(--pa-bg-hover);
 }
+
+.pa-answer-cutoff {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px 10px;
+  color: var(--pa-ink-secondary);
+  font: 13px/1.5 var(--pa-font-ui);
+}
+.pa-answer-cutoff button {
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: var(--pa-ink);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.pa-answer-cutoff button:disabled { opacity: .55; cursor: default; }
 
 /* 24.3 Conversation Stream Decluttering & Paper-Clean Docked Composer */
 .pa-msg-prose .nv-wikilink {

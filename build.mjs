@@ -32,23 +32,23 @@ const vendorAssetsDir = join(rootDir, 'vendor-assets');
 const isStandalone = existsSync(vendorAssetsDir);
 const distDir = join(rootDir, 'dist');
 
-const WIN_INSTALLER_VERSION = 'v0.1.0-preview.7';
-const WIN_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.7-x64-Setup.exe';
+const WIN_INSTALLER_VERSION = 'v0.1.0-preview.8';
+const WIN_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.8-x64-Setup.exe';
 const WIN_INSTALLER_SIZE_LABEL = '690 MB';
-const WIN_INSTALLER_SHA256 = 'f17c15311cef809fd5cd7b3b0938f1c693b01484b7dd29820d2a3580b90c584e';
+const WIN_INSTALLER_SHA256 = '23c39a6d0197a0eeb52019c0fea13e9cac94dfb1f3dadf419110d7c17fe1555e';
 const WIN_INSTALLER_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.7/Notara-PersonalAgent-0.1.0-preview.7-x64-Setup.exe';
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.8/Notara-PersonalAgent-0.1.0-preview.8-x64-Setup.exe';
 const WIN_SHA256SUMS_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.7/SHA256SUMS.txt';
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.8/SHA256SUMS.txt';
 const WIN_RELEASE_PAGE_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/tag/v0.1.0-preview.7';
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/tag/v0.1.0-preview.8';
 const DESKTOP_ISSUES_URL = 'https://github.com/TongZi2003/Notara-Desktop-Releases/issues';
-const MAC_INSTALLER_VERSION = 'v0.1.0-preview.7';
-const MAC_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.7-arm64.dmg';
+const MAC_INSTALLER_VERSION = 'v0.1.0-preview.8';
+const MAC_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.8-arm64.dmg';
 const MAC_INSTALLER_SIZE_LABEL = '561 MB';
-const MAC_INSTALLER_SHA256 = '048afe013c2f06219b66f5ea8378bc61032f40552d87c1a35d9f016b1a81669e';
+const MAC_INSTALLER_SHA256 = 'a04148dd26dd1727f39a20cdda0dd3a5b6ebc354a95885217e80bc522bb11a40';
 const MAC_INSTALLER_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.7/Notara-PersonalAgent-0.1.0-preview.7-arm64.dmg';
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.8/Notara-PersonalAgent-0.1.0-preview.8-arm64.dmg';
 
 function pageShell({ title, description, currentPath, body, appPage = false }) {
   const isLibrary = currentPath === '/library/' || currentPath === '/resources/';
