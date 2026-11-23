@@ -264,7 +264,7 @@ function renderHome() {
         ${renderPedagogyShowcase()}
 
         <div class="compare-section-wrap">
-          <h3 class="compare-subhead">和常规大班课、普通搜题 AI 到底差在哪</h3>
+          <h3 class="compare-subhead">在六个日常学习环节里，与常规大班课、普通搜题工具的具体对比</h3>
           ${renderTeachingComparison({ id: 'pedagogy-compare' })}
         </div>
       </div>
@@ -274,37 +274,37 @@ function renderHome() {
       <div class="wrap">
         <div class="chapter-head chapter-head--wide">
           <p class="section-rubric">核 · 核心工作流</p>
-          <h2>让读过的每一份资料，<span class="nowrap">真正长成你自己的知识体系。</span></h2>
+          <h2>围绕输入、加工与存储，<span class="nowrap">把零散资料沉淀为连贯的知识体系。</span></h2>
           <p>
-            下面五个环节首尾相接，替你接过拆卷、归档与排期的琐碎活儿，让手头的讲义和错题在白板推演、师友切磋与间隔复盘里，一步步沉淀成真正带得走的能力。
+            日常自学中，翻找原卷、誊抄错题、猜测解析跳步与手动排复习往往占用了大量精力。为了把这些外围的程序性事务交给工具处理，我们将资料整理、课堂分工、白板推导、同桌检验与间隔复习串联成五个衔接顺畅的环节，让你把主要精力留在理解和思考上。
           </p>
         </div>
 
         <nav class="wf-overview-rail" aria-label="五大核心学习流程速览">
           <a class="wf-overview-step" href="#wf-graph">
             <span class="wf-overview-idx">01</span>
-            <strong>会生长的知识图谱</strong>
-            <small>课本、错卷与笔记连点成网，还能点亮回放</small>
+            <strong>本地知识图谱</strong>
+            <small>讲义、错卷与笔记去重串联，按掌握情况点亮</small>
           </a>
           <a class="wf-overview-step" href="#wf-agents">
             <span class="wf-overview-idx">02</span>
-            <strong>首页管家与专题课堂</strong>
-            <small>平时看全局节奏，专题课专注深挖一道题</small>
+            <strong>首页统筹与专题课</strong>
+            <small>首页管理全局进度，难题单开课堂保持专注</small>
           </a>
           <a class="wf-overview-step" href="#wf-canvas">
             <span class="wf-overview-idx">03</span>
-            <strong>可视化推演白板</strong>
-            <small>课本原图直接摆上桌，分步草稿并排对照</small>
+            <strong>空间推演白板</strong>
+            <small>PDF 原题框选上板，多路解法分支并排对照</small>
           </a>
           <a class="wf-overview-step" href="#wf-personas">
             <span class="wf-overview-idx">04</span>
-            <strong>记得习惯的老师与同桌</strong>
-            <small>同桌盲听检验你会没会，老师按你的节奏点拨</small>
+            <strong>老师与盲测同桌</strong>
+            <small>老师按易错记录提醒，同桌屏蔽答案听你讲题</small>
           </a>
           <a class="wf-overview-step" href="#wf-review">
             <span class="wf-overview-idx">05</span>
-            <strong>分清真会与看懂的复习</strong>
-            <small>自己做对才拉长间隔，靠提示过关次日短查</small>
+            <strong>区分方式的复习</strong>
+            <small>独立做对才拉长间隔，借过提示次日安排短复查</small>
           </a>
         </nav>
 
@@ -316,9 +316,9 @@ function renderHome() {
       <div class="wrap">
         <div class="chapter-head chapter-head--wide">
           <p class="section-rubric">源 · 公开课程包与学习社区</p>
-          <h2>你只管安心看书，<span class="nowrap">让学习助手替你筛选真正有用的好题。</span></h2>
+          <h2>为了减少搜集资料的时间与情绪消耗，<span class="nowrap">直接选用持续维护的学科课程包。</span></h2>
           <p>
-            备考时最怕自己泡进论坛找资料，干货还没捞着，先被满屏焦虑帖打乱节奏。书房内置可继续追更的学科课程包，也支持在你授权后让助手定时浏览公开讨论和考后新题，把情绪噪音挡在外面，只把贴合当前进度的好题与讲义摆回你的书桌。
+            自己去论坛或社交平台搜集题目时，往往还没找到几份合适的讲义，就先被大量制造焦虑的讨论打乱了节奏。为此，书房内置了可直接试用的公开学科课程包，也规划了在获得授权后由助手按你当前进度筛选公开好题的机制；外部课程包更新时只合并新增题目，不会覆盖你原有的个人笔记。
           </p>
         </div>
 
@@ -349,9 +349,9 @@ function renderHome() {
 
         <div class="byo-material-card">
           <div>
-            <h3>市集里暂时还没有你在修的冷门专业课？直接把讲义拖进来。</h3>
+            <h3>正在学的专业课暂时没有现成课程包？直接把讲义拖进来整理即可。</h3>
             <p>
-              无论是学校内部印发的高数讲义 PDF、期末复习 PPT、课堂板书照片，还是做了一半卡住的试卷草稿，拖入桌面书房即可拆解并入你的本地图谱，现拆现学。
+              无论是学校印发的 PDF 讲义、期末复习课件、课堂板书照片，还是做了一半卡住的试卷草稿，拖入桌面书房后都能拆解为知识卡片并归入本地图谱，方便随时围绕具体页面展开讨论。
             </p>
           </div>
           <a class="btn-quiet" href="/library/">进入「私人书房 · 资源市集」完整预览 →</a>
@@ -376,21 +376,21 @@ function renderHome() {
     <section class="chapter" id="contract">
       <div class="wrap">
         <div class="chapter-head">
-          <p class="section-rubric">契 · 纯粹与坦荡</p>
-          <h2>笔记归你，接入自由，安静不打扰。</h2>
+          <p class="section-rubric">契 · 数据归属与使用边界</p>
+          <h2>笔记存为本地开放文档，模型按需自选，日常使用安静不打扰。</h2>
         </div>
         <div class="pledge-grid">
           <div class="pledge-col">
-            <h3>笔记永远留在你自己电脑里</h3>
-            <p>你写下的所有理解、批注与白板，都是电脑文件夹里普通的 <code>.md</code> 与 <code>.canvas</code> 开放文档，不锁死在任何封闭云端——哪怕有一天卸载软件，用 Obsidian 或记事本照样完整打开。</p>
+            <h3>所有笔记均保存为本地开放格式</h3>
+            <p>为了防止长期积累的学习记录被锁死在私有云端或专有格式中，你在书房里写下的理解、批注与白板全部保存为电脑文件夹里的标准 <code>.md</code> 与 <code>.canvas</code> 文档。即使日后卸载软件，用 Obsidian 或普通文本编辑器依然可以完整打开。</p>
           </div>
           <div class="pledge-col">
-            <h3>自带模型密钥，免注册直接开课</h3>
-            <p>现阶段安装包免注册即可使用，在电脑本地填入你自己的 DeepSeek、Claude、OpenAI、Gemini 等 API 密钥或已有模型订阅即可开讲，请求由本机直连模型商，不经中转，也支持把拆分资料的日常任务交给更省费用的模型。</p>
+            <h3>免注册直接使用，支持多模型分工配置</h3>
+            <p>当前公开测试版无需注册账号，在电脑本地填入你自己的 DeepSeek、Claude、OpenAI、Gemini 等 API 密钥或已有模型订阅即可本机直连。为了降低日常使用成本，还可以为讲课老师和后台拆分 PDF、建立卡片的工作员分别绑定不同价位的模型。</p>
           </div>
           <div class="pledge-col">
-            <h3>安静克制，绝不制造焦虑</h3>
-            <p>没有社交排行榜，没有断签清零的红点催促，也不会静默上传你的任何私人草稿与课堂对话。书房只在你推门进来思考时亮灯。</p>
+            <h3>不设打卡清零惩罚，不静默上传私人资料</h3>
+            <p>为了不给日常自学增加额外的心理负担，软件内不设社交排行榜，也没有连续打卡中断清零或红点催促；中断几天后再打开，首页助手只会帮你接上上次停下的位置。你的私人草稿与课堂对话默认只留在本地电脑中。</p>
           </div>
         </div>
       </div>
@@ -621,10 +621,10 @@ function renderGuide(currentPath = '/guide/') {
   const body = `
     <div class="wrap">
       <header class="page-header">
-        <p class="section-rubric">Beta 2 桌面书房获取与上手</p>
-        <h1>把课本、笔记与错题，放进一间安在电脑里的长期书房。</h1>
+        <p class="section-rubric">Beta 2 桌面版下载与上手指南</p>
+        <h1>将课本、讲义与错题放进本地电脑，搭建长期连贯的自习空间。</h1>
         <p>
-          现阶段为公开测试期（Beta 2 · v0.1.0-preview.10），下载后无需注册账号，填入你自己的模型密钥即可开课。你可以先从免费公开学科包起步，也可以随时拖入学校讲义、试卷和随堂笔记慢慢整理。
+          当前版本为公开测试版（Beta 2 · v0.1.0-preview.10）。安装后无需注册账号，在本地填入你自己的模型 API 密钥或已有模型订阅即可开始使用；你可以先体验随包内置的公开学科学习集，也可以直接拖入学校的 PDF 讲义、试卷和随堂笔记进行整理。
         </p>
         <div style="margin-top:16px;">
           <a class="btn-quiet" href="/features/">先看图文功能与上手说明 →</a>
@@ -681,41 +681,41 @@ function renderGuide(currentPath = '/guide/') {
         <div class="install-notes-sheet" style="margin-bottom:24px;">
           <div class="install-notes-head">
             <h3>Beta 2（v0.1.0-preview.10）新变化一览</h3>
-            <span>看得见的真实学习进步，再加上更清晰的师生协同</span>
+            <span>围绕学习进度可见性、图谱生长过程与日常上课衔接三项问题完成改进</span>
           </div>
           <div class="install-notes-grid">
             <div class="install-note-item">
-              <h4>1. 统计页、12 周热力图与书房足迹</h4>
-              <p>书房首页与每科的「统计」视图只认真实笔记与复习日期：一眼看清近 12 周实际学了几天、哪些卡片已稳步拉长间隔、哪些容易卡壳需要重温，以及未来 7 天即将到期的复习量。</p>
+              <h4>1. 新增学习统计页与近 12 周书房足迹</h4>
+              <p>为了让你清楚掌握每一科的实际投入与近期复习任务，书房总览和各学习集新增了「统计」视图，完全根据本地真实的笔记与卡片复习日期，展示近 12 周活跃天数热力图、卡片巩固阶段分布以及未来 7 天到期题量，点击对应日期柱即可直接筛出待复习卡片。</p>
             </div>
             <div class="install-note-item">
-              <h4>2. 知识星图按日期点亮回放</h4>
-              <p>打开星图点击「回放」并拖动日期滑块，能亲眼看见学过的知识点按时间一个个亮起来、卡片间的联系从虚线接成实线；下课后在后台刚整理出的新卡片，也会在标签上轻轻亮出 <code>+N</code> 提示。</p>
+              <h4>2. 新增知识星图按日期回放与后台建卡提示</h4>
+              <p>为了直观呈现零散题目是如何逐步连成知识体系的，知识星图新增了时间轴「回放」功能，拖动日期滑块即可按时间顺序重看已学节点点亮并接通实线的过程；下课后后台整理出新卡片时，资料库标签会以简短的 <code>+N</code> 数字温和提示，不打断当前阅读。</p>
             </div>
             <div class="install-note-item">
-              <h4>3. 一套备课课表、自由旁听与轻量上手</h4>
-              <p>不管按导入的课程讲义一步步推进，还是突然想自由问一道题、临时换个方向拆解，课堂都会顺着你的思路记下真实理解变化，再接回长期学习轨迹，不用担心切来切去把记录搞散。</p>
+              <h4>3. 打通备课路线推进与随时自由提问</h4>
+              <p>为了解决“按计划系统学习”与“日常写作业临时提问”容易割裂的问题，我们对课堂机制做了统一改进：既可以顺着课程路线由老师按实际掌握情况动态推进，也可以不建课表直接新建对话提问或发送草稿，两边产生的理解都会沉淀回同一批卡片。</p>
             </div>
           </div>
         </div>
 
         <div class="install-notes-sheet">
           <div class="install-notes-head">
-            <h3>安装放行、接模型与省钱攻略</h3>
+            <h3>安装放行、接模型与省钱配置说明</h3>
             <span>面向 Beta 2 免注册自带模型用户（macOS Apple Silicon / Windows 64 位）</span>
           </div>
           <div class="install-notes-grid">
             <div class="install-note-item">
-              <h4>1. 首次打开遇到系统拦截怎么放行</h4>
-              <p><strong>macOS</strong>：把 <code>Notara.app</code> 拖进「应用程序」后，若提示“未打开 / 无法验证开发者”，在终端粘贴运行 <code>xattr -cr /Applications/Notara.app</code>（或到「系统设置 → 隐私与安全性」底部点「仍要打开」）即可启动。<br><strong>Windows</strong>：若出现 SmartScreen「Windows 已保护你的电脑」，核对 SHA-256 后点「更多信息 → 仍要运行」。</p>
+              <h4>1. 首次打开遇到系统安全提示怎么处理</h4>
+              <p><strong>macOS</strong>：将 <code>Notara.app</code> 拖进「应用程序」后，若系统提示未验证开发者而无法打开，在终端运行 <code>xattr -cr /Applications/Notara.app</code>（或到「系统设置 → 隐私与安全性」底部点击「仍要打开」）即可正常启动。<br><strong>Windows</strong>：若弹出 SmartScreen「Windows 已保护你的电脑」提示，核对上方 SHA-256 校验值无误后，点击「更多信息 → 仍要运行」。</p>
             </div>
             <div class="install-note-item">
-              <h4>2. 怎么接模型更省钱又够用</h4>
-              <p>现阶段官方账号体系还在完善中，打开客户端后在引导页填入你自己的 API 密钥（如 DeepSeek、Claude、OpenAI、Gemini 等）或已有模型订阅就能直接学。建议日常讲课选顺手的主力模型，而批量整理 PDF 与建卡的「拆书整理师 / 分片建卡员」可换用更平价、带「视觉」标识的多模态模型，成本能省下大半。</p>
+              <h4>2. 怎么搭配模型更省钱又够用</h4>
+              <p>由于目前官方账号服务仍在建设中，安装后可在引导页填入你自己的 API 密钥（支持 DeepSeek、Claude、OpenAI、Gemini 等）或已有模型订阅。为了兼顾讲解质量与日常开销，建议让负责讲题的老师使用主力推理模型，将后台负责拆分 PDF 与批量建卡的工作员设为价格更低、带「视觉」标识的多模态模型。</p>
             </div>
             <div class="install-note-item">
-              <h4>3. 遇到卡顿或报错如何一键反馈</h4>
-              <p>若界面偶发卡住或识别出错，请在「设置 → 外观与常用连接 → 问题反馈与诊断」点<strong>「导出脱敏诊断」</strong>（会自动去掉 API 密钥和你的笔记原文），把生成的 JSON 文件发到内测群或 <a href="${DESKTOP_ISSUES_URL}" target="_blank" rel="noopener">桌面版 Issues ↗</a>。</p>
+              <h4>3. 遇到异常或报错如何导出脱敏诊断</h4>
+              <p>如果在使用过程中遇到界面卡顿或任务报错，可在「设置 → 外观与常用连接 → 问题反馈与诊断」中点击<strong>「导出脱敏诊断」</strong>。系统会自动剔除你的 API 密钥与个人笔记正文，只生成包含运行状态摘要的 JSON 文件，方便发送到内测群或 <a href="${DESKTOP_ISSUES_URL}" target="_blank" rel="noopener">桌面版 Issues ↗</a> 协助排查。</p>
             </div>
           </div>
         </div>
@@ -723,30 +723,30 @@ function renderGuide(currentPath = '/guide/') {
 
       <section class="chapter" style="padding-top:12px;border-top:0;">
         <div class="chapter-head" style="margin-bottom:28px;">
-          <p class="section-rubric">三步跑通第一节课</p>
-          <h2>不用复杂折腾，五分钟搭好你的<span class="nowrap">专属电子书房。</span></h2>
+          <p class="section-rubric">三步开始第一节课</p>
+          <h2>安装完成后，按以下三步<span class="nowrap">即可接入资料开始使用。</span></h2>
         </div>
 
         <div class="ledger">
           <div class="ledger-row">
             <div class="ledger-num">01</div>
-            <h3>选一套免费起步学习集，或拖进自己的讲义和错卷</h3>
+            <h3>选择内置公开学习集，或拖入自己的讲义与错卷</h3>
             <div class="ledger-body">
-              <p>第一次建空学习集时，可以直接从书架挑高中或大学公开示例目录（导数、离子平衡、高数、线代等），也可以直接把学校 PDF 讲义、试卷截图和随堂笔记拖进桌面，系统会自动把它们串联进同一张星图里。</p>
+              <p>首次创建学习集时，可以直接选用随包附带的高中或大学公开示例集（包含导数、离子平衡、高等数学、线性代数等），也可以直接把学校下发的 PDF 讲义、试卷图片和随堂笔记拖入窗口，由后台工作员整理进同一张本地知识图谱。</p>
             </div>
           </div>
           <div class="ledger-row">
             <div class="ledger-num">02</div>
-            <h3>填入自己的模型密钥，为讲课与整理分工选模型</h3>
+            <h3>在本地填入模型密钥，为讲课与整理角色分配模型</h3>
             <div class="ledger-body">
-              <p>免注册打开即用，输入你现有的 DeepSeek、Claude、OpenAI 或 Gemini 密钥，或者使用支持的模型订阅账号就能本机直连；首页管全局的助手、专题课堂和后台负责拆书、核对的帮手，可以各自绑定最划算的模型。</p>
+              <p>无需注册平台账号，填入你现有的 API 密钥或登录支持的模型订阅即可本机直连；首页统筹助手、专题课老师以及后台负责拆书、验算的工作员都可以独立指定适合的模型。</p>
             </div>
           </div>
           <div class="ledger-row" id="access">
             <div class="ledger-num">03</div>
-            <h3>摆上白板边画边聊，练完再按真实水平排复习</h3>
+            <h3>结合白板推导与同桌检验，按实际作答情况安排复习</h3>
             <div class="ledger-body">
-              <p>在推演白板上并排贴出课本截图与解题草稿，思路卡壳时让熟悉你习惯的老师点拨一两句，讲顺了换到看不见答案的「同桌盲测」里讲给她听；最后系统会看你是否真靠自己做出来，合理安排下次复查时间。</p>
+              <p>上课时可将原题区域贴到电子白板上配合推导，卡住时获取最小切入提示，想通后切换到屏蔽答案的同桌角色完整讲述一遍；下课时系统会根据你是否独立写出关键步，合理安排下一次复习日期。</p>
             </div>
           </div>
         </div>
@@ -766,163 +766,163 @@ function renderFeaturesPage() {
   const body = `
     <div class="wrap">
       <header class="page-header">
-        <p class="section-rubric">学生功能与使用说明 · Beta 2</p>
-        <h1>装好 Notara 之后，一间书房能怎么用。</h1>
+        <p class="section-rubric">功能与使用说明 · Beta 2</p>
+        <h1>Notara 桌面端核心功能与日常使用说明。</h1>
         <p>
-          不看复杂术语，直接按你平时看书、写题、问老师和复习的顺序，带你认识 Notara 桌面端（Beta 2 · v0.1.0-preview.10）里最常顺手用到的功能与画面。
+          下面按照平时导入资料、上课讨论、动笔推导、复习巩固与查看进度的顺序，逐一说明日常自学各个环节常见的问题，以及 Notara 桌面端（Beta 2 · v0.1.0-preview.10）是如何针对这些问题进行设计与改进的。
         </p>
         <nav class="features-toc" aria-label="功能说明章节导航">
-          <a href="#feat-vault">1. 建书架与导资料</a>
-          <a href="#feat-modes">2. 跟着课表学 / 随时快问</a>
-          <a href="#feat-tools">3. 白板、老师与盲测同桌</a>
-          <a href="#feat-stats">4. 统计页与诚实复习</a>
-          <a href="#feat-graph">5. 知识星图点亮回放</a>
-          <a href="#feat-models">6. 接模型省钱与热更新</a>
-          <a href="#feat-compare">7. 和常规学习对比</a>
+          <a href="#feat-vault">1. 导入资料与防剧透</a>
+          <a href="#feat-modes">2. 系统备课与自由提问</a>
+          <a href="#feat-tools">3. 白板、老师与同桌检验</a>
+          <a href="#feat-stats">4. 复习排期与统计视图</a>
+          <a href="#feat-graph">5. 知识星图按日期回放</a>
+          <a href="#feat-models">6. 模型分工与热更新</a>
+          <a href="#feat-compare">7. 与常见学习方式对比</a>
         </nav>
       </header>
 
       <section class="feature-block feature-block--first" id="feat-vault">
         <div class="feature-block-head">
-          <p class="section-rubric">01 · 起步与导入资料</p>
-          <h2>选一门免费起步课，或把自己的讲义、试卷直接摆进书架。</h2>
+          <p class="section-rubric">01 · 资料导入与防剧透题卡</p>
+          <h2>为了省去手抄题干和翻找原卷的消耗，讲义拖入即可拆卡并保留原书定位。</h2>
           <p>
-            第一次打开时不必空手发愁：书架自带高数、导数、离子平衡、英语语块和自救破冰指南等公开示例课；如果你自己电脑里本来就存了一堆讲义和笔记文件夹，也可以直接挂进书房，原地整理而不移动或改坏你的原文件。
+            平时整理错题与讲义时，大量时间和体力往往消耗在裁剪图片、誊抄题干和来回核对原卷页码上；而直接打开带完整解析的参考书，又很容易在还没动笔之前先瞄到答案，失去独立思考的机会。针对这两个问题，我们在资料区做了如下设计：
           </p>
         </div>
         <div class="feature-two-col">
           <div class="feature-info-card">
-            <h3>拖入 PDF 自动拆成题卡，随时点回原书</h3>
-            <p>把学校发的新讲义、扫描卷拖进资料区，后台整理帮手会把它们按知识点和题号拆成一张张卡片与导读大纲。题卡正文里保留了原卷页码与框选区域锚点，点击即可原地跳转回到 PDF 原页核对题目配图与上下文。</p>
+            <h3>PDF 框选拆卡与原书页码跳转</h3>
+            <p>将学校印发的 PDF 讲义或扫描试卷拖入学习集后，后台整理工作员会协助按知识点与题号拆分为独立的 Markdown 卡片和章节导读。每张卡片均保留原 PDF 的页码与框选区域引用，点击卡片上的出处即可在右侧直接跳回原书对应位置查看配图与上下文。初次打开时，书架也内置了高数、导数、离子平衡、英语和自学指南等公开示例集，方便直接上手体验；已有的本地笔记文件夹也可以原地挂载，不会移动或破坏原文件。</p>
           </div>
           <div class="feature-info-card">
-            <h3>默认遮住参考答案，先动笔不被剧透</h3>
-            <p>打开一道练习题时，右侧卡片默认只显示干净题面与你自己的理解笔记，标准解析自动折叠收在按钮后面。真卡壳时可以先点一下「先看思路提示」要半句指路，确定要核对再展开完整推导，保护自己的独立思考过程。</p>
+            <h3>默认折叠参考解析，支持先看最小提示</h3>
+            <p>打开任意练习题卡片时，右侧默认只呈现题干与你自己的理解记录，标准解析收起在折叠面板内。当你动笔推算卡在某一步时，可以先点击「先看思路提示」获取一步切入线索，尝试自己把后续过程算完；确认需要核对完整步骤时，再展开全部解析。</p>
           </div>
         </div>
         <figure class="feature-shot-card">
           <img src="/assets/features/hub-footprint.png" alt="Notara 私人书房顶部 12 周跨集学习足迹与两册书架腰封实景图" loading="eager">
-          <figcaption class="feature-shot-caption">私人书房实景：顶部横向展示全部在学书目的点亮卡片比例、待复查数与近 12 周活跃热力图，下方每册学习集腰封同步显示当前已亮进度和待复查提醒。</figcaption>
+          <figcaption class="feature-shot-caption">私人书房总览实景：顶部汇总展示所有在学书目的已点亮卡片比例、近期到期复习数与近 12 周实际学习热力图，下方每册学习集腰封同步显示各自的进度与待复查提醒。</figcaption>
         </figure>
       </section>
 
       <section class="feature-block" id="feat-modes">
         <div class="feature-block-head">
-          <p class="section-rubric">02 · 两种上课节奏自由切换</p>
-          <h2>想系统打底子时按课表一步步学，平时写作业卡壳就随时单题快问。</h2>
+          <p class="section-rubric">02 · 两种上课模式协同</p>
+          <h2>为了兼顾整章系统学习与日常零散答疑，备课推进与自由提问共用同一套知识库。</h2>
           <p>
-            不同科目、不同夜晚的精神状态不一样，Notara 把有准备的系统课程和随手提问放进同一张书桌里。不管从哪一头聊起，你的真实理解与错题都会安稳留在同一个学习集里，不会散落成互相打架的两套记录。
+            如果软件只能按固定课表推进，晚上写作业临时卡在一道小题上时就会显得繁琐；如果只有零散的单题问答，问完几十道题依然凑不出完整的章节脉络。为此，我们在同一个学习集里打通了两种上课模式，无论从哪种方式开始讨论，最终整理出的理解都会沉淀回同一批卡片中。
           </p>
         </div>
         <div class="feature-two-col">
           <div class="feature-info-card">
-            <h3>跟着课表系统推进（备课单当活教案）</h3>
+            <h3>按备课路线系统推进</h3>
             <ul>
-              <li>点击学习路线上的站点即可按备好讲义与白板的节奏开课，老师会先顺手探一探你的真实底子，会的地方自然跳过，不照本宣科拖泥带水。</li>
-              <li>每次只推进眼下一小步；万一时间不够或觉得太难，老师会优先守住核心保底线，并在课尾请首页助手帮你原地补一节铺垫或调缓后面难度。</li>
-              <li>只有确实聊过并做通的小任务，老师才会替你打上完成勾并写好下一课接续点，未完成部分诚实留白。</li>
+              <li>点击学习路线上的节点开课时，系统会结合知识图谱读取相关前置卡片；老师开讲前先用简短问题确认你的实际基础，已经掌握的部分直接跳过，缺少铺垫的地方先补齐定义。</li>
+              <li>课堂中每次只聚焦当前一个小目标；如果某一步反复受阻或当天时间有限，老师会优先帮你把核心保底内容弄清楚，并在课后请首页助手调整后续路线的难度坡度或补充前置练习。</li>
+              <li>下课收尾时，只有真正在对话中推导清楚并确认过的任务才会勾选完成，尚未完成的部分如实留到下一课衔接。</li>
             </ul>
           </div>
           <div class="feature-info-card">
-            <h3>随时自由即兴提问（不预设课表照样学）</h3>
+            <h3>不预设课表，随时新建对话自由提问</h3>
             <ul>
-              <li>写卷子突发奇想、临时搜到好题想换种证法，点一下顶部加号新建课堂，或点输入框下面的「单题快讲」就能直接开口问。</li>
-              <li>拍照或框选发来你写了一半的纸面草稿时，老师会先肯定走对的前面几行，只点出最早滑掉的那一行属于哪类失误，留给你亲自改顺。</li>
-              <li>即兴聊出来的重要收获同样可以顺手写回卡片、贴回今天的学习日记，不需要非得先建课程路线才能开始提问。</li>
+              <li>平时写卷子遇到卡壳的题目，或者临时想探讨另一种证法，无需提前建立课程路线，直接点击顶部加号新建课堂，或点击输入框下方的「单题快讲」即可开始提问。</li>
+              <li>拍照或框选发来写了一半的手写草稿时，老师会顺着你已有的步骤往下核对，保留前面正确的推导，只指出最早出错的那一行属于概念遗漏还是变形失误，把订正的最后一步留给你自己完成。</li>
+              <li>自由提问中理清的关键变形方法与易错条件，下课时同样可以写回对应卡片并记入当日学习日记，不会淹没在历史聊天记录里。</li>
             </ul>
           </div>
         </div>
         <figure class="feature-shot-card">
           <img src="/assets/features/classroom-route-cue.png" alt="Notara 左侧课堂对话区（含单题快讲快捷入口）与右侧学习路线画布、资料库标签 +2 微提示实景图" loading="lazy">
-          <figcaption class="feature-shot-caption">课堂分屏实景：左侧可随时点击「单题快讲」或发送图片草稿自由发问，右侧跟随展示完整课程路线图与全集位置缩略窗；后台整理好新卡片后，顶部「资料库」标签只以克制的 <code>+2</code> 提醒而不抢占焦点。</figcaption>
+          <figcaption class="feature-shot-caption">课堂分屏实景：左侧对话区可随时点击「单题快讲」或发送草稿图片自由提问，右侧同步展示课程路线画布与全集缩略导航；后台工作员整理好新卡片后，顶部「资料库」标签仅显示简短的 <code>+2</code> 数字提示，不会强行切换你的当前界面。</figcaption>
         </figure>
       </section>
 
       <section class="feature-block" id="feat-tools">
         <div class="feature-block-head">
-          <p class="section-rubric">03 · 课堂里的三样趁手工具</p>
-          <h2>原题摆上白板对照、师友按火候切换，还能自己动手改参数看变化。</h2>
+          <p class="section-rubric">03 · 课堂推导与检验工具</p>
+          <h2>为了看清复杂变形并检验是否真懂，对话旁配备了电子白板、习惯档案与无提示同桌。</h2>
         </div>
         <div class="install-notes-grid" style="margin-top:18px;">
           <div class="install-note-item">
-            <h4>1. 原卷直接贴墙的可视化白板</h4>
-            <p>碰到长分类讨论、辅助线或大段程序流程，聊几屏往往记不住条件。把 PDF 原题框出来钉到白板上，旁边放函数曲线、分步草图和自检填空；就算退回去尝试第二种解法，也能和原来那版并排对照或另开一张白板。</p>
+            <h4>1. 支持贴入原题与多分支对比的电子白板</h4>
+            <p>遇到多步分类讨论、含参函数图像或较长的算法流程时，单列聊天气泡很难把已知条件与几条思路同时展示清楚。你可以把 PDF 原题区域直接钉到 <code>.canvas</code> 白板上，在旁边并排画出函数草图、各分支推导与自检填空；如果从某条消息分叉尝试新解法，还能对比前后两版白板的具体改动。</p>
           </div>
           <div class="install-note-item">
-            <h4>2. 记得你习惯且懂火候的老师</h4>
-            <p>新概念刚起步先痛快讲透最小例子；卡在够得着的一步时，老师翻看你本地档案里记下的易漏惯性，只给半步提示搭梯子。所有笔记按需翻阅，只看和眼前题目相关的旧经历。</p>
+            <h4>2. 按需读取本地档案、区分火候的老师</h4>
+            <p>为了避免每次开新课都要重头交代自己的基础，系统会将你真实出现过的卡点与解题习惯记录在本地普通笔记中。上课时老师只读取与当前题目直接相关的记录：遇到陌生新概念先用最小正例把来龙去脉讲清楚；遇到熟悉题型则在容易漏掉条件的地方停下来追问。</p>
           </div>
           <div class="install-note-item">
-            <h4>3. 不看答案的同桌与动手微实验</h4>
-            <p>觉得题目顺了，把「大肥鱼」等同桌召出来开启费曼听讲：系统替他挡住解析与过往聊天，你要把前因后果讲到他点头才过关。理化和算法难题还可点开内置交互微课拖动滑块，一眼看懂临界变化。</p>
+            <h4>3. 屏蔽答案的同桌检验与可调参代码微课</h4>
+            <p>顺着老师的讲解听懂一道题，并不代表自己面对白纸也能独立做出来。为了检验真实掌握程度，你可以切换到同桌角色（如「大肥鱼」）把解题思路讲给他听，系统会对他屏蔽参考解析与此前对话，直到你把关键依据讲清楚才算过关。遇到物理磁场临界圆、导数切线逼近等问题，还可以打开内置代码微课暂停动画并拖动参数观察变化。</p>
           </div>
         </div>
       </section>
 
       <section class="feature-block" id="feat-stats">
         <div class="feature-block-head">
-          <p class="section-rubric">04 · 诚实统计与复习节奏（Beta 2 新增）</p>
-          <h2>真会做和看提示才做出来分开记账，用真实日历看到稳步巩固。</h2>
+          <p class="section-rubric">04 · 复习排期与真实统计（Beta 2 新增）</p>
+          <h2>为了避免“看提示做对也算掌握”的假象，复习间隔与统计视图只按真实记录计算。</h2>
           <p>
-            很多刷题软件最容易哄人开心：瞟一眼提示点下“认识”，下回上考场照样下不了笔。Notara 在确认复习时会如实核对完成条件，同时在资料库「统计」页老老实实摆出近 12 周的实际轨迹，不靠连续打卡惩罚或虚构积分来催焦虑。
+            日常复习中最容易产生误判的情况，是看了一眼提示才想起做法，却照常把卡片推迟到十几天后。为了让你准确把握哪些内容真正稳固、哪些还需要重练，我们对复习确认规则与统计视图做了明确区分：
           </p>
         </div>
         <div class="feature-two-col">
           <div class="feature-info-card">
-            <h3>复习排期规则一眼看明白</h3>
-            <p><strong>靠自己不看提示做通关键步</strong>，间隔才会按 <code>1 → 3 → 7 → 16 → 35 天</code> 稳步拉长；<strong>看了提示或跟着讲解走通</strong>，原有间隔保持不变，自动安排明天做一次 1 天裸题短复查；连续卡壳的老问题则暂停机械抽考，先拆成小铺垫练顺。</p>
+            <h3>按是否借用提示分开安排复习间隔</h3>
+            <p>只有<strong>不看任何提示、独立写出关键步骤</strong>，卡片的复习间隔才会按 <code>1 → 3 → 7 → 16 → 35 天</code> 逐步拉长；如果在作答过程中<strong>看过提示或听了讲解</strong>，原有间隔将保持不变，系统会自动在第二天安排一次 1 天无提示短复查；对于连续多次卡住的题目，则先暂停常规抽考，拆出前置基础小题帮你补稳薄弱环节。</p>
           </div>
           <div class="feature-info-card">
-            <h3>统计页每一格都来自真实文件</h3>
-            <p>「资料库 → 统计」集中呈现四项关键指标、近 12 周真实学习天数热力图、区分「稳步长间隔 / 已点亮巩固中 / 到期卡壳 / 尚未点亮」的分布条，以及可点击直接筛出待查卡片的未来 7 天复习潮汐与高遗忘队列。</p>
+            <h3>基于本地文件实时汇总的统计页</h3>
+            <p>在「资料库 → 统计」视图中，系统直接读取本地学习日记日期与每张卡片的复习记录，展示近 12 周实际学习天数热力图、卡片所处的不同巩固阶段比例，以及未来 7 天每天到期的待复习题量与多次出错卡片清单。点击未来 7 天中的任意一根柱子，即可直接筛选出当天到期的卡片开始复习。</p>
           </div>
         </div>
         <figure class="feature-shot-card">
-          <img src="/assets/features/vault-stats.png" alt="Notara 学习集内诚实统计视图：近 12 周学习热力图、巩固分布条、未来 7 天复习潮汐与高遗忘队列" loading="lazy">
-          <figcaption class="feature-shot-caption">单学习集统计实景：只根据真实日记日期与卡片 <code>last_review</code> 投影，空白日绝不补造数据；点击未来 7 天任意一根柱子即可直接筛出那批到期卡片开课复习。</figcaption>
+          <img src="/assets/features/vault-stats.png" alt="Notara 学习集内诚实统计视图：近 12 周学习热力图、巩固分布条、未来 7 天复习与待重温列表" loading="lazy">
+          <figcaption class="feature-shot-caption">单学习集统计视图实景：所有指标均由本地真实日记日期与卡片 <code>last_review</code> 记录实时投影生成，未学习的空白日期保持原样；点击未来 7 天任意日期柱可直接筛出对应到期卡片。</figcaption>
         </figure>
       </section>
 
       <section class="feature-block" id="feat-graph">
         <div class="feature-block-head">
           <p class="section-rubric">05 · 知识星图按日期点亮回放（Beta 2 新增）</p>
-          <h2>亲手证过的联系才连成实线，拖动滑块回放图谱一天天长亮起来。</h2>
+          <h2>为了分清“导入的资料”与“学懂的知识”，星图支持按学习日期回放点亮过程。</h2>
           <p>
-            刚导进来的讲义和题库，在星图上只是一片安静的浅色虚线草图；只有当你亲自推通这道题、把想法写进「我的理解」卡片后，对应的节点和双链联系才会在星图里真正点亮，从虚线变成实线。
+            如果刚导入一份讲义就自动生成整片实线网络，学生其实很难分辨哪些概念自己真正下过功夫。为此，刚拆解导入的题目与概念在星图上只显示为浅色虚线草图；只有当你实际推通题目并在卡片中写下个人理解后，对应的节点与双链关系才会点亮为实线。点击星图右上角的「回放」并拖动底部日期条，即可按时间顺序重看各个知识点是如何一步步连入整张网络的。
           </p>
         </div>
         <figure class="feature-shot-card">
           <img src="/assets/features/graph-replay.png" alt="Notara 知识星图按日期时间轴回放视图：已学节点按日期点亮并接通实线，未涉足节点维持浅灰虚线" loading="lazy">
-          <figcaption class="feature-shot-caption">星图点亮回放实景：点击图谱右上角「回放」并拖动底部日期条，就能按先后顺序重看每个知识点是哪一天被真正啃下来并连进整张网络里的；右半侧未开始探索的部分继续保持浅灰虚线暗态。</figcaption>
+          <figcaption class="feature-shot-caption">星图点亮回放实景：拖动底部日期滑块，已学过的节点与连接关系会按实际完成日期依次点亮接通；右侧尚未开始学习的章节节点继续保持浅灰虚线状态。</figcaption>
         </figure>
       </section>
 
       <section class="feature-block" id="feat-models">
         <div class="feature-block-head">
-          <p class="section-rubric">06 · 接模型省钱、热更新与隐私边界</p>
-          <h2>笔记全部留在你的硬盘上，接什么模型、哪一科花多少钱都自己做主。</h2>
+          <p class="section-rubric">06 · 模型分工、签名热更新与隐私边界</p>
+          <h2>为了降低长期使用的成本与维护负担，软件支持多模型分工、轻量热更新与开放格式存储。</h2>
         </div>
         <div class="install-notes-grid" style="margin-top:18px;">
           <div class="install-note-item">
-            <h4>1. 分角色选模型更划算</h4>
-            <p>现阶段安装包免注册即可使用，在本地填入自己的 DeepSeek、Claude、OpenAI、Gemini 密钥或已有订阅就能开课。平时讲题、启发可配主力模型；大批拆 PDF 和整理建卡的后台帮手可换用平价带「视觉」标识的模型，省下不少额度。</p>
+            <h4>1. 按角色分工配置不同模型，控制日常成本</h4>
+            <p>公开测试期间客户端免注册即可使用，在本地填入你自己的 DeepSeek、Claude、OpenAI、Gemini 密钥或已有模型订阅即可连接。你可以为负责启发讲题的老师绑定主力推理模型，同时为后台负责拆分 PDF 与批量建卡的工作员指定价格更低且带「视觉」标识的模型，减少日常整理资料的花费。</p>
           </div>
           <div class="install-note-item">
-            <h4>2. 小修热更新与出错自动回退</h4>
-            <p>从 Beta 2 起已接入签名校验热更新通道，侧边栏底部有新微调提醒时再升级前端或教学资源即可，启动如有异常会自动退回随包稳定版本，不必每次遇到小改动都重下五六百兆大安装包。</p>
+            <h4>2. 签名校验热更新与异常自动回退</h4>
+            <p>为了避免每次界面改进或教学提示更新都要重新下载五六百兆的安装包，Beta 2 接入了经过数字签名校验的热更新机制。侧边栏底部出现更新提示时即可按需升级前端界面与教学资源；如果新版本在启动时遇到异常，客户端会自动回退到随安装包分发的稳定版本。</p>
           </div>
           <div class="install-note-item">
-            <h4>3. 纯文本存本地，诊断自动脱敏</h4>
-            <p>所有卡片、导读和白板都是电脑里普通的 <code>.md</code> 和 <code>.canvas</code> 文档，换软件或离线照样打开。遇到界面卡住点击「导出脱敏诊断」，会自动剔除 API 密钥与个人笔记正文，只保留排错摘要。</p>
+            <h4>3. 本地纯文本存储与自动脱敏诊断</h4>
+            <p>所有卡片、导读和白板都是保存在本地文件夹中的标准 <code>.md</code> 与 <code>.canvas</code> 纯文本文件，离线或更换软件依然可以直接打开。遇到运行异常点击「导出脱敏诊断」时，系统会自动去除 API 密钥与个人笔记正文，只保留排错所需的运行状态摘要。</p>
           </div>
         </div>
       </section>
 
       <section class="feature-block" id="feat-compare">
         <div class="feature-block-head">
-          <p class="section-rubric">07 · 核心优势对比</p>
-          <h2>一张表看清：Notara 和常规大班课、普通搜题 AI 差在哪。</h2>
-          <p>把日常卡题、记忆连贯、检验真假、白板草稿和进步统计六件事放在一起对照，就知道顺手的长期书房是怎么回事。</p>
+          <p class="section-rubric">07 · 与常见学习方式对比</p>
+          <h2>围绕日常自学中的六个常见痛点，对比三种学习方式的具体做法。</h2>
+          <p>将遇到卡点、串联旧题、检验掌握程度、展开复杂草稿、兼顾系统与零散学习以及查看真实进度六件事放在一起对照，可以清楚看到 Notara 在每个环节所做的具体改进。</p>
         </div>
         <div style="margin-top:20px;">
           ${renderTeachingComparison({ id: 'feat-compare-matrix' })}
@@ -931,8 +931,8 @@ function renderFeaturesPage() {
 
       <section class="feature-cta-band" aria-label="下一步行动">
         <div>
-          <h2>准备好搭建自己的这间电子书房了吗</h2>
-          <p>下载对应系统的安装包 5 分钟内即可开讲，也可以先免安装打开 1:1 网页实景课堂体验一题。</p>
+          <h2>可以先在网页端试上一课，或下载客户端放入自己的讲义。</h2>
+          <p>下载对应系统的安装包后五分钟内即可完成模型配置开始使用；如果暂时不便安装，也可以先免登录打开网页端 1:1 实景课堂体验完整交互。</p>
         </div>
         <div class="feature-cta-actions">
           <a class="btn-primary" href="/guide/#download">前往下载 Beta 2 安装包</a>
@@ -943,8 +943,8 @@ function renderFeaturesPage() {
   `;
 
   return pageShell({
-    title: '学生功能与使用说明 · Notara',
-    description: '面向学生的 Notara 桌面端 Beta 2 图文使用指南：导资料、课表推进与自由提问、白板盲测、12 周诚实统计与星图点亮回放。',
+    title: '功能与使用说明 · Notara',
+    description: '面向学生的 Notara 桌面端 Beta 2 图文使用指南：导入资料、备课推进与自由提问、白板与同桌检验、12 周学习统计与星图点亮回放。',
     currentPath: '/features/',
     body,
   });
@@ -981,9 +981,9 @@ function renderCodeVideoPage(catalogItems = []) {
     <div class="wrap">
       <header class="page-header">
         <p class="section-rubric">公开免费微课源 · 可动手调参的代码视频</p>
-        <h1>随时按下暂停就能改参数的<span class="nowrap"> 20 KB 矢量代码微课。</span></h1>
+        <h1>随时暂停即可拖动参数验证的<span class="nowrap"> 20 KB 矢量代码微课。</span></h1>
         <p>
-          下面这几节公开微课已经打好包放上网页。你可以直接在下面点播放、拖时间轴、随时暂停伸手改参数；如果已经在电脑上装好了 Notara，也可以把下方订阅地址粘贴到「私人书房 → 资料源」，免注册添进自己的学习集，更新时不覆盖原有笔记。
+          平时看录播视频或静态配图时，遇到函数相切或磁场旋转的临界状态，往往很难自己动手改变条件试一试。为了解决这一问题，我们将微课做成了体积约 20 KB 的矢量交互代码视频：你可以直接在下方播放、拖动时间轴，并随时按下暂停亲手修改参数观察变化；如果已安装 Notara 桌面端，也可以把下方公开订阅地址粘贴到「私人书房 → 资料源」免费导入，后续更新不会覆盖你原有的个人笔记。
         </p>
         <div style="margin-top:18px;padding:12px 16px;border-radius:10px;border:1px solid var(--rule-strong);background:var(--paper-sheet);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
           <div style="min-width:0;font-size:13px;">

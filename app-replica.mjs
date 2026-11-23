@@ -669,8 +669,8 @@ export function renderPedagogyShowcase() {
 
       <div class="pedagogy-skill-foot">
         <div>
-          <strong>按场景随时切换的学习方法：</strong>
-          <span>除三段式主干外，<strong>命题人视角拆条件</strong>、<strong>波利亚解题启发</strong>、<strong>考前 30 分钟盲区快筛</strong>与<strong>代码沙箱排错</strong>等学习方法都整理成可按需调用的专题指南，上课聊到一半也能随时切换，还可以在资源市集按需添置。</span>
+          <strong>针对不同学习环节的专项方法包：</strong>
+          <span>除三段式主干外，为了应对“看不出题目条件用意”“考前时间紧不知先看哪里”“代码报错找不到原因”等具体场景，我们还将<strong>命题人视角拆条件</strong>、<strong>波利亚解题启发</strong>、<strong>考前 30 分钟盲区快筛</strong>与<strong>代码沙箱排错</strong>整理为可随时切换的教学方法包，也可在资源市集中按需添置。</span>
         </div>
       </div>
     </div>
@@ -680,40 +680,46 @@ export function renderPedagogyShowcase() {
 export function renderTeachingComparison({ id = 'pedagogy-compare' } = {}) {
   const rows = [
     {
-      dim: '卡壳时怎么教',
-      trad: '五十人同一步调往前赶，中间漏掉一处前置定义后面越听越晕，课堂上也不好意思反复打断。',
-      ai: '问完直接甩出整屏标准解答，扫一遍觉得看懂了，合上屏幕自己动笔依然写不出第一步。',
-      notara: '<strong>按火候切三段教法</strong>，陌生概念先痛快讲透最小例子，差半步想通只搭一级梯子，拍手写草稿只点出最早滑掉的那一行。',
+      dim: '做题卡住时怎么讲',
+      trad: '全班按统一进度往下讲，一旦中间漏掉某个前置概念，后面就会越听越吃力，课堂上也很难随时停下来追问。',
+      ai: '提问后往往直接给出整道题的完整解答，顺着看一遍觉得每一步都合理，但合上屏幕面对白纸，依然想不出第一步该怎么写。',
+      notara:
+        '为了避免直接看答案带来的假懂，老师会先区分你卡住的原因：如果缺少前置概念，就先用一个最小例子把基础补齐；如果只差一步变形，就只给一个切入提示；发来手写草稿时，也只指出最早出错的那一行，留给你自己改完。',
     },
     {
-      dim: '新旧题怎么串起来',
-      trad: '按固定章节单线推进，上个月做过的同类母题早压在旧卷子堆里，很难主动前后照应。',
-      ai: '每次新开聊天窗都像初次见面，问完几百轮记录沉在底部，根本不记得你常在哪一步漏条件。',
-      notara: '<strong>跨章关联与本地习惯记忆</strong>，只调取跟眼前题目有关的旧卡联系与易错惯性，讲新题顺手牵出旧坑并排对照。',
+      dim: '新旧题目怎么串联',
+      trad: '课程通常按章节顺序单线推进，上个月做过的同类题目压在旧卷子里，遇到综合题时很难及时翻出来对照。',
+      ai: '每次新建对话都是从头开始，聊过的内容沉在历史记录底部，模型既不记得你学过哪些卡片，也不知道你平时容易漏掉什么条件。',
+      notara:
+        '为了解决学过就散的问题，系统会把讲义、错题和笔记归入同一张本地知识图谱；上新课时按需调取与当前题目直接相关的旧卡片和易错记录，方便把新变式与以前做过的母题放在一起比较。',
     },
     {
-      dim: '怎么确认真的学会',
-      trad: '多半要等到月考出分才知道哪里没通，平时抄完错题本就容易以为已经过关。',
-      ai: '点个“明白了”就算结束；常见背卡工具看一眼提示也照样拉长间隔，上考场照样空白。',
-      notara: '<strong>同桌费曼听讲加诚实复习分流</strong>，合上解析讲给「大肥鱼」听通才算数；自己独立做出才拉长间隔，靠提示记住次日短复查。',
+      dim: '怎么判断是否真学会',
+      trad: '平时抄完错题本很容易误以为已经掌握，往往要等到周测或月考出分，才发现题目换个问法还是不会做。',
+      ai: '看懂解析点一句“明白了”就算结束；常见背卡软件哪怕看了一眼提示，也会照常把复习间隔拉长，掩盖了还没能独立做出来的事实。',
+      notara:
+        '为了区分“看懂解析”与“自己会做”，你可以切换到看不见参考答案的同桌角色，尝试把解题依据从头讲通；确认复习时，只有不看提示独立写出关键步才拉长间隔，借过提示的题目则保留原间隔，并在次日安排一次无提示短复查。',
     },
     {
-      dim: '复杂草稿怎么展开',
-      trad: '纸面草稿写乱就得重抄，黑板一擦也很难退回去对比前一条解题思路。',
-      ai: '挤在窄窄的单列聊天气泡里，多步分类讨论和几何辅助线往上翻两屏就容易忘掉条件。',
-      notara: '<strong>原题贴墙白板加互动代码微课</strong>，PDF 框选直接钉上画布并排连线，物理磁场、高数切线还能暂停拖参数亲眼看变化。',
+      dim: '复杂推导怎么展开',
+      trad: '纸面草稿改乱了只能重抄，黑板擦掉以后也很难退回去对比前一种思路为什么走不通。',
+      ai: '所有步骤都挤在单列聊天气泡里，遇到多步分类讨论或几何辅助线问题时，往上翻两屏就容易忘掉前面设下的条件。',
+      notara:
+        '为了解决单列对话框放不下复杂推导的问题，我们在对话旁配备了电子白板与可调参的代码微课：你可以把 PDF 原题直接框选贴到白板上，将不同情况的解法分支并排连线对照，遇到函数切线或物理磁场临界问题还能暂停动画、拖动参数观察变化。',
     },
     {
-      dim: '系统学还是随时问',
-      trad: '课表进度固定，晚上写作业临时卡在某道小题上往往等不到及时解答。',
-      ai: '只能零敲碎打单题问答，聊完十道题仍然散成一片，很难攒出完整学科框架。',
-      notara: '<strong>课表推进与单题快问合二为一</strong>，系统啃章用「活教案」随表现调缓补强，作业卡题随时「单题快讲」，沉淀进同一张图谱。',
+      dim: '系统学与日常问怎么兼顾',
+      trad: '课程进度固定，适合按部就班听新课，但晚上写作业临时卡在一道小题上时，很难及时得到针对性的解答。',
+      ai: '适合临时问一两道零散题目，但问完十道题依然是十段孤立的聊天记录，很难靠它把一门课从头到尾系统学完。',
+      notara:
+        '为了让整章系统学习与日常零散答疑互不割裂，同一个学习集同时支持两种上课方式：需要系统推进时，老师按备课路线讲授并根据你的作答表现调整快慢；写作业临时卡壳时，随时新建对话即可单题提问，讨论清楚的要点也能直接存回卡片。',
     },
     {
-      dim: '怎么看见自己在进步',
-      trad: '主要看阶段排名和刷卷数量，付出和真实掌握往往对不上，越刷越焦虑。',
-      ai: '只留下一长串历史聊天标题，看不出哪些知识点真进了脑子、哪些其实早已忘掉。',
-      notara: '<strong>诚实统计页加星图按日期点亮回放</strong>，只认真实笔记与独立复查日期，拖动滑块亲眼看见虚线草图一天天连成实线。',
+      dim: '怎么看清真实进度',
+      trad: '平时主要看考试排名或刷了多少套卷子，很难看清自己到底掌握了哪些具体方法，刷题越多反而越容易心里没底。',
+      ai: '左侧只留下一长串聊天标题，看不出整门课还有哪些知识盲区，也不知道哪些学过的内容已经到了该复习的时候。',
+      notara:
+        '为了让你清楚看到每一天的实际积累，统计页只根据本地真实的笔记与复习记录汇总近 12 周学习天数、巩固阶段分布和未来 7 天待复习题量；在知识星图里开启回放，还能按日期查看学过的节点是如何一步步点亮并连成实线的。',
     },
   ];
 
@@ -739,12 +745,12 @@ export function renderTeachingComparison({ id = 'pedagogy-compare' } = {}) {
 
   return `<div class="specimen-window compare-window" id="${esc(id)}">
     <div class="specimen-bar pedagogy-prompt-bar">
-      <span class="pedagogy-prompt-label">核心差异 · 一眼看清区别</span>
-      <span class="pedagogy-bar-sub">把 Notara 放进每天真实的学习场景里，和常规大班课、普通搜题 AI 逐项对比</span>
+      <span class="pedagogy-prompt-label">与常见学习方式的具体对比</span>
+      <span class="pedagogy-bar-sub">围绕日常自学中最常遇到的六个问题，对比常规大班课、普通搜题工具与 Notara 在做法上的差异</span>
     </div>
     <div class="compare-matrix" role="table" aria-label="Notara 与常规教学方法及普通搜题 AI 对比">
       <div class="compare-row compare-head-row" role="row">
-        <div class="compare-dim" role="columnheader">学习场景</div>
+        <div class="compare-dim" role="columnheader">日常学习问题</div>
         <div class="compare-cell" role="columnheader">常规大班课与网课</div>
         <div class="compare-cell" role="columnheader">普通搜题与通用 AI</div>
         <div class="compare-cell compare-cell--notara" role="columnheader">Notara 自习书房</div>
@@ -760,15 +766,15 @@ export function renderWorkbenchActs() {
     <article class="act-row" id="wf-graph">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">01 · 会生长的知识图谱</span>
-          <span class="wf-tag">多份资料并成同一张网</span>
+          <span class="act-num">01 · 本地知识图谱与资料整合</span>
+          <span class="wf-tag">多份资料去重归档 · 区分已学与待学</span>
         </div>
-        <h3>课本 PDF、错题卷与随堂笔记放在一起，慢慢长成同一张活图谱。</h3>
+        <h3>为了解决讲义、试卷与笔记分散难找的问题，所有资料都在同一张图谱里建立联系。</h3>
         <p>
-          拖进来的教材 PDF、拍下的月考错题卷和手写笔记，都会先和你的已有笔记逐一比对，再放进同一张网里：考同一个知识点的题并回老卡片并补全出处，换了条件的新变式题保留完整题干、连回母题，全新概念则单独建新卡片，再也不会留下一堆找不着的零散文件和沉底聊天记录。
+          平时学一门课，教材 PDF、月考错题卷和随堂笔记往往散落在不同文件夹里，做过的同类题也很难和以前记过的概念对应起来。为此，拖进书房的各类资料都会先与你已有的卡片逐一比对：考同一个知识点的题目合并到原卡片并补齐出处，改变条件的新变式保留完整题干并连回母题，全新的概念则单独建立新卡片。
         </p>
         <p>
-          新放进来的资料先用<strong>浅色虚线</strong>摆出骨架；只有等你亲手推通、写下「我的理解」之后，连线与节点才会真正<strong>点亮</strong>接成实线，还能按日期一步步回放图谱亮起来的过程。阶段复盘时，散在各章的零碎技巧也能收束整理成一篇规律总结卡。
+          为了区分“导入的材料”和“真正学懂的内容”，刚拆解进来的节点先以<strong>浅色虚线</strong>展示结构骨架；只有当你推通题目并在卡片里写下「我的理解」之后，对应的节点与连线才会转为<strong>实线点亮</strong>，还可以按日期回放整张知识网络一步步建立的过程。
         </p>
       </div>
       <div class="act-specimen">
@@ -848,15 +854,15 @@ export function renderWorkbenchActs() {
     <article class="act-row" id="wf-agents">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">02 · 首页管家与专题课堂分工</span>
-          <span class="wf-tag">首页看全盘 · 专题课深挖 · 后台跑繁杂活</span>
+          <span class="act-num">02 · 首页统筹助手与独立专题课堂</span>
+          <span class="wf-tag">避免单一聊天窗上下文杂乱</span>
         </div>
-        <h3>平时一个学习管家陪你看全盘，遇到硬骨头再单开专题课与后台帮手。</h3>
+        <h3>为了防止长对话互相干扰，日常统筹、单题深挖与后台整理由不同角色分工完成。</h3>
         <p>
-          不用在十几个零散对话窗口之间来回复制粘贴。每个学习集都住着一位常驻的<strong>首页学习助手</strong>，平时帮你看着整体进度、提醒该复习什么，有临时想问的小问题或新想法，从这一个入口开口就行。
+          如果把复习安排、整卷拆分和长题推导全部塞进同一个聊天窗口，对话很快就会变得冗长杂乱，模型也容易被前面的无关内容带偏。为了保持上下文干净，每个学习集都设有一位常驻的<strong>首页统筹助手</strong>，平时负责陪你查看整体进度、挑选今日复习内容或调整学习计划。
         </p>
         <p>
-          遇到要死磕的大题或整份考卷时，首页助手会把重活分出去：一边单开标签页里的<strong>专题课堂</strong>陪你专注推演，一边派最多五位<strong>后台帮手</strong>按不同任务选用省钱或强推理模型去剪卷归档、遮住答案先验算、对比老笔记。下课后只把简洁结论捎回首页，聊天页面永远干干净净。
+          当你需要深入推导一道难题或整理整张试卷时，首页助手会把具体工作拆分出去：一方面在独立标签页中开启<strong>专题课堂</strong>陪你专注讨论，另一方面按任务性质指派后台工作员（可分别绑定轻量视觉模型或强推理模型）完成拆卷建卡、遮答案独立验算与旧卡比对；下课后只将简要结论交回首页。
         </p>
       </div>
       <div class="act-specimen">
@@ -922,7 +928,7 @@ export function renderWorkbenchActs() {
               </div>
 
               <div class="wf-handoff-receipt">
-                <span>↩ 课后回报：</span>专题课结束后只把关键突破和后续复习点递回首页助手，不拿满屏中间草稿把主页面刷乱。
+                <span>↩ 课后小结回传：</span>专题课结束后只把本次突破的关键点与后续复习建议传回首页助手，不在主对话里堆放中间演算草稿。
               </div>
             </div>
           </div>
@@ -934,15 +940,15 @@ export function renderWorkbenchActs() {
     <article class="act-row" id="wf-canvas">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">03 · 可视化的空间推演白板</span>
-          <span class="wf-tag">原题直接贴上板 · 几路解法并排摆开</span>
+          <span class="act-num">03 · 支持贴入原题的空间推演白板</span>
+          <span class="wf-tag">PDF 原题直接上板 · 多分支并排对照</span>
         </div>
-        <h3>跳出窄窄的聊天框，在白板上把原题、图像与几种证法摆在一起看。</h3>
+        <h3>为了解决单列聊天框难以展开多步变形的问题，在白板上把原题、图像与分支解法摆在一起。</h3>
         <p>
-          遇到多步变形、分类讨论和几何辅助线，全挤在单列聊天气泡里，往上翻两屏就容易忘掉前面设的条件。书房内置开放格式的电子白板：你可以<strong>把 PDF 试卷或课本上的那一块直接框出来贴上白板</strong>（点一下就能跳回原书那一页），再把几种思路分支、函数草图和关键步骤自检卡片并排连线。
+          遇到含参分类讨论、多步代数变形或几何辅助线时，纯文字聊天气泡翻过两屏就容易让人忘掉前面的已知条件。为此，我们在课堂右侧内置了开放格式的 <code>.canvas</code> 电子白板：你可以<strong>直接从 PDF 讲义或试卷上框选原题区域贴上白板</strong>（点击即可跳回原书对应页码），再把函数图像、分类讨论分支与关键步自检卡并排连线。
         </p>
         <p>
-          聊到某一步如果想倒回去重开一条新思路、换另一种证法试试，新分出来的课堂既可以和原先那一版共用同一块白板接力修改，也可以另外新建一张空白白板，还能对照前后两次具体增改了哪几个框。
+          如果在某一步想退回去尝试第二种解法，从当前消息分叉出的新课堂既可以与原课堂共用同一张白板继续修改，也可以单独新建空白白板，并随时通过差异对比查看前后增改了哪些节点。
         </p>
       </div>
       <div class="act-specimen">
@@ -1012,15 +1018,15 @@ export function renderWorkbenchActs() {
     <article class="act-row" id="wf-personas">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">04 · 记得习惯的老师与同桌</span>
-          <span class="wf-tag wf-tag--beta">同桌盲测过关 + 按你习惯启发点拨</span>
+          <span class="act-num">04 · 本地学习习惯记录与同桌无提示检验</span>
+          <span class="wf-tag wf-tag--beta">按需读取易错习惯 + 屏蔽答案讲述检验</span>
         </div>
-        <h3>记得你平时总在哪里顺手跳步的师友，不用每节课从头认识。</h3>
+        <h3>为了让老师记得你的常见卡点，同时检验自己离开提示后能否独立讲通。</h3>
         <p>
-          你更习惯先画图像还是先推公式、过去踩过哪些坑、最近哪类变形容易一口气写太快，全都明明白白写在你电脑里自己能打开修改的普通笔记中。新开一节课时，老师只翻看跟当下有关的那几行，既连贯又干净。
+          每次开新窗口都要重新介绍基础会耗费不少精力；而一直只和知道标准答案的老师对话，又容易在不知不觉间顺着暗示往下说。为了解决这两个问题，系统会把你更习惯的切入方式和近期常漏的前提条件记录在本地普通 Markdown 档案里，老师上课时只按需读取与当前题目相关的几条记录，在你容易跳步的位置及时提醒。
         </p>
         <p>
-          感觉某一题真想明白了，可以请出<strong>同桌开启「费曼盲测」</strong>：系统会替他完全挡住参考解析与历史聊天，全靠你从头到尾讲到他听懂为止。平时做题卡住或滑向老毛病时，也能切给了解你习惯的<strong>启发老师</strong>，就在你最易漏条件的那一步及时叫住反问。
+          当你觉得一道题已经想明白时，可以切换到<strong>同桌角色进行无提示讲述检验</strong>：系统会对同桌完全屏蔽参考解析与此前对话，需要你用自己的话把推导依据和边界条件从头讲通，以此确认自己确实掌握了完整逻辑。
         </p>
       </div>
       <div class="act-specimen">
@@ -1075,15 +1081,15 @@ export function renderWorkbenchActs() {
     <article class="act-row" id="wf-review">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">05 · 分清真会与看懂的复习节奏</span>
-          <span class="wf-tag">自己推通才升档 × 靠提示次日短复查</span>
+          <span class="act-num">05 · 区分独立完成与借提示完成的间隔复习</span>
+          <span class="wf-tag">独立做对才升档 · 借过提示次日复查</span>
         </div>
-        <h3>“自己推出来”和“看提示才通”分开记账，不用虚假熟练度骗自己。</h3>
+        <h3>为了避免“瞄过一眼提示也算会做”的假象，按实际完成方式分开安排复习时间。</h3>
         <p>
-          用一般背卡软件最容易掉进一个坑：扫过一眼提示才想起来，顺手点下“认识”，卡片一下推到半个月后，可真上闭卷考场照样两眼发白。Notara 确认复习时会如实核对作答方式：只有<strong>不看任何提示、独立走通关键步骤</strong>，复习间隔才会按 <code>1 → 3 → 7 → 16 → 35 天</code> 稳步拉长；只要中途借过提示或讲解，原有间隔一律冻结不虚增，<strong>安排明天做一次 1 天短复查</strong>，确认裸题再战也能直接动手才算数。
+          使用普通背卡工具复习时，很多人看了一眼提示才想起做法，却顺手点下“认识”，导致还没掌握稳固的题目被推迟到半个月后，到了考场依然写不出第一步。为此，Notara 在确认复习时会记录实际作答条件：只有<strong>不看任何提示、独立写出关键步骤</strong>，复习间隔才会按 <code>1 → 3 → 7 → 16 → 35 天</code> 依次拉长；只要中途借用了提示或讲解，原有间隔保持不变，并在<strong>第二天安排一次 1 天短复查</strong>，检验面对原题能否直接动笔。
         </p>
         <p>
-          反复卡壳的老问题不再机械地反复弹出折磨你，而是先暂停常规排期、帮你降难度拆成更小的铺垫步骤练顺；卡片攒多了以后，还能顺着每张卡记下的「下次探讨」线索把同类题放一块比较归类，学透同一条底层方法。
+          对于连续多次卡在同一处的题目，系统会先暂停常规抽考循环，退一步拆出更小的前置铺垫卡帮你把基础补稳；积累多张同类卡片后，还可以顺着每张卡记录的「下次探讨」问题将它们放在一起对比归纳。
         </p>
       </div>
       <div class="act-specimen">
@@ -1123,11 +1129,11 @@ export function renderWorkbenchActs() {
 
             <div class="wf-review-receipt" data-rev-receipt>
               <div class="wf-receipt-head">
-                <span data-rev-badge class="wf-pill wf-pill--done">自己走通 · 升至 7 天档</span>
+                <span data-rev-badge class="wf-pill wf-pill--done">独立完成 · 升至 7 天档</span>
                 <code>目标卡片：导数隐零点代换-例4.md</code>
               </div>
-              <p data-rev-audit><strong>本次作答核对：</strong>没有借用中途点拨或拆步填空，独立写出了 x₀eˣ⁰ = a 整体消元和单调区间判断。</p>
-              <p data-rev-next class="wf-receipt-sub"><strong>下次探讨线索（延伸对比）：</strong>和上周《导数同构-例6》并排对比：同样碰到 ln x 与 eˣ，什么时候设隐零点、什么时候配同构？</p>
+              <p data-rev-audit><strong>本次作答记录：</strong>未借用中途提示或拆步填空，独立写出了 x₀eˣ⁰ = a 整体消元与单调区间判断过程。</p>
+              <p data-rev-next class="wf-receipt-sub"><strong>下次探讨问题（延伸对比）：</strong>与上周《导数同构-例6》放在一起比较：同样同时出现 ln x 与 eˣ，什么条件下适合设隐零点，什么条件下适合构造同构函数？</p>
             </div>
           </div>
         </div>
@@ -1146,7 +1152,7 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
         <strong>Notara 资源市集与学习社区</strong>
       </div>
       <div class="market-tabs" role="tablist" aria-label="资源市集与社区板块">
-        <button type="button" role="tab" class="market-tab" data-market-tab="scout" aria-selected="true">助手替你筛好贴 · 规划</button>
+        <button type="button" role="tab" class="market-tab" data-market-tab="scout" aria-selected="true">助手筛选公开资料 · 规划</button>
         <button type="button" role="tab" class="market-tab" data-market-tab="connectors" aria-selected="false">公开追更课程源</button>
         <button type="button" role="tab" class="market-tab" data-market-tab="packs" aria-selected="false">跨学科拓展包</button>
         <button type="button" role="tab" class="market-tab" data-market-tab="publish" aria-selected="false">学法与净本分享</button>
@@ -1166,7 +1172,7 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
               <span class="wf-pill wf-pill--warm">路线图规划中 · 后台静默收件不打断课堂</span>
             </div>
             <p class="market-scout-intro">
-              “昨晚趁你休息，按你的授权看完了 <code>#新高考导数</code> 和 <code>#线性代数微件</code> 讨论区（自动跳过 38 条只顾着焦虑宣泄的水帖），挑出两件正好接上你本周进度的好资料：”
+              “昨晚按你的授权浏览了 <code>#新高考导数</code> 与 <code>#线性代数微件</code> 公开讨论区，过滤掉与具体题目无关的情绪帖后，挑出两份与你本周学习进度直接衔接的资料：”
             </p>
 
             <div class="market-scout-items">
@@ -1192,21 +1198,21 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
 
           <div class="market-scout-pillars">
             <div class="market-scout-point">
-              <span class="pedagogy-stage-idx">01 · 天然防焦虑滤网</span>
-              <h4>挡掉考前吓人的水帖，只留下真能动手算的好题</h4>
-              <p>普通论坛一翻全是“今年太难完蛋了”的情绪帖。让带着你当前进度的学习助手去替你筛，标题党不起作用，也不用为了找几道新题平白把心态看崩。</p>
+              <span class="pedagogy-stage-idx">01 · 过滤无关情绪噪音</span>
+              <h4>减少自己翻论坛找题时的精力与心态消耗</h4>
+              <p>考前去公开社区搜题时，往往夹杂着大量制造紧张情绪的帖子。由了解你当前进度的学习助手按主题筛选，只把能够实际动笔练习的题目和讲义留下来供你查看。</p>
             </div>
 
             <div class="market-scout-point">
-              <span class="pedagogy-stage-idx">02 · 老师与同学们的公开手工作坊</span>
-              <h4>别人做好玩的互动图解和解题包，顺手就能收进书桌</h4>
-              <p>社区里分享的小互动页、精妙反例或者顺手的讲解包，既适合你自己直接点开看，也能让书房助手读懂后拿来给你讲题用。</p>
+              <span class="pedagogy-stage-idx">02 · 复用公开互动教具</span>
+              <h4>师生分享的可调参微件与反例卡可直接收入本地学习集</h4>
+              <p>公开源里分享的函数图像微件、典型反例卡和章节导读，既可以直接打开动手调整参数观察规律，也可以并入本地知识库供课堂讨论时调用。</p>
             </div>
 
             <div class="market-scout-point">
-              <span class="pedagogy-stage-idx">03 · 严守电脑里的隐私边界</span>
-              <h4>悄悄帮你看新帖，要往外发一定先给你把关</h4>
-              <p>助手去读公开论坛时碰不到你的私人文件，也不会乱弹窗打断你；如果想把整理好的资料发给别人，一定会在本地先清掉私人笔记，由你逐项看清确认再导出。</p>
+              <span class="pedagogy-stage-idx">03 · 严格的本地隐私边界</span>
+              <h4>读取公开源不触碰私人笔记，对外分享前先自动清理个人记录</h4>
+              <p>学习助手获取公开资料时不会上传你的本地文件；当你主动想把整理好的学习集分享给他人时，系统会先在本地剔除个人理解与复习记录，生成预览清单经你确认后再导出。</p>
             </div>
           </div>
         </div>
@@ -1302,14 +1308,14 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
       <div class="market-panel" data-market-panel="publish" hidden>
         <div class="market-publish-grid">
           <div class="market-publish-card">
-            <span class="wf-pill wf-pill--done">按需装载 · 权限严格隔开</span>
-            <h4>学习方法包与同桌 / 老师角色卡</h4>
-            <p>不管需要考后整卷复盘、考前 30 分钟抢救筛漏、跨学科拆题套路，还是合你脾气的同桌与导师档案，都可以从市集按需挑着用。资料包与脚本分开检查管理，下载下来绝对不会自己偷跑外部代码。</p>
+            <span class="wf-pill wf-pill--done">按需启用 · 权限分开管理</span>
+            <h4>学习方法包与同桌、老师角色档案</h4>
+            <p>无论是考后整卷复盘、考前 30 分钟盲区快筛，还是不同风格的同桌与老师设定，都可以按需要从市集中单独选取使用。资料包与可执行扩展分开管理，下载资料包不会自动执行外部脚本。</p>
           </div>
           <div class="market-publish-card">
-            <span class="wf-pill wf-pill--warm">预览确认 · 自动清除私人记录</span>
-            <h4>把你打磨好的笔记一键导出成「净本」送给别人</h4>
-            <p>期末考完啃下一门硬课后，可以把你整理顺了的知识图谱、章节导读和白板直接打包送给学弟学妹或传到市集。系统会自动抹去你私密的个人理解、日记与复习记录，给你逐项看一眼点同意再生成公开文件包。</p>
+            <span class="wf-pill wf-pill--warm">导出前预览 · 自动清除私人记录</span>
+            <h4>将整理好的学习集导出为不含私人笔记的「净本」</h4>
+            <p>课程结束后，如果你想把整理好的知识图谱、章节导读和白板分享给同学或发布到公开源，系统会自动清除其中的个人理解、日记与复习记录，供你逐项预览确认后生成「净本」压缩包。</p>
           </div>
         </div>
       </div>
