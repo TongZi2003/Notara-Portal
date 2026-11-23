@@ -271,31 +271,31 @@ function renderHome() {
           </p>
         </div>
 
-        <nav class="wf-overview-rail" aria-label="五大核心工作流速览">
+        <nav class="wf-overview-rail" aria-label="五大核心学习流程速览">
           <a class="wf-overview-step" href="#wf-graph">
             <span class="wf-overview-idx">01</span>
             <strong>会生长的知识图谱</strong>
-            <small>PDF / 错卷 / 笔记持续 Merge</small>
+            <small>课本、错卷与笔记连点成网，还能点亮回放</small>
           </a>
           <a class="wf-overview-step" href="#wf-agents">
             <span class="wf-overview-idx">02</span>
-            <strong>个人 Agent 协同编排</strong>
-            <small>主 Agent 统筹 · 专题课与后台工作员</small>
+            <strong>首页管家与专题课堂</strong>
+            <small>平时看全局节奏，专题课专注深挖一道题</small>
           </a>
           <a class="wf-overview-step" href="#wf-canvas">
             <span class="wf-overview-idx">03</span>
             <strong>可视化推演白板</strong>
-            <small>原生 .canvas 空间连线与框选</small>
+            <small>课本原图直接摆上桌，分步草稿并排对照</small>
           </a>
           <a class="wf-overview-step" href="#wf-personas">
             <span class="wf-overview-idx">04</span>
-            <strong>记得习惯的老师与同学</strong>
-            <small>同桌盲测 + 导师启发（试验功能）</small>
+            <strong>记得习惯的老师与同桌</strong>
+            <small>同桌盲听检验你会没会，老师按你的节奏点拨</small>
           </a>
           <a class="wf-overview-step" href="#wf-review">
             <span class="wf-overview-idx">05</span>
-            <strong>双轨制间隔复习</strong>
-            <small>独立升档轨 × 辅助短复查轨</small>
+            <strong>分清真会与看懂的复习</strong>
+            <small>自己做对才拉长间隔，靠提示过关次日短查</small>
           </a>
         </nav>
 
@@ -306,10 +306,10 @@ function renderHome() {
     <section class="chapter" id="sets">
       <div class="wrap">
         <div class="chapter-head chapter-head--wide">
-          <p class="section-rubric">源 · 资源市集与 AI 原生社区</p>
-          <h2>你只管安心看书，<span class="nowrap">让私人 Agent 替你去市集与论坛淘干货。</span></h2>
+          <p class="section-rubric">源 · 公开课程包与学习社区</p>
+          <h2>你只管安心看书，<span class="nowrap">让学习助手替你筛选真正有用的好题。</span></h2>
           <p>
-            备考时最怕自己泡进论坛找资料——干货还没捞着，先被满屏贩卖焦虑的水帖乱了阵脚。除了支持无损追更的课程包市集，我们正把社区从底层打造成面向个人 Agent 原生开放的知识网络：经你授权后，书房助教可以定时替你去刷论坛、盯紧大考后的真题变式，帮你挡在情绪噪音之外，只把契合当前进度的好题与微实验悄悄带回书桌。
+            备考时最怕自己泡进论坛找资料，干货还没捞着，先被满屏焦虑帖打乱节奏。书房内置可继续追更的学科课程包，也支持在你授权后让助手定时浏览公开讨论和考后新题，把情绪噪音挡在外面，只把贴合当前进度的好题与讲义摆回你的书桌。
           </p>
         </div>
 
@@ -376,8 +376,8 @@ function renderHome() {
             <p>你写下的所有理解、批注与白板，都是电脑文件夹里普通的 <code>.md</code> 与 <code>.canvas</code> 开放文档，不锁死在任何封闭云端——哪怕有一天卸载软件，用 Obsidian 或记事本照样完整打开。</p>
           </div>
           <div class="pledge-col">
-            <h3>开箱即用，也可自由接自己的模型</h3>
-            <p>既可以直接使用官方配置好的导学服务开箱即学，也支持免注册填入你自己的模型密钥（DeepSeek、Claude、OpenAI 等本机直连，不经中转，不赚一分差价）。</p>
+            <h3>自带模型密钥，免注册直接开课</h3>
+            <p>现阶段安装包免注册即可使用，在电脑本地填入你自己的 DeepSeek、Claude、OpenAI、Gemini 等 API 密钥或已有模型订阅即可开讲，请求由本机直连模型商，不经中转，也支持把拆分资料的日常任务交给更省费用的模型。</p>
           </div>
           <div class="pledge-col">
             <h3>安静克制，绝不制造焦虑</h3>
@@ -612,26 +612,26 @@ function renderGuide(currentPath = '/guide/') {
   const body = `
     <div class="wrap">
       <header class="page-header">
-        <p class="section-rubric">桌面书房获取与上手</p>
-        <h1>一间安放在你电脑里的长期书房。</h1>
+        <p class="section-rubric">Beta 2 桌面书房获取与上手</p>
+        <h1>把课本、笔记与错题，放进一间安在电脑里的长期书房。</h1>
         <p>
-          安装后既可在「资源市集」订阅各学科课程包与开源实验源，也可随时拖入你自己的课本讲义与错题，自由选择官方导学连接或自带模型密钥。
+          现阶段为公开测试期（Beta 2 · v0.1.0-preview.10），下载后无需注册账号，填入你自己的模型密钥即可开课。你可以先从免费公开学科包起步，也可以随时拖入学校讲义、试卷和随堂笔记慢慢整理。
         </p>
       </header>
 
       <section id="download">
         <div class="download-grid">
           <div class="download-card download-card--featured">
-            <span class="download-card-tag">Windows · 10 / 11 (64-bit) · 首轮内测开放下载</span>
+            <span class="download-card-tag">Windows · 10 / 11 (64-bit) · Beta 2 开放下载</span>
             <h2>Notara 桌面端 for Windows</h2>
-            <p>支持 Windows 10 / 11（x64）。独立安装包内置运行环境、PDF 渲染、离线公式字体与开放起步学习集；所有个人卡片与白板均以标准 <code>.md</code> / <code>.canvas</code> 留在本地，升级与课程包更新绝不覆盖个人笔记。</p>
+            <p>支持 Windows 10 / 11（64 位）。安装包自带运行环境、高清看卷与离线公式排版；你建的所有卡片、白板与学习进度全保存在本机文件夹里，版本升级绝不覆盖个人笔记。</p>
             <div class="download-card-actions">
               <a class="btn-primary" href="${WIN_INSTALLER_URL}" rel="noopener" data-download-win>下载 Windows 安装包（.exe · ${WIN_INSTALLER_SIZE_LABEL}）</a>
-              <a class="btn-quiet" href="${WIN_RELEASE_PAGE_URL}" target="_blank" rel="noopener">版本说明与附件清单 ↗</a>
+              <a class="btn-quiet" href="${WIN_RELEASE_PAGE_URL}" target="_blank" rel="noopener">Beta 2 更新清单与附件 ↗</a>
             </div>
             <div class="download-meta-box">
               <div class="download-meta-file">
-                <span>当前内测版本：<strong>${WIN_INSTALLER_VERSION}</strong></span>
+                <span>当前测试版本：<strong>${WIN_INSTALLER_VERSION}（Beta 2）</strong></span>
                 <code>${WIN_INSTALLER_FILENAME}</code>
               </div>
               <div class="download-sha-row">
@@ -644,16 +644,16 @@ function renderGuide(currentPath = '/guide/') {
           </div>
 
           <div class="download-card download-card--featured">
-            <span class="download-card-tag">macOS · Apple Silicon (M1–M4) · 首轮内测开放下载</span>
+            <span class="download-card-tag">macOS · Apple Silicon (M1–M4) · Beta 2 开放下载</span>
             <h2>Notara 桌面端 for macOS</h2>
-            <p>支持 macOS 13 及以上（Apple Silicon M1–M4）。内置运行环境、PDF 渲染、离线公式字体与开放起步学习集；Intel Mac 用户可先免登录体验 <a href="/first-lesson/" style="color:var(--umber-deep);text-decoration:underline;">1:1 在线实景课堂</a>。</p>
+            <p>支持 macOS 13 及以上（Apple Silicon M1–M4 芯片）。内置全套看卷渲染与离线字体；暂时使用 Intel Mac 或还没准备下载的同学，可先免登录体验 <a href="/first-lesson/" style="color:var(--umber-deep);text-decoration:underline;">1:1 在线实景课堂</a>。</p>
             <div class="download-card-actions">
               <a class="btn-primary" href="${MAC_INSTALLER_URL}" rel="noopener" data-download-mac>下载 macOS 安装包（.dmg · ${MAC_INSTALLER_SIZE_LABEL}）</a>
-              <a class="btn-quiet" href="${WIN_RELEASE_PAGE_URL}" target="_blank" rel="noopener">版本说明与附件清单 ↗</a>
+              <a class="btn-quiet" href="${WIN_RELEASE_PAGE_URL}" target="_blank" rel="noopener">Beta 2 更新清单与附件 ↗</a>
             </div>
             <div class="download-meta-box">
               <div class="download-meta-file">
-                <span>当前内测版本：<strong>${MAC_INSTALLER_VERSION}</strong></span>
+                <span>当前测试版本：<strong>${MAC_INSTALLER_VERSION}（Beta 2）</strong></span>
                 <code>${MAC_INSTALLER_FILENAME}</code>
               </div>
               <div class="download-sha-row">
@@ -666,23 +666,44 @@ function renderGuide(currentPath = '/guide/') {
           </div>
         </div>
 
-        <div class="install-notes-sheet">
+        <div class="install-notes-sheet" style="margin-bottom:24px;">
           <div class="install-notes-head">
-            <h3>内测安装与 BYOK 快速排障须知</h3>
-            <span>面向首轮 macOS (Apple Silicon) 与 Windows (x64) BYOK 内测用户</span>
+            <h3>Beta 2（v0.1.0-preview.10）新变化一览</h3>
+            <span>看得见的真实学习进步，再加上更清晰的师生协同</span>
           </div>
           <div class="install-notes-grid">
             <div class="install-note-item">
-              <h4>1. 首次启动系统安全放行（macOS / Windows）</h4>
-              <p><strong>macOS</strong>：将 <code>Notara.app</code> 拖入「应用程序」后，若提示“未打开 / 无法验证开发者”，在终端运行 <code>xattr -cr /Applications/Notara.app</code>（或到「系统设置 → 隐私与安全性」底部点「仍要打开」）即可启动。<br><strong>Windows</strong>：若弹出 SmartScreen「Windows 已保护你的电脑」，核对 SHA-256 后点击「更多信息 → 仍要运行」。</p>
+              <h4>1. 统计页、12 周热力图与书房足迹</h4>
+              <p>书房首页与每科的「统计」视图只认真实笔记与复习日期：一眼看清近 12 周实际学了几天、哪些卡片已稳步拉长间隔、哪些容易卡壳需要重温，以及未来 7 天即将到期的复习量。</p>
             </div>
             <div class="install-note-item">
-              <h4>2. 免注册 BYOK 与视觉模型提示</h4>
-              <p>打开后在引导框直接填入自有 API Key（DeepSeek / OpenAI / Anthropic / Gemini 等）即可开课，无需注册账号；若需拆解带配图或手写扫描 PDF，请在「设置 → 模型连接 / 工作员算力」为<strong>拆书整理师</strong>与<strong>分片建卡员</strong>选配带有「视觉」标识的多模态模型。</p>
+              <h4>2. 知识星图按日期点亮回放</h4>
+              <p>打开星图点击「回放」并拖动日期滑块，能亲眼看见学过的知识点按时间一个个亮起来、卡片间的联系从虚线接成实线；下课后在后台刚整理出的新卡片，也会在标签上轻轻亮出 <code>+N</code> 提示。</p>
             </div>
             <div class="install-note-item">
-              <h4>3. 一键导出脱敏诊断与反馈</h4>
-              <p>若遇界面卡住或拆书异常，请在「设置 → 外观与常用连接 → 问题反馈与诊断」点击<strong>「导出脱敏诊断」</strong>（自动过滤 API Key 与个人笔记正文），将 JSON 报告发回内测群或 <a href="${DESKTOP_ISSUES_URL}" target="_blank" rel="noopener">桌面版 Issues ↗</a>。</p>
+              <h4>3. 一套备课课表、自由旁听与轻量上手</h4>
+              <p>不管按导入的课程讲义一步步推进，还是突然想自由问一道题、临时换个方向拆解，课堂都会顺着你的思路记下真实理解变化，再接回长期学习轨迹，不用担心切来切去把记录搞散。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="install-notes-sheet">
+          <div class="install-notes-head">
+            <h3>安装放行、接模型与省钱攻略</h3>
+            <span>面向 Beta 2 免注册自带模型用户（macOS Apple Silicon / Windows 64 位）</span>
+          </div>
+          <div class="install-notes-grid">
+            <div class="install-note-item">
+              <h4>1. 首次打开遇到系统拦截怎么放行</h4>
+              <p><strong>macOS</strong>：把 <code>Notara.app</code> 拖进「应用程序」后，若提示“未打开 / 无法验证开发者”，在终端粘贴运行 <code>xattr -cr /Applications/Notara.app</code>（或到「系统设置 → 隐私与安全性」底部点「仍要打开」）即可启动。<br><strong>Windows</strong>：若出现 SmartScreen「Windows 已保护你的电脑」，核对 SHA-256 后点「更多信息 → 仍要运行」。</p>
+            </div>
+            <div class="install-note-item">
+              <h4>2. 怎么接模型更省钱又够用</h4>
+              <p>现阶段官方账号体系还在完善中，打开客户端后在引导页填入你自己的 API 密钥（如 DeepSeek、Claude、OpenAI、Gemini 等）或已有模型订阅就能直接学。建议日常讲课选顺手的主力模型，而批量整理 PDF 与建卡的「拆书整理师 / 分片建卡员」可换用更平价、带「视觉」标识的多模态模型，成本能省下大半。</p>
+            </div>
+            <div class="install-note-item">
+              <h4>3. 遇到卡顿或报错如何一键反馈</h4>
+              <p>若界面偶发卡住或识别出错，请在「设置 → 外观与常用连接 → 问题反馈与诊断」点<strong>「导出脱敏诊断」</strong>（会自动去掉 API 密钥和你的笔记原文），把生成的 JSON 文件发到内测群或 <a href="${DESKTOP_ISSUES_URL}" target="_blank" rel="noopener">桌面版 Issues ↗</a>。</p>
             </div>
           </div>
         </div>
@@ -690,30 +711,30 @@ function renderGuide(currentPath = '/guide/') {
 
       <section class="chapter" style="padding-top:12px;border-top:0;">
         <div class="chapter-head" style="margin-bottom:28px;">
-          <p class="section-rubric">三步跑通核心工作流</p>
-          <h2>无需折腾复杂配置，五分钟开启<span class="nowrap">第一节推演课。</span></h2>
+          <p class="section-rubric">三步跑通第一节课</p>
+          <h2>不用复杂折腾，五分钟搭好你的<span class="nowrap">专属电子书房。</span></h2>
         </div>
 
         <div class="ledger">
           <div class="ledger-row">
             <div class="ledger-num">01</div>
-            <h3>挑一卷公开标杆，或把异构资料 Merge 入图谱</h3>
+            <h3>选一套免费起步学习集，或拖进自己的讲义和错卷</h3>
             <div class="ledger-body">
-              <p>首次打开空学习集时，可从书架一键铺开高中导数、离子平衡或大学高数、线代等公开标杆；也可以直接把学校的 PDF 讲义、错题卷或随堂笔记拖进来，持续融合进同一张会生长的知识图谱。</p>
+              <p>第一次建空学习集时，可以直接从书架挑高中或大学公开示例目录（导数、离子平衡、高数、线代等），也可以直接把学校 PDF 讲义、试卷截图和随堂笔记拖进桌面，系统会自动把它们串联进同一张星图里。</p>
             </div>
           </div>
           <div class="ledger-row">
             <div class="ledger-num">02</div>
-            <h3>为统一主 Agent 与后台工作员接好模型</h3>
+            <h3>填入自己的模型密钥，为讲课与整理分工选模型</h3>
             <div class="ledger-body">
-              <p>想省心可直接登录使用官方导学连接；已有 DeepSeek、Claude、OpenAI 等 API Key 或原生订阅的同学，无需注册账号即可本机直连——首页统筹主 Agent、专题课堂与五类后台工作员还能分别指定最合适的模型。</p>
+              <p>免注册打开即用，输入你现有的 DeepSeek、Claude、OpenAI 或 Gemini 密钥，或者使用支持的模型订阅账号就能本机直连；首页管全局的助手、专题课堂和后台负责拆书、核对的帮手，可以各自绑定最划算的模型。</p>
             </div>
           </div>
           <div class="ledger-row" id="access">
             <div class="ledger-num">03</div>
-            <h3>白板推演、师友交手，再按双轨排期沉淀</h3>
+            <h3>摆上白板边画边聊，练完再按真实水平排复习</h3>
             <div class="ledger-body">
-              <p>在 <code>.canvas</code> 白板上摊开原卷切片与分支推导，卡壳时体验记得你习惯的导师启发（试验功能），学通后切换「同桌盲测」讲给看不见解析的同学听；收尾按独立提取与提示辅助双轨排布间隔复习，稳扎稳打内化。</p>
+              <p>在推演白板上并排贴出课本截图与解题草稿，思路卡壳时让熟悉你习惯的老师点拨一两句，讲顺了换到看不见答案的「同桌盲测」里讲给她听；最后系统会看你是否真靠自己做出来，合理安排下次复查时间。</p>
             </div>
           </div>
         </div>

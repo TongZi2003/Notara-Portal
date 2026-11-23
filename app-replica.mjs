@@ -186,8 +186,8 @@ function renderCanvasBoard(scene) {
   const [n0, n1, n2] = scene.canvasNodes;
   return `<div class="pa-replica-canvas-surface">
     <div class="wf-canvas-toolbar">
-      <span>原生 JSON Canvas 1.0（<code>${esc(scene.boardShort)}</code>）</span>
-      <span>支持 PDF 区域零拷贝嵌入 · 父子分支共享 · 节点 Diff</span>
+      <span>推演白板（<code>${esc(scene.boardShort)}</code>）</span>
+      <span>支持课本区域直接框选上板 · 分支推演并排对照</span>
     </div>
     <div class="wf-canvas-stage">
       <div class="pa-replica-canvas-node wf-canvas-root">
@@ -684,44 +684,44 @@ export function renderWorkbenchActs() {
       <div class="act-copy">
         <div class="act-meta-line">
           <span class="act-num">01 · 会生长的知识图谱</span>
-          <span class="wf-tag">多源异构资料持续 Merge</span>
+          <span class="wf-tag">多份资料并成同一张网</span>
         </div>
-        <h3>课本 PDF、错题卷与随堂笔记持续合流，长成同一张活图谱。</h3>
+        <h3>课本 PDF、错题卷与随堂笔记放在一起，慢慢长成同一张活图谱。</h3>
         <p>
-          拖进来的教材 PDF、拍下的月考错题卷和手写笔记，都会与你的已有笔记逐一比对、融合入图（<strong>Merge</strong>）：相同考点并入原有卡片并补全出处，条件改动的变式题保留完整上下文、回链母题，全新概念则单独建卡，不再留下一地散乱的文件和看过就沉底的长聊天记录。
+          拖进来的教材 PDF、拍下的月考错题卷和手写笔记，都会先和你的已有笔记逐一比对，再放进同一张网里：考同一个知识点的题并回老卡片并补全出处，换了条件的新变式题保留完整题干、连回母题，全新概念则单独建新卡片，再也不会留下一堆找不着的零散文件和沉底聊天记录。
         </p>
         <p>
-          新合入的资料先以<strong>浅色虚线</strong>铺开底图；只有你亲自推通、写进「我的理解」的关联才会点亮成<strong>实线</strong>。阶段复盘时，散落各章的局部技巧还能进一步收束提炼成高阶中枢卡。
+          新放进来的资料先用<strong>浅色虚线</strong>摆出骨架；只有等你亲手推通、写下「我的理解」之后，连线与节点才会真正<strong>点亮</strong>接成实线，还能按日期一步步回放图谱亮起来的过程。阶段复盘时，散在各章的零碎技巧也能收束整理成一篇规律总结卡。
         </p>
       </div>
       <div class="act-specimen">
         <div class="specimen-window">
           <div class="specimen-bar">
             <span style="display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--pa-ink);">
-              ${icons.file}<span>资料 · 图谱视图（多源资料持续 Merge）</span>
+              ${icons.file}<span>资料 · 知识图谱（多份资料自动整理串联）</span>
             </span>
-            <span style="font-size:11.5px;color:var(--pa-ink-muted);">虚线 = 资料关联 · 实线 = 亲证打通</span>
+            <span style="font-size:11.5px;color:var(--pa-ink-muted);">虚线 = 刚添入待巩固 · 实线 = 自己推通</span>
           </div>
           <div class="specimen-body" style="display:flex;flex-direction:column;gap:11px;">
-            <div class="wf-merge-feed" aria-label="异构资料合入队列">
+            <div class="wf-merge-feed" aria-label="多份资料并入图谱示例">
               <div class="wf-merge-item">
                 <span class="wf-merge-src">${icons.paperclip}<span>一轮导数讲义.pdf · P3 框选</span></span>
                 <span class="wf-merge-arrow">→</span>
-                <span class="wf-merge-dst">合入母卡 <code>[[切线放缩核心母题]]</code> 补齐来源</span>
+                <span class="wf-merge-dst">并入老卡片 <code>[[切线放缩核心母题]]</code> 补齐出处</span>
               </div>
               <div class="wf-merge-item">
                 <span class="wf-merge-src">${icons.file}<span>十月联考卷.pdf · 第 21 题</span></span>
                 <span class="wf-merge-arrow">→</span>
-                <span class="wf-merge-dst">新建变式卡并双链挂接 <code>[[极值点偏移]]</code></span>
+                <span class="wf-merge-dst">新建变式卡并连回 <code>[[极值点偏移]]</code></span>
               </div>
               <div class="wf-merge-item">
                 <span class="wf-merge-src">${icons.edit}<span>课堂随笔-泰勒余项.md</span></span>
                 <span class="wf-merge-arrow">→</span>
-                <span class="wf-merge-dst">阶段收敛提炼中枢 <code>[[多项式逼近与单侧界]]</code></span>
+                <span class="wf-merge-dst">阶段复盘整理成总结卡 <code>[[多项式逼近与单侧界]]</code></span>
               </div>
             </div>
 
-            <svg class="canvas-svg" viewBox="0 0 540 176" role="img" aria-label="多源资料合入后的虚实双线知识图谱">
+            <svg class="canvas-svg" viewBox="0 0 540 176" role="img" aria-label="多份资料串联后的虚实双线知识图谱">
               <rect x="0.5" y="0.5" width="539" height="175" rx="8" fill="#fdfbf7" stroke="#dfd7c8"/>
               <!-- Solid student-verified links -->
               <line x1="258" y1="88" x2="112" y2="44" stroke="#7d5c46" stroke-width="2.1"/>
@@ -737,7 +737,7 @@ export function renderWorkbenchActs() {
               <g>
                 <circle cx="258" cy="88" r="11" fill="#f3ebe1" stroke="#7d5c46" stroke-width="1.8"/>
                 <circle cx="258" cy="88" r="5.5" fill="#7d5c46"/>
-                <text x="258" y="67" text-anchor="middle" font-size="11" font-weight="600" fill="#26211c">多项式逼近与单侧界 (中枢)</text>
+                <text x="258" y="67" text-anchor="middle" font-size="11" font-weight="600" fill="#26211c">多项式逼近与单侧界 (总结)</text>
               </g>
               <!-- Mastered Solid Nodes -->
               <g>
@@ -755,7 +755,7 @@ export function renderWorkbenchActs() {
               <!-- Newly Merged Unlit Nodes -->
               <g>
                 <circle cx="424" cy="42" r="6" fill="#fdfbf7" stroke="#8b735f" stroke-width="1.7"/>
-                <text x="424" y="25" text-anchor="middle" font-size="10.5" fill="#6c6358">联考 T21·极值点偏移 (新合入)</text>
+                <text x="424" y="25" text-anchor="middle" font-size="10.5" fill="#6c6358">联考 T21·极值点偏移 (新加入)</text>
               </g>
               <g>
                 <circle cx="436" cy="124" r="6" fill="#fdfbf7" stroke="#8b735f" stroke-width="1.7"/>
@@ -767,19 +767,19 @@ export function renderWorkbenchActs() {
       </div>
     </article>
 
-    <!-- Core Workflow 02: Assistant-Centric Personal Multi-Agent Orchestration -->
+    <!-- Core Workflow 02: Home Assistant + Focused Classrooms + Background Helpers -->
     <article class="act-row" id="wf-agents">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">02 · 助手化的个人 Agent 编排</span>
-          <span class="wf-tag">统一对话主 Agent + 专题/工作从 Agent</span>
+          <span class="act-num">02 · 首页管家与专题课堂分工</span>
+          <span class="wf-tag">首页看全盘 · 专题课深挖 · 后台跑繁杂活</span>
         </div>
-        <h3>一个主 Agent 统筹对话，专题课堂与后台工作员各司其职。</h3>
+        <h3>平时一个学习管家陪你看全盘，遇到硬骨头再单开专题课与后台帮手。</h3>
         <p>
-          不必在十几个零碎对话窗口之间手动搬运上下文。每个学习集常驻一位<strong>统一对话主 Agent（首页学习助手）</strong>，由它记住你的整体进度、统筹学习路线并对接日常提问——你只需要在一个入口说明想法。
+          不用在十几个零散对话窗口之间来回复制粘贴。每个学习集都住着一位常驻的<strong>首页学习助手</strong>，平时帮你看着整体进度、提醒该复习什么，有临时想问的小问题或新想法，从这一个入口开口就行。
         </p>
         <p>
-          遇到需要深挖的难题或整卷拆解时，主 Agent 会把重活分派出去：一边开启独立标签页里的<strong>专题课堂从 Agent</strong> 陪你专注推演，一边调动最多五路并发的<strong>后台工作员</strong>，分别选用合适的模型去拆卷、独立盲算、比对旧卡或拟出变式题。任务结束后，只把精炼的结论回传到首页主线，对话永远清爽不臃肿。
+          遇到要死磕的大题或整份考卷时，首页助手会把重活分出去：一边单开标签页里的<strong>专题课堂</strong>陪你专注推演，一边派最多五位<strong>后台帮手</strong>按不同任务选用省钱或强推理模型去剪卷归档、遮住答案先验算、对比老笔记。下课后只把简洁结论捎回首页，聊天页面永远干干净净。
         </p>
       </div>
       <div class="act-specimen">
@@ -787,14 +787,14 @@ export function renderWorkbenchActs() {
           <div class="specimen-bar wf-agent-tabbar">
             <span class="wf-agent-tab wf-agent-tab--active">
               <span class="wf-dot wf-dot--solid"></span>
-              <span>首页学习助手 · 主 Agent</span>
+              <span>首页学习助手 · 总管</span>
             </span>
             <span class="wf-agent-tab">
               <span class="wf-dot wf-dot--pulse"></span>
-              <span>专题课：联考 T21 隐零点 · 从 Agent</span>
+              <span>专题课：联考 T21 隐零点</span>
             </span>
             <span class="wf-agent-tab">
-              <span>工作员记录 (2)</span>
+              <span>帮手记录 (2)</span>
             </span>
           </div>
           <div class="specimen-body" style="display:flex;flex-direction:column;gap:10px;">
@@ -805,8 +805,8 @@ export function renderWorkbenchActs() {
             <div class="wf-coord-box">
               <div class="wf-coord-head">
                 ${renderPixelAvatar('notara-coordinator.png', 24)}
-                <strong>星野 · 统一对话主 Agent</strong>
-                <span>按 L0 → L1 调取导数进度并分派子任务</span>
+                <strong>星野 · 首页学习助手</strong>
+                <span>翻看近期导数进度并分派后台任务</span>
               </div>
 
               <div class="wf-subagent-list">
@@ -814,10 +814,10 @@ export function renderWorkbenchActs() {
                   ${renderPixelAvatar('worker-general.png', 24)}
                   <div class="wf-subagent-main">
                     <div class="wf-subagent-title">
-                      <strong>工作员从 Agent · 分片整理 (general)</strong>
-                      <span class="wf-pill wf-pill--done">轻量模型 · 已合入 2 卡</span>
+                      <strong>后台帮手 · 拆卷归档员</strong>
+                      <span class="wf-pill wf-pill--done">轻量模型 · 已并入 2 卡</span>
                     </div>
-                    <p>提取 T20、T21 原卷零拷贝框选区域，比对既有母卡完成双链归档。</p>
+                    <p>记下 T20、T21 在原卷框选出的页码与位置，对照老卡片完成连线归档。</p>
                   </div>
                 </div>
 
@@ -825,10 +825,10 @@ export function renderWorkbenchActs() {
                   ${renderPixelAvatar('worker-problem.png', 24)}
                   <div class="wf-subagent-main">
                     <div class="wf-subagent-title">
-                      <strong>工作员从 Agent · 独立盲算 (problem)</strong>
-                      <span class="wf-pill wf-pill--done">推理模型 · 盲算已核验</span>
+                      <strong>后台帮手 · 独立盲算员</strong>
+                      <span class="wf-pill wf-pill--done">推理模型 · 独立验算完毕</span>
                     </div>
-                    <p>隔离参考答案独立验算：确认 a &gt; 1 时直接参变分离求导失效，需走隐零点代换。</p>
+                    <p>遮住解析先自己算一遍：确认 a &gt; 1 时直接分离参数走不通，需要改用隐零点代换。</p>
                   </div>
                 </div>
 
@@ -836,16 +836,16 @@ export function renderWorkbenchActs() {
                   ${renderPixelAvatar('teacher-shirakawa.png', 24)}
                   <div class="wf-subagent-main">
                     <div class="wf-subagent-title">
-                      <strong>专题课堂从 Agent · 单课深潜 (classroom)</strong>
+                      <strong>专题课堂 · 专注拆解这一题</strong>
                       <span class="wf-pill wf-pill--warm">独立标签进行中</span>
                     </div>
-                    <p>已为你建好《联考 T21 · 为何参变分离失效》专题课；推演结束后自动回传结论摘要。</p>
+                    <p>已为你建好《联考 T21 · 为何不能直接分离参数》专题课；下课后自动把结论捎回首页。</p>
                   </div>
                 </div>
               </div>
 
               <div class="wf-handoff-receipt">
-                <span>↩ 结课回传：</span>专题课结束后自动向首页主 Agent 汇报关键突破与待复查点，不把满屏中间草稿塞回主线。
+                <span>↩ 课后回报：</span>专题课结束后只把关键突破和后续复习点递回首页助手，不拿满屏中间草稿把主页面刷乱。
               </div>
             </div>
           </div>
@@ -853,19 +853,19 @@ export function renderWorkbenchActs() {
       </div>
     </article>
 
-    <!-- Core Workflow 03: Visual Spatial Whiteboard (.canvas) -->
+    <!-- Core Workflow 03: Visual Spatial Whiteboard -->
     <article class="act-row" id="wf-canvas">
       <div class="act-copy">
         <div class="act-meta-line">
           <span class="act-num">03 · 可视化的空间推演白板</span>
-          <span class="wf-tag">原生 JSON Canvas 1.0</span>
+          <span class="wf-tag">原题直接贴上板 · 几路解法并排摆开</span>
         </div>
-        <h3>跳出狭窄的单列气泡，在空间白板上把原题、图像与分支铺开连线。</h3>
+        <h3>跳出窄窄的聊天框，在白板上把原题、图像与几种证法摆在一起看。</h3>
         <p>
-          复杂的多步变形、分类讨论与几何辅助线，全塞在单列聊天流里，往回翻两屏就容易丢掉全局。书房内置开放标准的 <code>.canvas</code> 白板：你可以把 <strong>PDF 原题框选区域直接零拷贝钉上画布</strong>（点击即可跳回原书页码），再把各路推导分支、函数图像与关键步填空（<code>flow</code>）并排连线对照。
+          遇到多步变形、分类讨论和几何辅助线，全挤在单列聊天气泡里，往上翻两屏就容易忘掉前面设的条件。书房内置开放格式的电子白板：你可以<strong>把 PDF 试卷或课本上的那一块直接框出来贴上白板</strong>（点一下就能跳回原书那一页），再把几种思路分支、函数草图和关键步骤自检卡片并排连线。
         </p>
         <p>
-          当你从任意历史节点开出分支（Fork）、尝试第二种证法时，父子课堂既可以共享同一块白板同步推演，也可以另起一块空白画布，还能通过节点级 Diff 看清每一步改了什么。
+          聊到某一步如果想倒回去重开一条新思路、换另一种证法试试，新分出来的课堂既可以和原先那一版共用同一块白板接力修改，也可以另外新建一张空白白板，还能对照前后两次具体增改了哪几个框。
         </p>
       </div>
       <div class="act-specimen">
@@ -874,13 +874,13 @@ export function renderWorkbenchActs() {
             <span style="display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--pa-ink);">
               ${icons.canvas}<span>含参零点分类讨论.canvas</span>
             </span>
-            <span style="font-size:11.5px;color:var(--pa-ink-muted);">PDF 零拷贝回跳 · 分支共享 · 交互挖空</span>
+            <span style="font-size:11.5px;color:var(--pa-ink-muted);">原卷跳链 · 分支共用白板 · 关键步小测</span>
           </div>
           <div class="pa-replica-canvas-surface wf-canvas-demo" data-canvas-flow>
             <div class="wf-spatial-board">
               <div class="wf-spatial-left">
                 <div class="pa-replica-canvas-node">
-                  <div class="pa-replica-canvas-node-head">PDF 零拷贝摘录 · 讲义 P4</div>
+                  <div class="pa-replica-canvas-node-head">原题框选贴板 · 讲义 P4</div>
                   <div class="pa-replica-canvas-node-body">${renderMdWithMath('讨论 $f(x)=e^x - ax - 1$ 的零点个数（$a \\in \\mathbb{R}$）。')}</div>
                   <div class="wf-canvas-pdf-tag">${icons.file}<span>点击直跳 PDF 第 4 页原选区</span></div>
                 </div>
@@ -914,7 +914,7 @@ export function renderWorkbenchActs() {
                 </div>
 
                 <div class="pa-replica-canvas-node wf-flow-node">
-                  <div class="pa-replica-canvas-node-head">分支 B · a &gt; 0（白板 flow 关键步自检）</div>
+                  <div class="pa-replica-canvas-node-head">分支 B · a &gt; 0（白板小测自检）</div>
                   <div class="pa-replica-canvas-node-body">
                     ${renderMdWithMath('驻点 $x_0=\\ln a$。当 $a > 1$ 时极小值 $f(\\ln a) = a(1-\\ln a)-1$ 的符号为：')}
                   </div>
@@ -931,38 +931,38 @@ export function renderWorkbenchActs() {
       </div>
     </article>
 
-    <!-- Core Workflow 04: Habit-Aware Mentors & Peers (Teacher explicitly marked Experimental) -->
+    <!-- Core Workflow 04: Habit-Aware Mentors & Blind-Test Peers -->
     <article class="act-row" id="wf-personas">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">04 · 记得习惯的老师与同学</span>
-          <span class="wf-tag wf-tag--beta">教师角色与连贯备课 · 试验功能</span>
+          <span class="act-num">04 · 记得习惯的老师与同桌</span>
+          <span class="wf-tag wf-tag--beta">同桌盲测过关 + 按你习惯启发点拨</span>
         </div>
-        <h3>记得你常在哪里跳步的师友，不再每次都从零认识你。</h3>
+        <h3>记得你平时总在哪里顺手跳步的师友，不用每节课从头认识。</h3>
         <p>
-          依托透明开放的<strong>多尺度本地记忆</strong>（<code>L0 全局习惯 → L1 专题快照 → L2 单题演进</code>），你偏爱先看几何还是先推代数、曾跨过哪些旧坑、近期在哪类变形上容易跳步，都明明白白存在你随时可读可改的本地 Markdown 里。
+          你更习惯先画图像还是先推公式、过去踩过哪些坑、最近哪类变形容易一口气写太快，全都明明白白写在你电脑里自己能打开修改的普通笔记中。新开一节课时，老师只翻看跟当下有关的那几行，既连贯又干净。
         </p>
         <p>
-          觉得学懂了，可以请出<strong>同桌同学开启「费曼盲测」</strong>——系统会彻底屏蔽参考解析与历史剧透，全靠你把逻辑一步步讲给对方听懂；需要点拨时，也能体验<strong>个性化教师角色与连贯授课（试验功能）</strong>，在你习以为常的跳步处及时拦住反问。
+          感觉某一题真想明白了，可以请出<strong>同桌开启「费曼盲测」</strong>：系统会替他完全挡住参考解析与历史聊天，全靠你从头到尾讲到他听懂为止。平时做题卡住或滑向老毛病时，也能切给了解你习惯的<strong>启发老师</strong>，就在你最易漏条件的那一步及时叫住反问。
         </p>
       </div>
       <div class="act-specimen">
         <div class="specimen-window">
           <div class="specimen-bar">
             <span style="display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--pa-ink);">
-              ${icons.memBook}<span>本地多尺度习惯记忆 · 同桌盲测与导师席位</span>
+              ${icons.memBook}<span>本地学习习惯笔记 · 同桌盲测与启发老师</span>
             </span>
-            <span style="font-size:11.5px;color:var(--pa-ink-muted);">角色/*.md 本地透明可编辑</span>
+            <span style="font-size:11.5px;color:var(--pa-ink-muted);">角色档案全以普通笔记存本地，随时可看可改</span>
           </div>
           <div class="specimen-body" style="display:flex;flex-direction:column;gap:10px;">
             <div class="wf-mem-snapshot">
               <div class="wf-mem-head">
-                <span>L0 / L1 习惯快照（学生资料.md &amp; 导数导读.md）</span>
-                <span>按需翻阅 · 不全库盲扫</span>
+                <span>习惯与卡点记录（来自学生档案与导数导读）</span>
+                <span>按需参考 · 只读当下需要的内容</span>
               </div>
               <ul class="mem-excerpt-list">
-                <li><strong>已跨越里程碑（10-10）：</strong>含参二次项现已形成先验 <code>a = 0</code> 退化情形的自觉。</li>
-                <li><strong>近期活跃惯性（10-16）：</strong>遇到 <code>ln x</code> 与 <code>eˣ</code> 同台时易硬解超越方程，需留意整体代换。</li>
+                <li><strong>已跨过的小坑（10-10）：</strong>遇到含参二次项时，现在已经能主动先查 <code>a = 0</code> 退化情况。</li>
+                <li><strong>近期常见惯性（10-16）：</strong>看到 <code>ln x</code> 和 <code>eˣ</code> 同时出现时容易硬求反函数，需要提醒先整体代换。</li>
               </ul>
             </div>
 
@@ -972,10 +972,10 @@ export function renderWorkbenchActs() {
                   ${renderPixelAvatar('companion-deepseek.png', 26)}
                   <div>
                     <div class="persona-roster-name">同桌盲测 · 大肥鱼</div>
-                    <span class="wf-badge-inline">稳定核心 · 物理屏蔽解析与剧透</span>
+                    <span class="wf-badge-inline">完全遮蔽答案 · 你讲透才算过</span>
                   </div>
                 </div>
-                <p class="wf-role-quote">“我这儿可没答案啊！你刚讲 a &gt; 1 时左边必有一个负根，可 x 往负无穷走的时候 eˣ 趋近 0，你是怎么保住 f(x) 重新大于 0 的？补一行给我看？”</p>
+                <p class="wf-role-quote">“我这儿可没答案。你刚说 a &gt; 1 时左边一定有一个负根，可 x 往负无穷走的时候 eˣ 越来越小，你是怎么保证 f(x) 还会变回正数的？补一行给我看？”</p>
               </div>
 
               <div class="wf-role-card wf-role-card--teacher">
@@ -983,10 +983,10 @@ export function renderWorkbenchActs() {
                   ${renderPixelAvatar('teacher-shirakawa.png', 26)}
                   <div>
                     <div class="persona-roster-name">启发导师 · 白川 / 夜久</div>
-                    <span class="wf-badge-inline wf-badge-inline--beta">试验功能 · 个性化教师与连贯授课</span>
+                    <span class="wf-badge-inline wf-badge-inline--beta">记得你的习惯 · 在易滑步处先叫停</span>
                   </div>
                 </div>
-                <p class="wf-role-quote">“先停笔——上周你在例 4 硬解 ln x₀ + x₀ = 0 绕进了死胡同。今天看到 eˣ⁰ = a，别急着反求 x₀，看看原式里的 eˣ⁰ 能不能整体换掉？”</p>
+                <p class="wf-role-quote">“先停笔，上周你在例 4 硬解 ln x₀ + x₀ = 0 绕进死胡同了。今天看见 eˣ⁰ = a，别急着反求 x₀，先看看原来式子里的 eˣ⁰ 能不能直接换掉？”</p>
               </div>
             </div>
           </div>
@@ -994,39 +994,39 @@ export function renderWorkbenchActs() {
       </div>
     </article>
 
-    <!-- Core Workflow 05: Dual-Track Spaced Repetition -->
+    <!-- Core Workflow 05: Honest Dual-Mode Spaced Review -->
     <article class="act-row" id="wf-review">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">05 · 双轨制的间隔复习排布</span>
-          <span class="wf-tag">独立升档轨 × 辅助短复查保底轨</span>
+          <span class="act-num">05 · 分清真会与看懂的复习节奏</span>
+          <span class="wf-tag">自己推通才升档 × 靠提示次日短复查</span>
         </div>
-        <h3>“自己推出来”与“看提示才通”分走两条轨道，拒绝自欺欺人的熟练。</h3>
+        <h3>“自己推出来”和“看提示才通”分开记账，不用虚假熟练度骗自己。</h3>
         <p>
-          传统背卡软件最大的陷阱，是瞄了一眼提示觉得“看懂了”就顺手点认识，结果排期直接跳到半个月后，一上闭卷考场依然大脑空白。Notara 在确认复习时会如实核对作答方式，实行<strong>双轨制间隔排布</strong>：只有<strong>无提示独立走通关键步（<code>independent</code>）</strong>，才沿 <code>1 → 3 → 7 → 16 → 35 天</code> 稳步升档；只要借过提示或讲解，一律保持原档位、转入<strong> 1 天短复查轨</strong>次日重验，绝不虚增掌握度。
+          用一般背卡软件最容易掉进一个坑：扫过一眼提示才想起来，顺手点下“认识”，卡片一下推到半个月后，可真上闭卷考场照样两眼发白。Notara 确认复习时会如实核对作答方式：只有<strong>不看任何提示、独立走通关键步骤</strong>，复习间隔才会按 <code>1 → 3 → 7 → 16 → 35 天</code> 稳步拉长；只要中途借过提示或讲解，原有间隔一律冻结不虚增，<strong>安排明天做一次 1 天短复查</strong>，确认裸题再战也能直接动手才算数。
         </p>
         <p>
-          反复卡壳的顽固题不会再机械地一遍遍抽考折磨你，而是先暂停常规循环、退回拆成更小的台阶重新练顺；卡片攒多之后，还能顺着每张卡留下的「下次探讨」线索，把同类题放在一起对照归纳，再往更深一层延伸迁移。
+          反复卡壳的老问题不再机械地反复弹出折磨你，而是先暂停常规排期、帮你降难度拆成更小的铺垫步骤练顺；卡片攒多了以后，还能顺着每张卡记下的「下次探讨」线索把同类题放一块比较归类，学透同一条底层方法。
         </p>
       </div>
       <div class="act-specimen">
         <div class="specimen-window" data-review-demo>
           <div class="specimen-bar">
-            <span style="font-weight:600;color:var(--pa-ink);">课堂复习确认卡 · 双轨排期实时分流</span>
-            <span style="font-size:11.5px;color:var(--pa-ink-muted);">点击切换不同作答过程查看排期走向</span>
+            <span style="font-weight:600;color:var(--pa-ink);">课堂复习确认卡 · 按真实完成方式排下次时间</span>
+            <span style="font-size:11.5px;color:var(--pa-ink-muted);">点下面三种真实作答情况看排期变化</span>
           </div>
           <div class="specimen-body" style="display:flex;flex-direction:column;gap:11px;">
             <div class="wf-review-switcher" role="group" aria-label="选择本次复习完成方式">
-              <button type="button" class="wf-rev-btn" data-rev-mode="independent" aria-pressed="true">无提示独立推完 (independent)</button>
-              <button type="button" class="wf-rev-btn" data-rev-mode="hint" aria-pressed="false">借思路提示走通 (hint)</button>
-              <button type="button" class="wf-rev-btn" data-rev-mode="leech" aria-pressed="false">反复卡壳降档重拆 (missed)</button>
+              <button type="button" class="wf-rev-btn" data-rev-mode="independent" aria-pressed="true">没看提示，自己独立推完</button>
+              <button type="button" class="wf-rev-btn" data-rev-mode="hint" aria-pressed="false">看了提示或拆步才想通</button>
+              <button type="button" class="wf-rev-btn" data-rev-mode="leech" aria-pressed="false">反复在同一步卡壳，降难重拆</button>
             </div>
 
             <div class="wf-tracks-diagram">
               <div class="wf-track-lane is-highlighted" data-track-lane="a">
                 <div class="wf-track-label">
-                  <strong>轨道 A · 独立提取升档轨</strong>
-                  <span>仅限无提示独立做出关键步 · 计入星图真实命中</span>
+                  <strong>主通道 · 无提示独立过关</strong>
+                  <span>只有自己独自写对关键步才拉长间隔，并记入知识星图真实掌握</span>
                 </div>
                 <div class="wf-track-steps">
                   <span>1天</span><i>→</i><span>3天</span><i>→</i><strong class="wf-step-active">7天 (本次升档)</strong><i>→</i><span>16天</span><i>→</i><span>35天</span>
@@ -1035,22 +1035,22 @@ export function renderWorkbenchActs() {
 
               <div class="wf-track-lane" data-track-lane="b">
                 <div class="wf-track-label">
-                  <strong>轨道 B · 辅助走通短复查轨</strong>
-                  <span>看过提示 / 拆步框 / 讲解 · 隔离“听懂=会做”错觉</span>
+                  <strong>保底通道 · 靠提示走通</strong>
+                  <span>看懂提示不等同于自己想得出，先原间隔不动，明天不看提示重试一次</span>
                 </div>
                 <div class="wf-track-steps">
-                  <span>原档位冻结不虚增</span><i>→</i><strong class="wf-step-amber">明日 1 天短复查（重验裸题提取）</strong>
+                  <span>原间隔先冻结不虚增</span><i>→</i><strong class="wf-step-amber">明日 1 天短复查（裸题再试一次）</strong>
                 </div>
               </div>
             </div>
 
             <div class="wf-review-receipt" data-rev-receipt>
               <div class="wf-receipt-head">
-                <span data-rev-badge class="wf-pill wf-pill--done">进入轨道 A · 升至 7 天档</span>
+                <span data-rev-badge class="wf-pill wf-pill--done">自己走通 · 升至 7 天档</span>
                 <code>目标卡片：导数隐零点代换-例4.md</code>
               </div>
-              <p data-rev-audit><strong>本次作答核对：</strong>无任何中途点拨或拆步填空，独立写出 x₀eˣ⁰ = a 整体消元与单调区间验证。</p>
-              <p data-rev-next class="wf-receipt-sub"><strong>下次探讨线索（延伸复习）：</strong>与上周《导数同构-例6》并排对比——同见 ln x 与 eˣ，何时设隐零点、何时凑同构？</p>
+              <p data-rev-audit><strong>本次作答核对：</strong>没有借用中途点拨或拆步填空，独立写出了 x₀eˣ⁰ = a 整体消元和单调区间判断。</p>
+              <p data-rev-next class="wf-receipt-sub"><strong>下次探讨线索（延伸对比）：</strong>和上周《导数同构-例6》并排对比：同样碰到 ln x 与 eˣ，什么时候设隐零点、什么时候配同构？</p>
             </div>
           </div>
         </div>
@@ -1066,18 +1066,18 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
     <div class="specimen-bar market-plaza-bar">
       <div class="market-brand-line">
         <span class="market-stamp">集</span>
-        <strong>Notara 资源市集与 AI 原生社区</strong>
+        <strong>Notara 资源市集与学习社区</strong>
       </div>
       <div class="market-tabs" role="tablist" aria-label="资源市集与社区板块">
-        <button type="button" role="tab" class="market-tab" data-market-tab="scout" aria-selected="true">AI 替你刷论坛 · 路线图</button>
-        <button type="button" role="tab" class="market-tab" data-market-tab="connectors" aria-selected="false">公开连接器源</button>
+        <button type="button" role="tab" class="market-tab" data-market-tab="scout" aria-selected="true">助手替你筛好贴 · 规划</button>
+        <button type="button" role="tab" class="market-tab" data-market-tab="connectors" aria-selected="false">公开追更课程源</button>
         <button type="button" role="tab" class="market-tab" data-market-tab="packs" aria-selected="false">跨学科拓展包</button>
-        <button type="button" role="tab" class="market-tab" data-market-tab="publish" aria-selected="false">技能与净本分享</button>
+        <button type="button" role="tab" class="market-tab" data-market-tab="publish" aria-selected="false">学法与净本分享</button>
       </div>
     </div>
 
     <div class="specimen-body market-plaza-body">
-      <!-- Tab 0 (Default): AI-Native Forum & Personal Agent Scout (Roadmap Vision) -->
+      <!-- Tab 0 (Default): Assistant Scout & Learning Community (Roadmap) -->
       <div class="market-panel" data-market-panel="scout">
         <div class="market-scout-layout">
           <div class="market-scout-digest">
@@ -1086,29 +1086,29 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
                 ${renderPixelAvatar('notara-coordinator.png', 24)}
                 <strong>星野 · 社区定时巡站简报</strong>
               </div>
-              <span class="wf-pill wf-pill--warm">路线图研发中 · 静默巡航不打断课堂</span>
+              <span class="wf-pill wf-pill--warm">路线图规划中 · 后台静默收件不打断课堂</span>
             </div>
             <p class="market-scout-intro">
-              “趁你昨晚休息，已凭只读授权巡完 <code>#新高考导数</code> 与 <code>#线性代数微件</code> 专版（自动略过 38 条考后情绪宣泄水帖），挑出两件正好接上你本周进度的干货：”
+              “昨晚趁你休息，按你的授权看完了 <code>#新高考导数</code> 和 <code>#线性代数微件</code> 讨论区（自动跳过 38 条只顾着焦虑宣泄的水帖），挑出两件正好接上你本周进度的好资料：”
             </p>
 
             <div class="market-scout-items">
               <div class="market-scout-item">
                 <div class="market-scout-item-top">
-                  <span class="wf-pill wf-pill--done">论坛新教具 · 可直接挂载试玩</span>
-                  <span class="market-cadence">匹配明日导读：特征值与二次型</span>
+                  <span class="wf-pill wf-pill--done">互动小教具 · 点开就能摆弄参数</span>
+                  <span class="market-cadence">衔接明日导读：特征值与二次型</span>
                 </div>
-                <h4>学长刚发帖分享《二次型椭圆主轴旋转探针.html》</h4>
-                <p>帖子内置沙箱交互微件与一张反例卡，拖动非对称项系数即可直观看到正交对角化的几何旋转过程，下次讲这节时我可以直接拿来给你搭桥。</p>
+                <h4>学长刚分享了《二次型椭圆主轴旋转探针.html》</h4>
+                <p>里面带着直观动手微件和一张反例卡，拖动参数就能看清正交变换是怎么转出主轴的，明天聊这节时可以直接调出来给你直观感受。</p>
               </div>
 
               <div class="market-scout-item">
                 <div class="market-scout-item-top">
-                  <span class="wf-pill wf-pill--done">大考后 24h 雷达 · 精准对账薄弱点</span>
-                  <span class="market-cadence">命中你上周记过的隐零点卡点</span>
+                  <span class="wf-pill wf-pill--done">考后 24 小时新题跟踪 · 贴合你的卡点</span>
+                  <span class="market-cadence">恰好对应你上周卡住的隐零点</span>
                 </div>
-                <h4>《函数、导数与放缩》推送 v1.2 十月联考 T21 变式补丁</h4>
-                <p>教研源刚补充了今年联考压轴第二问的隐零点整体消元变式；经核对与你上周卡住的例 4 同源，可一键无损合入本地图谱（保留你写过的全部笔记）。</p>
+                <h4>《函数、导数与放缩》推送 v1.2 十月联考 T21 变式补充包</h4>
+                <p>课程源刚加了今年联考压轴第二问的隐零点整体消元变式；对照后发现和上周你卡住的例 4 是同一个套路，可以一键加进本地图谱，而且原封不动留着你自己写过的笔记。</p>
               </div>
             </div>
           </div>
@@ -1116,61 +1116,61 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
           <div class="market-scout-pillars">
             <div class="market-scout-point">
               <span class="pedagogy-stage-idx">01 · 天然防焦虑滤网</span>
-              <h4>挡住考前恐慌水帖，只按推理密度捞干货</h4>
-              <p>传统备考社区充斥着“今年题巨难天塌了”的流量帖。让带着你学情的 Agent 替你去刷，标题党自然失效，你再也不必为了找资料被搞崩心态。</p>
+              <h4>挡掉考前吓人的水帖，只留下真能动手算的好题</h4>
+              <p>普通论坛一翻全是“今年太难完蛋了”的情绪帖。让带着你当前进度的学习助手去替你筛，标题党不起作用，也不用为了找几道新题平白把心态看崩。</p>
             </div>
 
             <div class="market-scout-point">
-              <span class="pedagogy-stage-idx">02 · 助教的“同行茶水间”</span>
-              <h4>全网搓出的好微件与新讲法，顺手揣回书房</h4>
-              <p>社区内容天生兼顾人读与机读——别人分享的交互微件、精妙反例或拆题 Skill，你的助教逛一圈就能整理好带回书桌为你所用。</p>
+              <span class="pedagogy-stage-idx">02 · 老师与同学们的公开手工作坊</span>
+              <h4>别人做好玩的互动图解和解题包，顺手就能收进书桌</h4>
+              <p>社区里分享的小互动页、精妙反例或者顺手的讲解包，既适合你自己直接点开看，也能让书房助手读懂后拿来给你讲题用。</p>
             </div>
 
             <div class="market-scout-point">
-              <span class="pedagogy-stage-idx">03 · 严守本地隐私边界</span>
-              <h4>只读巡检静默收件，发帖分享必经你拍板</h4>
-              <p>巡站权限与本地文件严格隔离，安静在后台收件、绝不弹窗打断；任何向外回帖或分享笔记，都必须先在本机剥离个人记录，经你逐项预览确认后才会发出。</p>
+              <span class="pedagogy-stage-idx">03 · 严守电脑里的隐私边界</span>
+              <h4>悄悄帮你看新帖，要往外发一定先给你把关</h4>
+              <p>助手去读公开论坛时碰不到你的私人文件，也不会乱弹窗打断你；如果想把整理好的资料发给别人，一定会在本地先清掉私人笔记，由你逐项看清确认再导出。</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Tab 1: Open Connector Feeds -->
+      <!-- Tab 1: Open Curated Feeds -->
       <div class="market-panel" data-market-panel="connectors" hidden>
         <div class="market-feed-grid">
           <article class="market-feed-card" data-tone="indigo">
             <div class="market-feed-top">
               <span class="wf-pill wf-pill--done">高中 · 数学 / 物理 / 化学</span>
-              <span class="market-cadence">每月追更真题与变式</span>
+              <span class="market-cadence">每月补充新真题与变式</span>
             </div>
             <h4>新高考理科重难点月更源</h4>
-            <p>持续收录各地名校联考导数放缩、电磁感应双杆微元、圆锥曲线定比点差与水溶液三大守恒题包；上游更新一键合入本地图谱，原封保留你写过的「我的理解」与复习排期。</p>
+            <p>持续收录各地名校联考导数放缩、电磁感应双杆微元、圆锥曲线定比点差与水溶液三大守恒题包；课程包追更时会直接合进本地图谱，原来写过的「我的理解」与复习时间完全不动。</p>
             <div class="market-feed-foot">
               <span>维护：华东重难点教研联盟</span>
-              <code>无损追更 Merge</code>
+              <code>追更新题不盖原笔记</code>
             </div>
           </article>
 
           <article class="market-feed-card" data-tone="walnut">
             <div class="market-feed-top">
               <span class="wf-pill wf-pill--done">大学 · CS:APP / OS / 算法</span>
-              <span class="market-cadence">随实验勘误持续迭代</span>
+              <span class="market-cadence">随实验勘误持续更新</span>
             </div>
             <h4>高校计算机与电子系统实验源</h4>
-            <p>配套本地 C11 / Python 沙箱实验源码、字节探针、虚拟内存页表与动态规划网格微件，支持边改代码跑判题用例，边向盲测同桌讲清底层状态转移。</p>
+            <p>配套本地 C11 / Python 动手实验、字节探针、虚拟内存页表和动态规划网格微件，可以一边改代码跑测试，一边讲给看不见答案的盲测同桌听，理清每一步状态转移。</p>
             <div class="market-feed-foot">
               <span>维护：CS Systems Study Club</span>
-              <code>含沙箱微实验</code>
+              <code>含动手小实验</code>
             </div>
           </article>
 
           <article class="market-feed-card" data-tone="terracotta">
             <div class="market-feed-top">
               <span class="wf-pill wf-pill--done">大学 &amp; 进阶 · 数理 / 经管</span>
-              <span class="market-cadence">按期中期末双周增补</span>
+              <span class="market-cadence">按期中期末双周补充</span>
             </div>
             <h4>大学基础课与跨专业搭桥工坊</h4>
-            <p>涵盖数学分析、线性代数、概率统计与宏微观经济核心模型，用二维几何特例与反例库为严格证明搭桥，专治高数与专业课“看得懂板书却下不了笔”。</p>
+            <p>涵盖数学分析、线性代数、概率统计与宏微观经济核心模型，用二维小例子和反例库帮严格证明搭好台阶，专治大一高数和专业课“听懂老师板书却还是下不了笔”。</p>
             <div class="market-feed-foot">
               <span>维护：BaseBridge 学长工作坊</span>
               <code>几何直觉 × 反例集</code>
@@ -1180,8 +1180,8 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
 
         <div class="market-subscribe-bar">
           <div class="market-sub-copy">
-            <strong>真实公网开放源已上线（<code>.notara-pack</code> / <code>catalog.json</code>）：</strong>
-            <span>桌面端已默认内置公开连接器 <code>https://packs.oh-my-student.com/public/feeds/open-labs/catalog.json</code>，开箱即可免登录试用「代码视频」微课并无损合入本地图谱。</span>
+            <strong>公网公开课程源已经可以试用：</strong>
+            <span>桌面端已默认自带免费开放地址 <code>https://packs.oh-my-student.com/public/feeds/open-labs/catalog.json</code>，免注册就能先试玩「代码视频」互动微课并添回自己的书桌。</span>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;flex:none;">
             <a class="pa-sdoc-secondary-btn" href="/code-video/" style="text-decoration:none;flex:none;">
@@ -1201,38 +1201,38 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
           <div class="market-pack-card">
             <div class="market-pack-meta">高中物理 · 力学与电磁综合</div>
             <h4>电磁感应双杆模型与动量守恒边界</h4>
-            <p>内置不等距轨道 vs 等距轨道对比白板、安培力冲量微元推导卡与速度-时间演化交互滑块。</p>
+            <p>内置不等距轨道和等距轨道对比白板、安培力冲量微元推导卡，还有能动手拖动的速变曲线小工具。</p>
           </div>
           <div class="market-pack-card">
             <div class="market-pack-meta">化学 · 有机与反应原理</div>
             <h4>有机合成路线倒推与官能团保护</h4>
-            <p>以 <code>.canvas</code> 合成树串联断键位点判断、反应条件敏感度反例与跨流程信息迁移卡。</p>
+            <p>用合成路线白板把断键位点判断、反应条件挑剔点和容易搞混的跨步推导连成一串。</p>
           </div>
           <div class="market-pack-card">
             <div class="market-pack-meta">大学数学 · 概率论与数理统计</div>
             <h4>贝叶斯更新、似然直观与两类错误</h4>
-            <p>附先验-后验分布实时形变微件，打通条件概率陷阱、极大似然估计与假设检验边界。</p>
+            <p>带上动手拖动分布小工具，一口气弄懂条件概率错觉、极大似然想法和假设检验的边界。</p>
           </div>
           <div class="market-pack-card">
             <div class="market-pack-meta">计算机 · 操作系统内核基础</div>
             <h4>虚拟内存多级页表与缺页中断探针</h4>
-            <p>可交互拆解虚拟地址位段、TLB 命中路径与页面置换反例（Belady 异常演示）。</p>
+            <p>能一步步点着看虚拟地址拆段、TLB 命中经过与经典的页面置换反例（Belady 异常演示）。</p>
           </div>
         </div>
       </div>
 
-      <!-- Tab 3: Skills Workshop & Clean-Copy Publishing -->
+      <!-- Tab 3: Study Methods Workshop & Clean-Copy Publishing -->
       <div class="market-panel" data-market-panel="publish" hidden>
         <div class="market-publish-grid">
           <div class="market-publish-card">
-            <span class="wf-pill wf-pill--done">按需装载 · 权限严格隔离</span>
-            <h4>教学技能包（Skill）与角色档案市集</h4>
-            <p>无论是考后整卷诊断、考前 30 分钟盲区过筛、跨学科拆题思路，还是不同脾气的同桌与导师档案，都可从市集按需添加。社区资料包与可执行脚本严格分权隔离，下载安装绝不自动执行外部代码。</p>
+            <span class="wf-pill wf-pill--done">按需装载 · 权限严格隔开</span>
+            <h4>学习方法包与同桌 / 老师角色卡</h4>
+            <p>不管需要考后整卷复盘、考前 30 分钟抢救筛漏、跨学科拆题套路，还是合你脾气的同桌与导师档案，都可以从市集按需挑着用。资料包与脚本分开检查管理，下载下来绝对不会自己偷跑外部代码。</p>
           </div>
           <div class="market-publish-card">
-            <span class="wf-pill wf-pill--warm">预览确认 · 自动剥离隐私</span>
-            <h4>把你打磨好的笔记一键导出为「净本」分享</h4>
-            <p>期末复习完一门硬课后，可将你整理成熟的图谱、导读与白板打包分享给学弟学妹或发布至市集——系统自动剥离你私人的「我的理解」、日记与复习记录，经你逐项预览确认后才生成公开包。</p>
+            <span class="wf-pill wf-pill--warm">预览确认 · 自动清除私人记录</span>
+            <h4>把你打磨好的笔记一键导出成「净本」送给别人</h4>
+            <p>期末考完啃下一门硬课后，可以把你整理顺了的知识图谱、章节导读和白板直接打包送给学弟学妹或传到市集。系统会自动抹去你私密的个人理解、日记与复习记录，给你逐项看一眼点同意再生成公开文件包。</p>
           </div>
         </div>
       </div>

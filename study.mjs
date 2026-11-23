@@ -537,29 +537,29 @@
       independent: {
         lane: 'a',
         badgeClass: 'wf-pill wf-pill--done',
-        badgeText: '进入轨道 A · 升至 7 天档',
+        badgeText: '自己走通 · 升至 7 天档',
         auditHtml:
-          '<strong>本次作答核对：</strong>无任何中途点拨或拆步填空，独立写出 x₀eˣ⁰ = a 整体消元与单调区间验证。',
+          '<strong>本次作答核对：</strong>没有借用中途点拨或拆步填空，独立写出了 x₀eˣ⁰ = a 整体消元和单调区间判断。',
         nextHtml:
-          '<strong>下次探讨线索（延伸复习）：</strong>与上周《导数同构-例6》并排对比——同见 ln x 与 eˣ，何时设隐零点、何时凑同构？',
+          '<strong>下次探讨线索（延伸对比）：</strong>和上周《导数同构-例6》并排对比：同样碰到 ln x 与 eˣ，什么时候设隐零点、什么时候配同构？',
       },
       hint: {
         lane: 'b',
         badgeClass: 'wf-pill wf-pill--warm',
-        badgeText: '分流轨道 B · 原档冻结 + 明日 1 天短复查',
+        badgeText: '靠提示走通 · 原间隔不变 + 明日 1 天短复查',
         auditHtml:
-          '<strong>本次作答核对：</strong>中途给过「观察 x₀ + ln x₀ = ln a 能否化为乘积」的切入提示；不冒充独立掌握，次日重验裸题提取。',
+          '<strong>本次作答核对：</strong>中间看了一次「想想 x₀ + ln x₀ = ln a 能不能化为乘积」的点拨；不虚增巩固间隔，明天不看提示重验一次。',
         nextHtml:
-          '<strong>明日复查重点：</strong>遮住今日演算草稿，仅看原题干在 2 分钟内独立写出隐零点整体代换步。',
+          '<strong>明日复查重点：</strong>盖住今天写的草稿，只看原题干在 2 分钟内自己写出隐零点整体代换那一步。',
       },
       leech: {
         lane: 'none',
         badgeClass: 'wf-pill wf-pill--detox',
-        badgeText: '暂停机械抽考 · 降档拆小台阶重练',
+        badgeText: '暂停机械抽考 · 拆成小步重练',
         auditHtml:
-          '<strong>历史记录复核：</strong>连续两次在「超越方程设而不求」处硬解卡死；继续原题逼问只会积累挫败感，自动暂停常规循环。',
+          '<strong>历史记录复核：</strong>连续两次卡在“死解超越方程”上；再把原题强行塞回来抽考只会越练越烦躁，先暂停常规循环。',
         nextHtml:
-          '<strong>拆解重练方案：</strong>先退回拆出轻量前置微卡《超越方程的整体代换支点》，先把这一小步练稳后再接回原题。',
+          '<strong>降难重练方案：</strong>先退一步做一张轻量前置铺垫卡《超越方程怎么找整体代换支点》，先把这一小步练稳再接回原题。',
       },
     };
 
