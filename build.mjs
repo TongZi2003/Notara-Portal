@@ -11,6 +11,7 @@ import {
   renderMarketPlaza,
   renderOpenLetters,
   renderPedagogyShowcase,
+  renderTeachingComparison,
   renderWorkbenchActs,
   renderWorkspaceShell,
 } from './app-replica.mjs';
@@ -261,6 +262,11 @@ function renderHome() {
         </div>
 
         ${renderPedagogyShowcase()}
+
+        <div class="compare-section-wrap">
+          <h3 class="compare-subhead">和常规大班课、普通搜题 AI 到底差在哪</h3>
+          ${renderTeachingComparison({ id: 'pedagogy-compare' })}
+        </div>
       </div>
     </section>
 
@@ -772,6 +778,7 @@ function renderFeaturesPage() {
           <a href="#feat-stats">4. 统计页与诚实复习</a>
           <a href="#feat-graph">5. 知识星图点亮回放</a>
           <a href="#feat-models">6. 接模型省钱与热更新</a>
+          <a href="#feat-compare">7. 和常规学习对比</a>
         </nav>
       </header>
 
@@ -908,6 +915,17 @@ function renderFeaturesPage() {
             <h4>3. 纯文本存本地，诊断自动脱敏</h4>
             <p>所有卡片、导读和白板都是电脑里普通的 <code>.md</code> 和 <code>.canvas</code> 文档，换软件或离线照样打开。遇到界面卡住点击「导出脱敏诊断」，会自动剔除 API 密钥与个人笔记正文，只保留排错摘要。</p>
           </div>
+        </div>
+      </section>
+
+      <section class="feature-block" id="feat-compare">
+        <div class="feature-block-head">
+          <p class="section-rubric">07 · 核心优势对比</p>
+          <h2>一张表看清：Notara 和常规大班课、普通搜题 AI 差在哪。</h2>
+          <p>把日常卡题、记忆连贯、检验真假、白板草稿和进步统计六件事放在一起对照，就知道顺手的长期书房是怎么回事。</p>
+        </div>
+        <div style="margin-top:20px;">
+          ${renderTeachingComparison({ id: 'feat-compare-matrix' })}
         </div>
       </section>
 

@@ -677,6 +677,83 @@ export function renderPedagogyShowcase() {
   </div>`;
 }
 
+export function renderTeachingComparison({ id = 'pedagogy-compare' } = {}) {
+  const rows = [
+    {
+      dim: '卡壳时怎么教',
+      trad: '五十人同一步调往前赶，中间漏掉一处前置定义后面越听越晕，课堂上也不好意思反复打断。',
+      ai: '问完直接甩出整屏标准解答，扫一遍觉得看懂了，合上屏幕自己动笔依然写不出第一步。',
+      notara: '<strong>按火候切三段教法</strong>，陌生概念先痛快讲透最小例子，差半步想通只搭一级梯子，拍手写草稿只点出最早滑掉的那一行。',
+    },
+    {
+      dim: '新旧题怎么串起来',
+      trad: '按固定章节单线推进，上个月做过的同类母题早压在旧卷子堆里，很难主动前后照应。',
+      ai: '每次新开聊天窗都像初次见面，问完几百轮记录沉在底部，根本不记得你常在哪一步漏条件。',
+      notara: '<strong>跨章关联与本地习惯记忆</strong>，只调取跟眼前题目有关的旧卡联系与易错惯性，讲新题顺手牵出旧坑并排对照。',
+    },
+    {
+      dim: '怎么确认真的学会',
+      trad: '多半要等到月考出分才知道哪里没通，平时抄完错题本就容易以为已经过关。',
+      ai: '点个“明白了”就算结束；常见背卡工具看一眼提示也照样拉长间隔，上考场照样空白。',
+      notara: '<strong>同桌费曼听讲加诚实复习分流</strong>，合上解析讲给「大肥鱼」听通才算数；自己独立做出才拉长间隔，靠提示记住次日短复查。',
+    },
+    {
+      dim: '复杂草稿怎么展开',
+      trad: '纸面草稿写乱就得重抄，黑板一擦也很难退回去对比前一条解题思路。',
+      ai: '挤在窄窄的单列聊天气泡里，多步分类讨论和几何辅助线往上翻两屏就容易忘掉条件。',
+      notara: '<strong>原题贴墙白板加互动代码微课</strong>，PDF 框选直接钉上画布并排连线，物理磁场、高数切线还能暂停拖参数亲眼看变化。',
+    },
+    {
+      dim: '系统学还是随时问',
+      trad: '课表进度固定，晚上写作业临时卡在某道小题上往往等不到及时解答。',
+      ai: '只能零敲碎打单题问答，聊完十道题仍然散成一片，很难攒出完整学科框架。',
+      notara: '<strong>课表推进与单题快问合二为一</strong>，系统啃章用「活教案」随表现调缓补强，作业卡题随时「单题快讲」，沉淀进同一张图谱。',
+    },
+    {
+      dim: '怎么看见自己在进步',
+      trad: '主要看阶段排名和刷卷数量，付出和真实掌握往往对不上，越刷越焦虑。',
+      ai: '只留下一长串历史聊天标题，看不出哪些知识点真进了脑子、哪些其实早已忘掉。',
+      notara: '<strong>诚实统计页加星图按日期点亮回放</strong>，只认真实笔记与独立复查日期，拖动滑块亲眼看见虚线草图一天天连成实线。',
+    },
+  ];
+
+  const rowsHtml = rows
+    .map(
+      (r) => `<div class="compare-row" role="row">
+        <div class="compare-dim" role="rowheader">${esc(r.dim)}</div>
+        <div class="compare-cell" role="cell">
+          <span class="compare-mobile-label">常规大班课与网课</span>
+          <p>${esc(r.trad)}</p>
+        </div>
+        <div class="compare-cell" role="cell">
+          <span class="compare-mobile-label">普通搜题与通用 AI</span>
+          <p>${esc(r.ai)}</p>
+        </div>
+        <div class="compare-cell compare-cell--notara" role="cell">
+          <span class="compare-mobile-label">Notara 自习书房</span>
+          <p>${r.notara}</p>
+        </div>
+      </div>`
+    )
+    .join('');
+
+  return `<div class="specimen-window compare-window" id="${esc(id)}">
+    <div class="specimen-bar pedagogy-prompt-bar">
+      <span class="pedagogy-prompt-label">核心差异 · 一眼看清区别</span>
+      <span class="pedagogy-bar-sub">把 Notara 放进每天真实的学习场景里，和常规大班课、普通搜题 AI 逐项对比</span>
+    </div>
+    <div class="compare-matrix" role="table" aria-label="Notara 与常规教学方法及普通搜题 AI 对比">
+      <div class="compare-row compare-head-row" role="row">
+        <div class="compare-dim" role="columnheader">学习场景</div>
+        <div class="compare-cell" role="columnheader">常规大班课与网课</div>
+        <div class="compare-cell" role="columnheader">普通搜题与通用 AI</div>
+        <div class="compare-cell compare-cell--notara" role="columnheader">Notara 自习书房</div>
+      </div>
+      ${rowsHtml}
+    </div>
+  </div>`;
+}
+
 export function renderWorkbenchActs() {
   return `<div class="workbench-acts">
     <!-- Core Workflow 01: Living Knowledge Graph with Heterogeneous Material Merge -->
