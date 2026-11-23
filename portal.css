@@ -2570,6 +2570,163 @@ a {
   color: var(--ink);
 }
 
+/* Illustrated Student Features & Onboarding Page (/features/) */
+.features-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.features-toc a {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-sheet);
+  color: var(--ink-secondary);
+  font-size: 0.84rem;
+  font-weight: 500;
+  transition: border-color 0.16s ease, color 0.16s ease, background 0.16s ease;
+}
+
+.features-toc a:hover {
+  border-color: var(--umber);
+  background: var(--umber-wash);
+  color: var(--ink);
+}
+
+.feature-block {
+  padding: 40px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.feature-block--first {
+  border-top: 0;
+  padding-top: 8px;
+}
+
+.feature-block-head {
+  max-width: 760px;
+}
+
+.feature-block-head h2 {
+  margin: 6px 0 10px;
+  font-family: var(--font-serif);
+  font-size: clamp(1.38rem, 2.3vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1.32;
+  color: var(--ink);
+}
+
+.feature-block-head p {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.78;
+  color: var(--ink-secondary);
+}
+
+.feature-two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.feature-info-card {
+  padding: 18px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-sheet);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.feature-info-card h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.06rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.feature-info-card p,
+.feature-info-card li {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.72;
+  color: var(--ink-secondary);
+}
+
+.feature-info-card ul {
+  margin: 2px 0 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.feature-shot-card {
+  margin: 20px 0 0;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-sheet);
+}
+
+.feature-shot-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--rule);
+}
+
+.feature-shot-caption {
+  margin: 10px 4px 2px;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: var(--ink-secondary);
+}
+
+.feature-cta-band {
+  margin: 12px 0 48px;
+  padding: 26px 28px;
+  border-radius: 12px;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-sheet);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.feature-cta-band h2 {
+  margin: 0 0 6px;
+  font-family: var(--font-serif);
+  font-size: 1.24rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.feature-cta-band p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.68;
+  color: var(--ink-secondary);
+}
+
+.feature-cta-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex: none;
+}
+
 /* Responsive Real-App Stacking for Narrow / Mobile Viewports */
 @media (max-width: 980px) {
   .pa-app-window--embed .pa-shell,
@@ -2715,6 +2872,18 @@ a {
   .scene-tab {
     white-space: nowrap;
     flex: none;
+  }
+
+  .feature-two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-shot-card {
+    padding: 10px;
+  }
+
+  .feature-cta-band {
+    padding: 20px 18px;
   }
 }
 

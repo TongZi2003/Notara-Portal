@@ -70,7 +70,7 @@ export const OPEN_LABS_PACK_DEFS = Object.freeze([
       '第 1–2 幕：割线差商与 h 趋近 0 的极限本质',
       '第 3–4 幕：eˣ 凹凸托底与三次函数拐点穿切线反例',
     ],
-    tags: ['公开开源', '代码视频', '切线放缩', '交互微课', '零覆盖 Merge'],
+    tags: ['公开开源', '代码视频', '切线放缩', '交互微课', '不覆盖原笔记'],
     recommendedClub: {
       defaultTeacherKey: 'teacher-shirakawa',
       defaultCompanionPreset: 'companion-deepseek',
@@ -88,7 +88,7 @@ export const OPEN_LABS_PACK_DEFS = Object.freeze([
         tag: '首个公开代码视频微课',
         highlights: [
           '内置 4 幕 48 秒矢量代码视频（60fps Canvas 渲染、倍速与分幕跳转、暂停即接管参数）。',
-          '附完整文字分镜稿、反例卡片与原生 JSON Canvas 1.0 推演白板，AI 导师可直接读懂每一幕内容。',
+          '附完整文字分镜稿、反例卡片与空间推演白板，AI 导师可直接读懂每一幕内容。',
         ],
       },
     ],
@@ -128,7 +128,7 @@ export const OPEN_LABS_PACK_DEFS = Object.freeze([
         tag: '首个公开代码视频微课',
         highlights: [
           '内置 4 幕 48 秒线性代数几何代码视频，实时画出单位圆、像椭圆、特征轴与负二次型扇区。',
-          '附概念卡、非对称矩阵反例卡与 JSON Canvas 白板，支持一键无损并入现有线代学习集。',
+          '附概念卡、非对称矩阵反例卡与推演白板，支持一键并入现有线代学习集且不覆盖原笔记。',
         ],
       },
     ],
@@ -169,7 +169,7 @@ export const OPEN_LABS_PACK_DEFS = Object.freeze([
         tag: '高中数学基础核心试用集',
         highlights: [
           '内置 4 幕 48 秒宣纸交互代码微课，支持随时拖动底数 a（含临界 e^{-e} 与 e^{1/e}）与幂指 α。',
-          '第 3 幕自带“a=1/16 指对交点裂为 3 根”朱笔押注断点，并配 4 张精选概念/方法/反例卡与 JSON Canvas 决策树白板。',
+          '第 3 幕自带“a=1/16 指对交点裂为 3 根”朱笔押注断点，并配 4 张精选概念/方法/反例卡与决策树推演白板。',
         ],
       },
     ],
@@ -191,7 +191,7 @@ export const OPEN_LABS_PACK_DEFS = Object.freeze([
       '第一至三阶（第 1–10 讲）：定义域值域、分段与动轴二次、单调奇偶对称与周期',
       '第四至七阶（第 11–19 讲）：幂指对运算图像比大小、分段嵌套零点、双量词与含参最值',
     ],
-    tags: ['免费试用', '高中数学', '高一函数', '必修第一册', '参数图像', '零覆盖 Merge'],
+    tags: ['免费试用', '高中数学', '高一函数', '必修第一册', '参数图像', '不覆盖原笔记'],
     recommendedClub: {
       defaultTeacherKey: 'teacher-shirakawa',
       defaultCompanionPreset: 'companion-deepseek',
@@ -209,7 +209,7 @@ export const OPEN_LABS_PACK_DEFS = Object.freeze([
         date: '2026-11-20',
         tag: '高一函数中难题完整开放学习集',
         highlights: [
-          '收录 7 阶分阶导读、37 张概念方法与易错辨析卡、2 张 JSON Canvas 结构白板与 123 道精选题卡。',
+          '收录 7 阶分阶导读、37 张概念方法与易错辨析卡、2 张结构梳理白板与 123 道精选题卡。',
           '16 道例题配分步宣纸演示，63 道需借助图像或参数变化的练习内嵌极简参数滑块与构图微件，纯代数题保持干净文字推导。',
         ],
       },
@@ -331,7 +331,7 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
     label: 'Notara 公开代码微课总源',
     author: 'Notara 官方公开教研站',
     description:
-      '由阿里云 ESA Pages 公开托管的真实开放连接器总源：内置可随时暂停改参数的矢量「代码视频」微课包，免账号直接订阅、试读与无损合入桌面书房。',
+      '公开托管的免费代码微课总源：内置可随时暂停改参数的矢量「代码视频」微课包，免账号直接订阅、试读与添入桌面书房。',
     items: catalogItems,
   };
   await writeFile(join(feedOutDir, 'catalog.json'), `${JSON.stringify(catalogPayload, null, 2)}\n`, 'utf8');
@@ -384,7 +384,7 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
         id: 'notara-hs-math-feed',
         label: '高中导数与函数代码微课源',
         author: 'Notara 官方公开教研站',
-        description: '收录高一函数中难题攻坚学习集、基本初等函数与导数切线公开微课，支持免登录订阅与无损 Merge。',
+        description: '收录高一函数中难题攻坚学习集、基本初等函数与导数切线公开微课，支持免登录订阅，更新时不覆盖个人笔记。',
         items: hsItems,
       },
       null,
@@ -400,7 +400,7 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
         id: 'notara-uni-math-feed',
         label: '大学数理几何直观代码微课源',
         author: 'Notara 官方公开教研站',
-        description: '用矢量交互代码视频与反例白板打通线性代数特征值与二次型正定边界，支持免登录订阅与无损 Merge。',
+        description: '用矢量交互代码视频与反例白板打通线性代数特征值与二次型正定边界，支持免登录订阅，更新时不覆盖个人笔记。',
         items: uniItems,
       },
       null,
@@ -420,10 +420,10 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
         subject: '数学 / 线性代数 · 代码视频微课',
         updateCadence: '随公开微课脚本持续追更（免登录直连）',
         description:
-          '真实公网托管的开放连接器总源：内置高中物理《磁场动态圆》、高中数学《高一函数与基本初等函数中难题攻坚》《基本初等函数》《割线逼近切线》与大学线代《特征值几何》学习集与交互代码微课包，支持一键预览、建集与三路哈希无损追更。',
+          '公开托管的免费课程包与代码微课总源：内置高中物理《磁场动态圆》、高中数学《高一函数与基本初等函数中难题攻坚》《基本初等函数》《割线逼近切线》与大学线代《特征值几何》学习集与交互代码微课包，支持一键预览、建集并自动追更新内容而不覆盖个人笔记。',
         catalogUrl: OPEN_LABS_FEED_URL,
         packCountHint: catalogItems.length,
-        tags: ['真实公网源', '代码视频', '免登录', '零覆盖 Merge'],
+        tags: ['真实公网源', '代码视频', '免登录', '不覆盖原笔记'],
       },
       {
         id: 'notara-hs-physics-feed',
@@ -446,7 +446,7 @@ export async function buildStaticOpenFeeds({ rootDir, distDir }) {
         subject: '数学 · 基本初等函数 × 导数与放缩',
         updateCadence: '按专题微课持续增补',
         description:
-          '收录《高一函数与基本初等函数中难题攻坚》《基本初等函数图像、对称与比大小》与《割线逼近切线》学习集及交互代码视频、题卡与 JSON Canvas 决策白板。',
+          '收录《高一函数与基本初等函数中难题攻坚》《基本初等函数图像、对称与比大小》与《割线逼近切线》学习集及交互代码视频、题卡与决策推演白板。',
         catalogUrl: HS_MATH_FEED_URL,
         packCountHint: hsItems.length,
         tags: ['高中数学', '代码视频', '切线放缩'],

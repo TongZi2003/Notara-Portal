@@ -437,7 +437,7 @@ export function renderWorkspaceShell({
                   ${
                     embedMode
                       ? `<a href="${esc(scene.sampleHref)}" class="pa-chip-btn" style="color:var(--pa-accent-ink);border-color:color-mix(in srgb,var(--pa-accent) 32%,var(--pa-border));">全屏动手试这一课 →</a>`
-                      : `<span class="pa-chip-btn">BYOK · 导学旗舰 ${icons.chevDown}</span>`
+                      : `<span class="pa-chip-btn">自带密钥 · 导学旗舰 ${icons.chevDown}</span>`
                   }
                   <button type="submit" class="pa-send-btn" aria-label="发送推演消息">${icons.send}</button>
                 </div>
@@ -669,8 +669,8 @@ export function renderPedagogyShowcase() {
 
       <div class="pedagogy-skill-foot">
         <div>
-          <strong>兼收并蓄的可插拔教法（Skill）：</strong>
-          <span>除三段式主干外，<strong>命题人视角拆条件</strong>、<strong>波利亚解题启发</strong>、<strong>考前 30 分钟盲区快筛</strong>与<strong>代码沙箱排错</strong>等教法都做成独立 Skill，课堂中可随时切换，也能在资源市集按需扩展。</span>
+          <strong>按场景随时切换的学习方法：</strong>
+          <span>除三段式主干外，<strong>命题人视角拆条件</strong>、<strong>波利亚解题启发</strong>、<strong>考前 30 分钟盲区快筛</strong>与<strong>代码沙箱排错</strong>等学习方法都整理成可按需调用的专题指南，上课聊到一半也能随时切换，还可以在资源市集按需添置。</span>
         </div>
       </div>
     </div>
@@ -1293,7 +1293,7 @@ export function renderHubOverviewShell({ learningSets, embedMode = false, primar
         <header class="pa-rightbar-header pa-hub-header" style="justify-content:space-between;">
           <div style="display:flex;align-items:center;gap:10px;min-width:0;">
             <${primaryHeadingTag} class="pa-global-pane-title" style="margin:0;">私人书房 · 资源市集与开箱样卷</${primaryHeadingTag}>
-            <span class="pa-hub-header-sub">桌面端支持订阅多源课程包市集（Market） · 下方随包样卷支持网页免登录直接试课</span>
+            <span class="pa-hub-header-sub">桌面端支持订阅免费公开课程市集 · 下方随包样卷打开网页免登录就能直接试课</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;flex:none;">
             <a href="/first-lesson/" class="pa-chip-btn">快速试一课</a>
