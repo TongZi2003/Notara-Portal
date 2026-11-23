@@ -793,7 +793,7 @@ function renderFeaturesPage() {
         <div class="feature-two-col">
           <div class="feature-info-card">
             <h3>前序主干挂接、无损合并与原书回跳</h3>
-            <p>拖入 PDF 讲义或扫描试卷后，后台工作员会协助按概念方法主干（标明前序后序依赖）与具体例题挂接关系拆成 Markdown 卡片，并与库内已有卡片比对去重，不覆盖原有记录。每张题卡保留原 PDF 页码与框选坐标，点击出处即可直接跳回原书对应位置核对配图与上下文。</p>
+            <p>拖入 PDF 讲义或扫描试卷后，后台工作员会协助按概念方法主干（标明前序后序依赖）与具体例题挂接关系拆成 Markdown 卡片，并与库内已有卡片比对去重、保留原有记录，让你的知识体系能随日常学习持续自生长。每张题卡保留原 PDF 页码与框选坐标，点击出处即可直接跳回原书对应位置核对配图与上下文。</p>
           </div>
           <div class="feature-info-card">
             <h3>默认折叠参考解析，支持先看最小提示</h3>
@@ -853,8 +853,8 @@ function renderFeaturesPage() {
             <p>系统在开课时自动调取当前题目图谱两跳范围内的前置卡片与易错线索：遇到陌生新概念先用最小正例讲清楚，遇到熟悉题型则在容易漏掉条件的地方停下来追问，不做琐碎反问。老师只如实记录学习过程，若某处记录与你的真实情况有偏差，随时开口就能让老师改回。</p>
           </div>
           <div class="install-note-item">
-            <h4>3. 同桌听讲自主验真与每帧形式化可读的代码微课</h4>
-            <p>一道题到底算不算搞明白，由你自己通过验证说了算：请同桌「大肥鱼」听题时，他只看原始题面和你的讲解，有跳步就当场追问并复述核对。遇到磁场临界圆、导数切线逼近等动态过程，还可打开每一帧由代码形式化表述的微课，你随时暂停改参数，AI 也精确知道你停在哪一帧卡壳。</p>
+            <h4>3. 同桌听讲自主验真与 AI 看得懂画面的互动微课</h4>
+            <p>一道题到底算不算搞明白，由你自己通过验证说了算：请同桌「大肥鱼」听题时，他只看原始题面和你的讲解，有跳步就当场追问并复述核对。遇到磁场临界圆、导数切线逼近等动态过程，还可打开用代码实时绘制每一帧的互动微课：你随时暂停拖滑块改参数，AI 老师在后台也能直接看懂当前画面和参数数值，顺着你停下的地方给你讲明白。</p>
           </div>
         </div>
       </section>
@@ -869,8 +869,8 @@ function renderFeaturesPage() {
         </div>
         <div class="feature-two-col">
           <div class="feature-info-card">
-            <h3>本人确认完成条件 + 阶段专题复习课</h3>
-            <p>日常练习中由你本人确认完成条件：只有<strong>无提示独立写出关键步</strong>才按 <code>1 → 3 → 7 → 16 → 35 天</code> 拉长间隔，<strong>看过提示或讲解</strong>则保留原间隔并在次日安排 1 天短复查。隔一段时间后，还可让备课老师围绕近期到期卡片<strong>专门准备一节复习课</strong>，撤掉拐杖梳透旧卡点，并通过变条件、跨章对比向外发散出更广的联系。</p>
+            <h3>间隔重复轨与导学轨随时并轨</h3>
+            <p>平时在间隔重复轨上由你本人确认完成条件：只有<strong>无提示独立写出关键步</strong>才按 <code>1 → 3 → 7 → 16 → 35 天</code> 拉长间隔，<strong>看过提示或讲解</strong>则保留原间隔并在次日安排 1 天短复查。隔一段时间后，它可直接与 AI 导学轨并轨，由备课老师把近期到期卡片汇拢起来<strong>专门准备一节复习课</strong>，梳透旧卡点并跨章向外发散联系。</p>
           </div>
           <div class="feature-info-card">
             <h3>基于本地文件实时汇总的统计页</h3>
@@ -922,7 +922,7 @@ function renderFeaturesPage() {
         <div class="feature-block-head">
           <p class="section-rubric">07 · 事实层与表现层全景对比</p>
           <h2>从底层事实可靠性到上层媒介表现力，对比三种学习方式的设计取舍。</h2>
-          <p>把事实层的五项根基（人机读写不对称托管、外挂精选脉络、前序与合并结构、认知规律教法、双轨融合复习课）与表现层的两项升级（每帧形式化可读的代码微课、空间白板与虚实图谱投影）分开对照，就能看清这套系统的完整脉络。</p>
+          <p>把事实层的五项根基（人机协作与全程托管、外挂精选脉络、自生长知识库结构、搭梯式认知教法、双轨并轨复习课）与表现层的两项升级（AI 看得懂每一帧的互动微课、平铺推导白板与全局知识星图）分开对照，就能看清这套系统的完整脉络。</p>
         </div>
         <div style="margin-top:20px;">
           ${renderTeachingComparison({ id: 'feat-compare-matrix' })}
@@ -944,7 +944,7 @@ function renderFeaturesPage() {
 
   return pageShell({
     title: '功能与使用说明 · Notara',
-    description: '面向学生的 Notara 桌面端 Beta 2 图文使用指南：事实层与表现层架构、Personal AI 托管、前序合并、认知教法、双轨复习与每帧可读代码微课。',
+    description: '面向学生的 Notara 桌面端 Beta 2 图文使用指南：事实层与表现层架构、人机协作、自生长知识库、搭梯教法、双轨复习与 AI 看得懂的互动微课。',
     currentPath: '/features/',
     body,
   });
@@ -981,9 +981,9 @@ function renderCodeVideoPage(catalogItems = []) {
     <div class="wrap">
       <header class="page-header">
         <p class="section-rubric">公开免费微课源 · 可动手调参的代码视频</p>
-        <h1>每一帧都由代码形式化表述的<span class="nowrap">交互式动态微课。</span></h1>
+        <h1>你看得到动态变化、AI 也看得懂每一帧的<span class="nowrap">互动微课。</span></h1>
         <p>
-          传统录播网课视频对 AI 来说是一个像素黑盒：你在某一秒按下暂停说“这里没看懂”，模型很难精确知道画面此刻停在什么几何位置与临界状态。下面这几节公开微课直接用代码形式化编写每一帧动态画面：对人眼来说，抽象的函数逼近、特征值拉伸与磁场临界圆直观可调，随时可以按下暂停亲手拖动参数验证猜想；对桌面书房里的 AI 老师来说，每一帧的参数与状态在底层完全透明可读，能够直接针对你停下的那一帧切入讲解。已安装 Notara 桌面端的同学，可将下方公开订阅地址粘贴到「私人书房 → 资料源」免费导入，后续更新不会覆盖原有的个人笔记。
+          传统录播网课是录死的一段视频：你看课时没法自己动手改条件试一试，按下暂停问 AI“这里没看懂”时，AI 也很难准确知道视频画面此刻停在什么状态。下面这几节公开微课直接用代码实时画出每一帧动画：对人来说，函数逼近、特征值拉伸与磁场临界圆的变化一目了然，随时可以按暂停、亲手拖动滑块改参数；对桌面书房里的 AI 老师来说，画面背后的公式和当前参数全写在代码里，你在哪一帧停住、把数值调成了多少，它后台看得一清二楚，能直接顺着当前画面给你讲明白。已安装 Notara 桌面端的同学，可将下方公开订阅地址粘贴到「私人书房 → 资料源」免费导入，后续更新不会覆盖原有的个人笔记。
         </p>
         <div style="margin-top:18px;padding:12px 16px;border-radius:10px;border:1px solid var(--rule-strong);background:var(--paper-sheet);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
           <div style="min-width:0;font-size:13px;">
@@ -1002,8 +1002,8 @@ function renderCodeVideoPage(catalogItems = []) {
   `;
 
   return pageShell({
-    title: '每帧代码形式化可读的交互微课 · Notara',
-    description: '在线体验每一帧由代码形式化表述、人可动手调参且对 AI 透明可读的动态微课，并获取免费公开订阅地址导入 Notara 桌面书房。',
+    title: 'AI 看得懂每一帧的互动代码微课 · Notara',
+    description: '在线体验用代码实时绘制、随时可暂停拖滑块改参数且 AI 老师看得懂每一帧状态的互动微课，并可免费订阅导入 Notara 桌面书房。',
     currentPath: '/code-video/',
     body,
   });
