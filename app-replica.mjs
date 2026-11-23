@@ -678,232 +678,113 @@ export function renderPedagogyShowcase() {
 }
 
 export function renderTeachingComparison({ id = 'pedagogy-compare' } = {}) {
-  const groups = [
+  const rows = [
     {
-      title: '一、事实层 · 决定资料管理、教学质量与人机协作的可靠底座',
-      sub: '让 AI 接管繁琐的窗口与资料打理，把思考过程与搞懂与否的最终验证留给人',
-      rows: [
-        {
-          dim: 'Personal AI 托管与人机协作',
-          trad: '讲义在文件夹、草稿在纸上、错题在另一个本子上，学到哪一页全靠自己记；抄题整理耗掉大量体力，搞没搞懂也往往要等月考出分才知道。',
-          ai: '需要自己管十几个聊天窗口、手动复制整理笔记；同时模型常顺着半句话替你圆过去或直接代写总结，掩盖了你自己还没真正想通的事实。',
-          notara:
-            '建立清晰的人机协作分工：对话分流、文档归档，以及未来去论坛替你刷帖筛选思路，全由 Personal AI 自动打理；但在学习本身上，系统只负责引导思考和忠实记录过程，<strong>一个问题到底搞没搞明白最终由你自己通过验证说了算</strong>，写进卡片的理解与发出的帖子也必须经过你自己的大脑思考。',
-        },
-        {
-          dim: '支撑教学的知识脉络与底本',
-          trad: '纸质教辅选材扎实，但印出来就是固定顺序，对所有人一刀切，很难顺着你个人的薄弱点动态重组，也没法把平时的零散想法融进去。',
-          ai: '单靠临时对话框即兴发挥，背后缺少一套经过校对的整体学科脉络驱动，聊十几轮就容易偏离主干；随手塞入杂乱未校对的资料也会拉低讲解质量。',
-          notara:
-            '以外挂的整体知识脉络驱动授课：一方面在资源市集提供经过精心挑选与校对的原始课程包，托住教学质量下限；另一方面顺畅承接你日常的错题、学校讲义与突发想法，统一收进同一个知识库里持续生长。',
-        },
-        {
-          dim: '知识库的前序结构与合并',
-          trad: '传统课本目录和思维导图是单向树状层级，装不下中后期多章节交叉耦合的综合题，上个月做过的同类母题压在旧卷堆里很难找回来。',
-          ai: '普通双链笔记攒到几百张卡就容易乱成一团毛线球，分不清谁是谁的前置条件；常见 AI 知识库又倾向于一键生成大批死卡片，再导新讲义时容易重复建卡或覆盖旧记录。',
-          notara:
-            '知识库底层经过专门构思：核心概念与方法标清前序后序依赖组成主干，每一道题目和每一次动手实践都精准挂接到对应的知识节点上；导入新卷或追更课程包时先比对再去重合并（Merge），保留原有笔记不覆盖，<strong>使一套随日常学习不断自生长的知识体系成为可能</strong>。',
-        },
-        {
-          dim: '贴合人类认知规律的备课教法',
-          trad: '大班课只能照顾中等进度，教辅参考答案在关键变形处常以一句“显然可得”跳过思考过程，缺少针对个人真实卡点的分步台阶。',
-          ai: '通用大模型的训练惯性偏重编码与直接交付结果，对人类学习新知识时的客观认知规律把握并不全面：要么一口气把完整答案全倒出来剥夺思考空间，要么在简单步骤上机械反问一堆无关痛痒的琐碎问题。',
-          notara:
-            '通过专门打磨的备课与教法体系校准模型习惯：课前结合手头资料、你过往的卡点记录与可用时间，顺着认知规律<strong>一步步为你搭好梯子</strong>（推不动时自动放缓坡度补铺垫）；课中缺前置基础就先用最小例子讲透，够得着的关键步留出空间让你自己想通，既不直接把答案全倒给你，也不问无关痛痒的琐碎问题。',
-        },
-        {
-          dim: '间隔重复与导学融合的复习',
-          trad: '学习严肃硬核的学科时，靠 Anki 这类闪卡翻看正反面很难复习到位：复杂方法靠背一句结论用不出来，瞄一眼提示点“认识”还会造成已经掌握的错觉。',
-          ai: '没有间隔重复机制，分不清某道题上次是靠提示走通的还是独立算出来的，更不会隔一段时间主动把学过的零散题目串起来做深度复盘。',
-          notara:
-            '采用「日常间隔重复」与「AI 专题导学」两条轨道并行、随时并轨的设计：平时在间隔重复轨上，按你是独立做通还是借过提示自动跟踪每张卡的遗忘时间；隔一段时间后，两条轨道直接并轨，老师会把近期到期的卡片汇拢起来<strong>专门为你备出一节复习课</strong>，既把上次借过提示的地方彻底梳透，又带你变条件、跨章节横向对比，向外发散出更深更广的联系。',
-        },
-      ],
+      probTitle: '1. 资料到处都是，手抄整理太费体力',
+      probDesc: '讲义在文件夹、草稿在纸上、错题在另一个本子上，抄题耗掉大量时间；用普通 AI 又要自己管十几个聊天窗口、手动复制整理笔记。',
+      solTitle: '助手全自动归档，你只管动脑把题真想通',
+      solDesc:
+        '个人学习助手自动处理所有对话分类与笔记归档；同时严格把控效果，一道题到底学会没有，最终要通过你自己的思考和给“同桌”讲明白才算过关，不用等月考出分才发现没学懂。',
     },
     {
-      title: '二、表现层 · 让抽象过程与全局进度对人眼直观、对 AI 清晰可读',
-      sub: '突破黑盒视频与窄小文字气泡的局限，让动态实验、局部推导与全局脉络一目了然',
-      rows: [
-        {
-          dim: 'AI 看得懂每一帧的互动微课',
-          trad: '传统录播网课是录好的一段视频，看课的人没法亲手改条件试一试；而且视频对 AI 来说是个黑盒，你按下暂停提问时，AI 很难准确知道画面此刻停在什么状态。',
-          ai: '普通聊天框只有文字和静态图片，遇到物理磁场里的圆周临界变化、函数切线逼近或内存指针移动这类动态过程，光看文字很难在脑子里转过弯来。',
-          notara:
-            '动态微课直接用代码实时画出每一帧动画：你看课的时候，随时可以按暂停、亲手拖动滑块改参数，直观看到图形和临界点怎么变；同时<strong>因为画面背后的公式和数值全写在代码里，你在哪一帧停住、把参数调成了多少，AI 老师后台看得一清二楚</strong>，不用截图解释就能直接顺着当前画面给你讲明白。',
-        },
-        {
-          dim: '交互白板与全局知识星图',
-          trad: '纸面草稿写乱了只能重抄，黑板擦掉后难以退回对比前一条思路；卷子刷得再多，也很难在一张图上看清整门课还有哪些关联没打通。',
-          ai: '多步分类讨论和辅助线全挤在单列聊天气泡里，翻两屏就忘掉前面设的条件；历史记录只剩一排聊天标题，看不出整门课的知识掌握全貌。',
-          notara:
-            '跳出窄小的单列聊天气泡，让局部推导和整门课的进度都一目了然：推演难题时，<strong>交互白板</strong>把原卷配图、不同解法分支与关键步填空平铺在同一张桌面上并排对照；回看全局时，<strong>知识星图</strong>用虚线标出书本原有的脉络、用实线点亮你自己真正想通的联系，一眼看清整门课学到了哪里、还差哪一环。',
-        },
-      ],
+      probTitle: '2. 纸质教辅顺序死板，普通 AI 聊久了容易跑偏',
+      probDesc:
+        '印好的教辅对所有人都是固定顺序，没法顺着你的薄弱点调整；直接和普通大模型聊天，聊十几句就容易偏离课本主干，放进没核对过的资料还会拉低讲解质量。',
+      solTitle: '精校课程包打底，助手随时把你的错题融进去',
+      solDesc:
+        '既可以导入经过挑选和核对的公开课程包，保住基础讲解质量；同时助手会把你平时的学校讲义、错题和想法顺畅收进同一个知识库里不断积累。',
+    },
+    {
+      probTitle: '3. 综合题找不到以前做过的母题，笔记越记越乱',
+      probDesc:
+        '普通目录装不下跨章节的综合题，上个月做过的同类题压在旧卷子堆里很难找；普通笔记软件卡片一多就乱成一团，导入新讲义容易重复建卡或覆盖旧记录。',
+      solTitle: '助手按知识点先后关系挂接，新旧资料去重合并',
+      solDesc:
+        '按核心概念和方法的先后关系排好主干，助手会把每道题精准挂在对应的知识点下；导入新卷子或课程包时先比对再去重合并，完整保留你原有的笔记。',
+    },
+    {
+      probTitle: '4. 参考答案跳步看不懂，普通 AI 又直接剧透全部答案',
+      probDesc:
+        '教辅答案在关键处常写一句“显然可得”跳过思考过程；普通大模型要么一口气把整道题的答案全倒出来让你没法思考，要么在简单步骤上机械反问没用的问题。',
+      solTitle: '助手结合你的历史卡点备课，在课堂上一步步搭台阶',
+      solDesc:
+        '课前先结合你以前的卡点记录备好课；讲题时缺基础就先用简单例子讲清，推不动时放缓节奏做好铺垫，把你能想出来的关键步留给你自己动脑，既不直接倒答案，也不问无用废话。',
+    },
+    {
+      probTitle: '5. 没人提醒复习，只看答案容易误以为自己学会了',
+      probDesc: '老师不会每天催你复习旧题，学理科只靠翻看卡片正反面也很难复习到位，看一眼提示觉得“眼熟”就容易以为自己已经掌握了。',
+      solTitle: '助手自动跟踪遗忘时间，定期汇总为你备出复习课',
+      solDesc:
+        '助手分得清一道题你是“自己算出来的”还是“看提示才做出来的”，自动安排每道题的复习时间；隔一段时间还会把到期题目汇总起来专门备出一节复习课，带你变条件、跨章节对比，彻底拔掉病根。',
+    },
+    {
+      probTitle: '6. 动态变化过程难脑补，聊天太长翻两页就忘了前面条件',
+      probDesc:
+        '遇到磁场圆周临界变化、函数切线逼近或指针移动这类动态过程，光看文字和静态图很难想明白；多步分类讨论挤在单列聊天气泡里，聊长了就找不到前面的条件。',
+      solTitle: '能看懂你操作的动态微课，配合同屏对比的交互白板',
+      solDesc:
+        '动态微课支持随时暂停、拖动滑块改数值看变化，后台能直接看懂你当前的画面状态并顺着讲；交互白板把原题配图和不同解法平铺在同一张桌面上对比，步骤再长也不会忘掉前提条件。',
     },
   ];
 
-  const groupsHtml = groups
+  const rowsHtml = rows
     .map(
-      (g) => `<div class="compare-rowgroup" role="rowgroup">
-        <div class="compare-group-band" role="row">
-          <span class="compare-group-title" role="cell">${esc(g.title)}</span>
-          <span class="compare-group-sub" role="cell">${esc(g.sub)}</span>
+      (r) => `<div class="compare-row" role="row">
+        <div class="compare-cell" role="cell">
+          <span class="compare-mobile-label">平时自己学或用普通 AI 遇到的麻烦</span>
+          <strong class="compare-item-title">${esc(r.probTitle)}</strong>
+          <p>${esc(r.probDesc)}</p>
         </div>
-        ${g.rows
-          .map(
-            (r) => `<div class="compare-row" role="row">
-              <div class="compare-dim" role="rowheader">${esc(r.dim)}</div>
-              <div class="compare-cell" role="cell">
-                <span class="compare-mobile-label">传统课堂、教辅与闪卡</span>
-                <p>${esc(r.trad)}</p>
-              </div>
-              <div class="compare-cell" role="cell">
-                <span class="compare-mobile-label">直接用通用大模型（含学习模式）</span>
-                <p>${esc(r.ai)}</p>
-              </div>
-              <div class="compare-cell compare-cell--notara" role="cell">
-                <span class="compare-mobile-label">Notara 自习书房</span>
-                <p>${r.notara}</p>
-              </div>
-            </div>`
-          )
-          .join('')}
+        <div class="compare-cell compare-cell--notara" role="cell">
+          <span class="compare-mobile-label">有了 Notara「个人学习助手」之后的改变</span>
+          <strong class="compare-item-title">${esc(r.solTitle)}</strong>
+          <p>${esc(r.solDesc)}</p>
+        </div>
       </div>`
     )
     .join('');
 
   return `<div class="specimen-window compare-window" id="${esc(id)}">
     <div class="specimen-bar pedagogy-prompt-bar">
-      <span class="pedagogy-prompt-label">产品设计取舍 · 事实层与表现层全景对比</span>
-      <span class="pedagogy-bar-sub">对照传统课堂闪卡与通用大模型，看清 Notara 在底层可靠性与上层表现力上的设计取舍</span>
+      <span class="pedagogy-prompt-label">日常自习六大问题对照</span>
+      <span class="pedagogy-bar-sub">左边是平时自己学或用普通 AI 常见的麻烦，右边是交给 Notara 个人学习助手之后的改变</span>
     </div>
-    <div class="compare-matrix" role="table" aria-label="Notara 与传统课堂闪卡及通用大模型对比">
+    <div class="compare-matrix compare-matrix--twocol" role="table" aria-label="平时自习遇到的麻烦与个人学习助手解决方式对照表">
       <div class="compare-row compare-head-row" role="row">
-        <div class="compare-dim" role="columnheader">设计维度</div>
-        <div class="compare-cell" role="columnheader">传统课堂、教辅与闪卡</div>
-        <div class="compare-cell" role="columnheader">直接用通用大模型（含学习模式）</div>
-        <div class="compare-cell compare-cell--notara" role="columnheader">Notara 自习书房</div>
+        <div class="compare-cell" role="columnheader">平时自己学或用普通 AI 遇到的麻烦</div>
+        <div class="compare-cell compare-cell--notara" role="columnheader">有了 Notara「个人学习助手」之后的改变</div>
       </div>
-      ${groupsHtml}
+      ${rowsHtml}
     </div>
   </div>`;
 }
 
 export function renderWorkbenchActs() {
   return `<div class="workbench-acts">
-    <!-- Core Workflow 01: Living Knowledge Graph with Heterogeneous Material Merge -->
-    <article class="act-row" id="wf-graph">
-      <div class="act-copy">
-        <div class="act-meta-line">
-          <span class="act-num">01 · 本地知识图谱与资料整合</span>
-          <span class="wf-tag">前序主干 + 题目挂接 + 去重合并</span>
-        </div>
-        <h3>核心概念标明前序后序组成主干，每道题与每次实践精准挂回对应知识。</h3>
-        <p>
-          只用文件夹装不下多章节交叉的综合题，只用无差别双链攒到几百张卡又容易乱成毛线球。Notara 将核心概念与共性方法标清前序依赖与横向联系构成主干网络，把每一道具体例题和实践案例挂接在对应的知识节点周围；拖入新讲义、错题卷或追更课程包时，系统先与已有卡片比对再去重合并，补齐出处且不覆盖原有笔记，让你的个人知识库能够随日常学习不断自生长。
-        </p>
-        <p>
-          刚拆解导入但尚未亲自走通的关联，在图谱上默认显示为<strong>浅色虚线</strong>；只有当你真正推通依据并在卡片「我的理解」中确认记录后，连线才会转为<strong>实线点亮</strong>，支持按日期拖动滑块回放整张知识地图亮起来的过程。
-        </p>
-      </div>
-      <div class="act-specimen">
-        <div class="specimen-window">
-          <div class="specimen-bar">
-            <span style="display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--pa-ink);">
-              ${icons.file}<span>资料 · 知识图谱（多份资料自动整理串联）</span>
-            </span>
-            <span style="font-size:11.5px;color:var(--pa-ink-muted);">虚线 = 刚添入待巩固 · 实线 = 自己推通</span>
-          </div>
-          <div class="specimen-body" style="display:flex;flex-direction:column;gap:11px;">
-            <div class="wf-merge-feed" aria-label="多份资料并入图谱示例">
-              <div class="wf-merge-item">
-                <span class="wf-merge-src">${icons.paperclip}<span>一轮导数讲义.pdf · P3 框选</span></span>
-                <span class="wf-merge-arrow">→</span>
-                <span class="wf-merge-dst">并入老卡片 <code>[[切线放缩核心母题]]</code> 补齐出处</span>
-              </div>
-              <div class="wf-merge-item">
-                <span class="wf-merge-src">${icons.file}<span>十月联考卷.pdf · 第 21 题</span></span>
-                <span class="wf-merge-arrow">→</span>
-                <span class="wf-merge-dst">新建变式卡并连回 <code>[[极值点偏移]]</code></span>
-              </div>
-              <div class="wf-merge-item">
-                <span class="wf-merge-src">${icons.edit}<span>课堂随笔-泰勒余项.md</span></span>
-                <span class="wf-merge-arrow">→</span>
-                <span class="wf-merge-dst">阶段复盘整理成总结卡 <code>[[多项式逼近与单侧界]]</code></span>
-              </div>
-            </div>
-
-            <svg class="canvas-svg" viewBox="0 0 540 176" role="img" aria-label="多份资料串联后的虚实双线知识图谱">
-              <rect x="0.5" y="0.5" width="539" height="175" rx="8" fill="#fdfbf7" stroke="#dfd7c8"/>
-              <!-- Solid student-verified links -->
-              <line x1="258" y1="88" x2="112" y2="44" stroke="#7d5c46" stroke-width="2.1"/>
-              <line x1="258" y1="88" x2="108" y2="134" stroke="#7d5c46" stroke-width="2.1"/>
-              <line x1="112" y1="44" x2="108" y2="134" stroke="#9b7b63" stroke-width="1.4"/>
-              <line x1="258" y1="88" x2="258" y2="144" stroke="#7d5c46" stroke-width="1.9"/>
-              <!-- Dashed newly merged material links -->
-              <line x1="258" y1="88" x2="424" y2="42" stroke="#b3a99a" stroke-width="1.6" stroke-dasharray="4 4"/>
-              <line x1="258" y1="88" x2="436" y2="124" stroke="#b3a99a" stroke-width="1.6" stroke-dasharray="4 4"/>
-              <line x1="424" y1="42" x2="436" y2="124" stroke="#c5bcb0" stroke-width="1.3" stroke-dasharray="3 4"/>
-
-              <!-- Hub Node -->
-              <g>
-                <circle cx="258" cy="88" r="11" fill="#f3ebe1" stroke="#7d5c46" stroke-width="1.8"/>
-                <circle cx="258" cy="88" r="5.5" fill="#7d5c46"/>
-                <text x="258" y="67" text-anchor="middle" font-size="11" font-weight="600" fill="#26211c">多项式逼近与单侧界 (总结)</text>
-              </g>
-              <!-- Mastered Solid Nodes -->
-              <g>
-                <circle cx="112" cy="44" r="6" fill="#7d5c46"/>
-                <text x="112" y="27" text-anchor="middle" font-size="10.5" fill="#2c2722">切线放缩 eˣ ≥ x+1</text>
-              </g>
-              <g>
-                <circle cx="108" cy="134" r="6" fill="#524a41"/>
-                <text x="108" y="154" text-anchor="middle" font-size="10.5" fill="#2c2722">反例 f(t)=t³ 穿切线</text>
-              </g>
-              <g>
-                <circle cx="258" cy="144" r="5.5" fill="#524a41"/>
-                <text x="258" y="164" text-anchor="middle" font-size="10.5" fill="#2c2722">对数上界 ln x ≤ x-1</text>
-              </g>
-              <!-- Newly Merged Unlit Nodes -->
-              <g>
-                <circle cx="424" cy="42" r="6" fill="#fdfbf7" stroke="#8b735f" stroke-width="1.7"/>
-                <text x="424" y="25" text-anchor="middle" font-size="10.5" fill="#6c6358">联考 T21·极值点偏移 (新加入)</text>
-              </g>
-              <g>
-                <circle cx="436" cy="124" r="6" fill="#fdfbf7" stroke="#8b735f" stroke-width="1.7"/>
-                <text x="436" y="146" text-anchor="middle" font-size="10.5" fill="#6c6358">帕德有理近似边界 (待探索)</text>
-              </g>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- Core Workflow 02: Home Assistant + Focused Classrooms + Background Helpers -->
+    <!-- 01: Core Brain — Personal Study Assistant -->
     <article class="act-row" id="wf-agents">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">02 · Personal AI 全过程对话与文档托管</span>
-          <span class="wf-tag">无需手动管窗口与文档 · 自动分流交接</span>
+          <span class="act-num">01 · 核心大脑</span>
+          <span class="wf-tag">记住学习底细 × 包揽备课归档 × 自动调度</span>
         </div>
-        <h3>日常衔接交给常驻首页助手，单题深挖与拆卷验算自动分流到独立课堂和后台工作员。</h3>
-        <p>
-          把长期规划、整卷拆分和几十轮推导全塞进同一个聊天窗口，上下文很快就会杂乱串味，自己管理十几个窗口又格外心累。每个学习集都设有一位常驻的<strong>首页统筹助手</strong>，替你看着导读进度、近期到期问题与学习画像，平时无论是想问一句小问题还是商量今天学什么，直接找他开口即可。
-        </p>
-        <p>
-          一旦敲定要深入攻克某道难题或整理整份试卷，首页助手会自动把任务拆分出去：在独立标签页中开启<strong>专题课堂</strong>陪你专注推导，同时指派后台工作员（可分别绑定轻量视觉模型或强推理模型）完成拆卷建卡、独立脚本验算与旧卡比对；下课后自动把认识变化写回文档并交回首页衔接下一步。
-        </p>
+        <h3>接管一切杂活的「个人学习助手」</h3>
+        <ul class="act-bullet-list">
+          <li><strong>记住你的全部学习底细：</strong>助手一直守在你的学习集首页。你目前学到了哪一章、做过哪些题、哪道题是自己算出来的、哪道题是看提示才走通的、平时容易在哪一步卡住，它全都记得清清楚楚，提问时再也不用从头交代背景。</li>
+          <li><strong>替你包揽备课与资料归档：</strong>你平时只管把问题、新发的讲义和错卷丢给助手。对话分流、文档归档、新旧笔记去重合并，全由助手在后台自动打理（整理好只在顶部标签显示安静的小数字提示），彻底省去手动管十几个窗口的麻烦。</li>
+          <li><strong>为你调度专属课堂与复习：</strong>遇到简单疑问，助手当场就能帮你解答；遇到需要深入推导的难题，或者到了该复习的时间，助手会自动调出你之前的薄弱点记录先备好课，再为你开启专门的互动课堂。</li>
+        </ul>
       </div>
       <div class="act-specimen">
         <div class="specimen-window">
           <div class="specimen-bar wf-agent-tabbar">
             <span class="wf-agent-tab wf-agent-tab--active">
               <span class="wf-dot wf-dot--solid"></span>
-              <span>首页学习助手 · 总管</span>
+              <span>个人学习助手 · 首页常驻</span>
             </span>
             <span class="wf-agent-tab">
               <span class="wf-dot wf-dot--pulse"></span>
-              <span>专题课：联考 T21 隐零点</span>
+              <span>互动课堂：联考 T21 隐零点</span>
             </span>
             <span class="wf-agent-tab">
               <span>帮手记录 (2)</span>
@@ -917,8 +798,8 @@ export function renderWorkbenchActs() {
             <div class="wf-coord-box">
               <div class="wf-coord-head">
                 ${renderPixelAvatar('notara-coordinator.png', 24)}
-                <strong>星野 · 首页学习助手</strong>
-                <span>翻看近期导数进度并分派后台任务</span>
+                <strong>星野 · 个人学习助手</strong>
+                <span>翻看近期导数底细并自动分派杂活</span>
               </div>
 
               <div class="wf-subagent-list">
@@ -926,10 +807,10 @@ export function renderWorkbenchActs() {
                   ${renderPixelAvatar('worker-general.png', 24)}
                   <div class="wf-subagent-main">
                     <div class="wf-subagent-title">
-                      <strong>后台帮手 · 拆卷归档员</strong>
-                      <span class="wf-pill wf-pill--done">轻量模型 · 已并入 2 卡</span>
+                      <strong>后台整理 · 拆卷归档员</strong>
+                      <span class="wf-pill wf-pill--done">已并入智能笔记本</span>
                     </div>
-                    <p>记下 T20、T21 在原卷框选出的页码与位置，对照老卡片完成连线归档。</p>
+                    <p>记下 T20、T21 在原卷框选出的页码与位置，与已有错题比对去重后归档。</p>
                   </div>
                 </div>
 
@@ -937,10 +818,10 @@ export function renderWorkbenchActs() {
                   ${renderPixelAvatar('worker-problem.png', 24)}
                   <div class="wf-subagent-main">
                     <div class="wf-subagent-title">
-                      <strong>后台帮手 · 独立盲算员</strong>
-                      <span class="wf-pill wf-pill--done">推理模型 · 独立验算完毕</span>
+                      <strong>课前准备 · 独立盲算员</strong>
+                      <span class="wf-pill wf-pill--done">提前算清卡点</span>
                     </div>
-                    <p>遮住解析先自己算一遍：确认 a &gt; 1 时直接分离参数走不通，需要改用隐零点代换。</p>
+                    <p>遮住解析先自己推演一遍：确认 a &gt; 1 时直接分离参数走不通，本课重点引出隐零点代换。</p>
                   </div>
                 </div>
 
@@ -948,16 +829,16 @@ export function renderWorkbenchActs() {
                   ${renderPixelAvatar('teacher-shirakawa.png', 24)}
                   <div class="wf-subagent-main">
                     <div class="wf-subagent-title">
-                      <strong>专题课堂 · 专注拆解这一题</strong>
+                      <strong>互动课堂 · 专题课已备好</strong>
                       <span class="wf-pill wf-pill--warm">独立标签进行中</span>
                     </div>
-                    <p>已为你建好《联考 T21 · 为何不能直接分离参数》专题课；下课后自动把结论捎回首页。</p>
+                    <p>结合你的历史错因建好《联考 T21 · 为何不能直接分离参数》课堂；下课后自动把结论存回笔记本。</p>
                   </div>
                 </div>
               </div>
 
               <div class="wf-handoff-receipt">
-                <span>↩ 课后小结回传：</span>专题课结束后只把本次突破的关键点与后续复习建议传回首页助手，不在主对话里堆放中间演算草稿。
+                <span>↩ 下课自动收尾：</span>课堂结束后，本次想通的关键步与后续复习日期自动写回智能笔记本，不把中间草稿堆在首页对话里。
               </div>
             </div>
           </div>
@@ -965,28 +846,28 @@ export function renderWorkbenchActs() {
       </div>
     </article>
 
-    <!-- Core Workflow 03: Visual Spatial Whiteboard -->
+    <!-- 02: Interactive Classroom Scheduled by Assistant -->
     <article class="act-row" id="wf-canvas">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">03 · 支持贴入原题的空间推演白板</span>
-          <span class="wf-tag">PDF 原题直接上板 · 多分支并排对照</span>
+          <span class="act-num">02 · 互动课堂</span>
+          <span class="wf-tag wf-tag--beta">分步搭台阶 × 动态微课 × 同屏白板</span>
         </div>
-        <h3>原题从 PDF 直接框选钉上白板，把函数图像、分类分支与关键步填空摆在一起对照。</h3>
-        <p>
-          遇到含参分类讨论、多步代数变形或几何辅助线时，纯文字聊天气泡翻过两屏就容易让人忘掉前面的已知条件。课堂右侧内置了开放格式的 <code>.canvas</code> 电子白板：你可以<strong>直接从 PDF 讲义或试卷上框选原题区域贴上白板</strong>（点击即可跳回原书对应页码），再把函数图像、各参数分支与关键步自检卡并排连线。
-        </p>
-        <p>
-          中途想从某一步退回去尝试第二种解法时，从当前消息分叉出的新课堂既可以与原课堂共用同一张白板继续修改，也可以单独新建空白白板，并通过差异对比清楚查看前后增改了哪些节点。
-        </p>
+        <h3>助手为你安排的「互动课堂」（带动态画面与大白板的分步讲题）</h3>
+        <p class="act-lead-note">当助手为你备好课、进入具体学习时，课堂老师会用学校大班课和普通网课做不到的方式带你把题吃透：</p>
+        <ul class="act-bullet-list">
+          <li><strong>顺着你的卡点一步步搭台阶：</strong>不会像参考答案那样写一句“显然可得”就跳步，也不会像普通 AI 那样一股脑把答案全倒给你。老师会根据助手记下的学情，缺基础时先用最小例子补齐，推不动时放缓节奏做好铺垫，把你能想出来的关键一步留给你自己想通；学完还可以切换成看不见答案的“同桌”听你讲一遍题，检验自己是不是真懂了。</li>
+          <li><strong>能看懂你操作的动态微课：</strong>微课动画由代码实时生成，看课时你可以随时暂停、亲手拖动滑块改数值，直观看到图形和临界点怎么变。你停在哪一帧、把参数调成了多少，后台都能直接看懂，不用截图打字解释就能顺着当前画面给你讲明白。<a href="/code-video/">在线试玩公开微课 →</a></li>
+          <li><strong>同屏铺开的交互白板：</strong>做复杂大题时，可以直接把 PDF 原卷的配图框选钉在白板上（点击即可跳回原书对应页码），把已知条件、函数图像和不同解法分支平铺在同一张桌面上对比着看，不用在窄小的聊天框里来回翻页找条件。</li>
+        </ul>
       </div>
-      <div class="act-specimen">
+      <div class="act-specimen act-specimen-stack">
         <div class="specimen-window">
           <div class="specimen-bar">
             <span style="display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--pa-ink);">
-              ${icons.canvas}<span>含参零点分类讨论.canvas</span>
+              ${icons.canvas}<span>含参零点分类讨论 · 同屏交互白板</span>
             </span>
-            <span style="font-size:11.5px;color:var(--pa-ink-muted);">原卷跳链 · 分支共用白板 · 关键步小测</span>
+            <span style="font-size:11.5px;color:var(--pa-ink-muted);">原卷跳链 · 多思路并排对照 · 关键步小测</span>
           </div>
           <div class="pa-replica-canvas-surface wf-canvas-demo" data-canvas-flow>
             <div class="wf-spatial-board">
@@ -1040,92 +921,118 @@ export function renderWorkbenchActs() {
             </div>
           </div>
         </div>
+
+        <div id="wf-personas" class="wf-role-compare">
+          <div class="wf-role-card wf-role-card--peer">
+            <div class="wf-role-top">
+              ${renderPixelAvatar('companion-deepseek.png', 26)}
+              <div>
+                <div class="persona-roster-name">同桌听讲检验 · 大肥鱼</div>
+                <span class="wf-badge-inline">完全遮蔽答案 · 你讲透才算过</span>
+              </div>
+            </div>
+            <p class="wf-role-quote">“我这儿可没答案。你刚说 a &gt; 1 时左边一定有一个负根，可 x 往负无穷走的时候 eˣ 越来越小，你是怎么保证 f(x) 还会变回正数的？补一行给我看？”</p>
+          </div>
+
+          <div class="wf-role-card wf-role-card--teacher">
+            <div class="wf-role-top">
+              ${renderPixelAvatar('teacher-shirakawa.png', 26)}
+              <div>
+                <div class="persona-roster-name">课堂老师 · 白川 / 夜久</div>
+                <span class="wf-badge-inline wf-badge-inline--beta">记得你的习惯 · 在易滑步处搭梯</span>
+              </div>
+            </div>
+            <p class="wf-role-quote">“先停笔，上周你在例 4 硬解 ln x₀ + x₀ = 0 绕进死胡同了。今天看见 eˣ⁰ = a，别急着反求 x₀，先看看原来式子里的 eˣ⁰ 能不能直接换掉？”</p>
+          </div>
+        </div>
       </div>
     </article>
 
-    <!-- Core Workflow 04: Habit-Aware Mentors & Blind-Test Peers -->
-    <article class="act-row" id="wf-personas">
+    <!-- 03: Smart Notebook Maintained by Assistant -->
+    <article class="act-row" id="wf-graph">
       <div class="act-copy">
         <div class="act-meta-line">
-          <span class="act-num">04 · 认知规律校准与你说了算的掌握验证</span>
-          <span class="wf-tag wf-tag--beta">老师只负责引导记录 · 搞没搞懂由你验证</span>
+          <span class="act-num">03 · 自动沉淀</span>
+          <span class="wf-tag">免手抄合并 × 图谱看进度 × 催复习</span>
         </div>
-        <h3>老师按认知火候引导并忠实记录过程，这道题搞没搞明白由你自己通过验证说了算。</h3>
-        <p>
-          通用大模型往往要么直接倒出整套标准答案，要么在简单步骤上做琐碎反问。Notara 的老师在开课时会自动调取当前卡片两跳范围内的前置依据与你的常见卡点，顺着认知规律为你搭好梯子：遇到陌生概念先用最小例子讲透，遇到够得着的转折步留出空间让你自己想通；全过程只做忠实记录，如果某一步记录与你的实际感受有出入，随时开口就能让老师改回。
-        </p>
-        <p>
-          一道题到底算不算学会，系统绝不单方面替你宣布，需要你自己去验证：你可以请<strong>同桌「大肥鱼」进来听你讲题</strong>，他只看原始题面和你自己的阐述，哪里漏了前提或跳了步就盯住追问，听明白后还会复述一遍请你核对；平时也可找「大小姐」化简计算、「多动鬼」补充几何直觉，或请「后桌」构造反例挑刺。
-        </p>
+        <h3>助手帮你打理的「智能笔记本」（免去手抄、结构化看进度、按时催复习）</h3>
+        <p class="act-lead-note">你不用再一笔一画手抄错题、剪贴卷子，助手会在后台帮你维护好一本自动生长的智能笔记本：</p>
+        <ul class="act-bullet-list">
+          <li><strong>个人错题与精校课程包自动合并：</strong>无论是你平时上传的学校讲义、错题，还是导入官方或别人分享的课程包，助手都会按知识点的先后关系把题目自动挂到对应位置，先比对再去重合并，保留你原有的笔记不覆盖（后续支持直接导出打印成纸质讲义带去学校）。</li>
+          <li><strong>一眼看清自己学到了哪里：</strong>在全局知识图谱上，系统会标出课本原有的知识脉络，以及你目前真正已经学懂打通的部分（刚添入的显示浅色虚线，自己想通写下理解后点亮为实线），支持按日期回看每天的点亮轨迹，整门课还差哪一环没掌握一目了然。</li>
+          <li><strong>自动算好遗忘时间并组织复习课：</strong>学校老师没法每天挨个催你复习，有时自己也不知道该先看哪块。助手会根据每道题你是“自己独立做通”还是“看提示才做出来”，自动算好遗忘时间提醒你复习；隔一段时间还会把近期到期的题目汇总起来，专门为你备出一节复习课，带你把之前半懂不懂的地方彻底搞透。</li>
+        </ul>
       </div>
-      <div class="act-specimen">
+      <div class="act-specimen act-specimen-stack">
         <div class="specimen-window">
           <div class="specimen-bar">
             <span style="display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--pa-ink);">
-              ${icons.memBook}<span>本地学习习惯笔记 · 同桌盲测与启发老师</span>
+              ${icons.file}<span>智能笔记本 · 多份资料自动合并串联</span>
             </span>
-            <span style="font-size:11.5px;color:var(--pa-ink-muted);">角色档案全以普通笔记存本地，随时可看可改</span>
+            <span style="font-size:11.5px;color:var(--pa-ink-muted);">虚线 = 刚添入待巩固 · 实线 = 自己想通</span>
           </div>
-          <div class="specimen-body" style="display:flex;flex-direction:column;gap:10px;">
-            <div class="wf-mem-snapshot">
-              <div class="wf-mem-head">
-                <span>习惯与卡点记录（来自学生档案与导数导读）</span>
-                <span>按需参考 · 只读当下需要的内容</span>
+          <div class="specimen-body" style="display:flex;flex-direction:column;gap:11px;">
+            <div class="wf-merge-feed" aria-label="多份资料并入图谱示例">
+              <div class="wf-merge-item">
+                <span class="wf-merge-src">${icons.paperclip}<span>一轮导数讲义.pdf · P3 框选</span></span>
+                <span class="wf-merge-arrow">→</span>
+                <span class="wf-merge-dst">并入老卡片 <code>[[切线放缩核心母题]]</code> 补齐出处</span>
               </div>
-              <ul class="mem-excerpt-list">
-                <li><strong>已跨过的小坑（10-10）：</strong>遇到含参二次项时，现在已经能主动先查 <code>a = 0</code> 退化情况。</li>
-                <li><strong>近期常见惯性（10-16）：</strong>看到 <code>ln x</code> 和 <code>eˣ</code> 同时出现时容易硬求反函数，需要提醒先整体代换。</li>
-              </ul>
+              <div class="wf-merge-item">
+                <span class="wf-merge-src">${icons.file}<span>十月联考卷.pdf · 第 21 题</span></span>
+                <span class="wf-merge-arrow">→</span>
+                <span class="wf-merge-dst">新建变式卡并连回 <code>[[极值点偏移]]</code></span>
+              </div>
+              <div class="wf-merge-item">
+                <span class="wf-merge-src">${icons.edit}<span>课堂随笔-泰勒余项.md</span></span>
+                <span class="wf-merge-arrow">→</span>
+                <span class="wf-merge-dst">阶段复盘整理成总结卡 <code>[[多项式逼近与单侧界]]</code></span>
+              </div>
             </div>
 
-            <div class="wf-role-compare">
-              <div class="wf-role-card wf-role-card--peer">
-                <div class="wf-role-top">
-                  ${renderPixelAvatar('companion-deepseek.png', 26)}
-                  <div>
-                    <div class="persona-roster-name">同桌盲测 · 大肥鱼</div>
-                    <span class="wf-badge-inline">完全遮蔽答案 · 你讲透才算过</span>
-                  </div>
-                </div>
-                <p class="wf-role-quote">“我这儿可没答案。你刚说 a &gt; 1 时左边一定有一个负根，可 x 往负无穷走的时候 eˣ 越来越小，你是怎么保证 f(x) 还会变回正数的？补一行给我看？”</p>
-              </div>
+            <svg class="canvas-svg" viewBox="0 0 540 176" role="img" aria-label="多份资料串联后的虚实双线知识图谱">
+              <rect x="0.5" y="0.5" width="539" height="175" rx="8" fill="#fdfbf7" stroke="#dfd7c8"/>
+              <line x1="258" y1="88" x2="112" y2="44" stroke="#7d5c46" stroke-width="2.1"/>
+              <line x1="258" y1="88" x2="108" y2="134" stroke="#7d5c46" stroke-width="2.1"/>
+              <line x1="112" y1="44" x2="108" y2="134" stroke="#9b7b63" stroke-width="1.4"/>
+              <line x1="258" y1="88" x2="258" y2="144" stroke="#7d5c46" stroke-width="1.9"/>
+              <line x1="258" y1="88" x2="424" y2="42" stroke="#b3a99a" stroke-width="1.6" stroke-dasharray="4 4"/>
+              <line x1="258" y1="88" x2="436" y2="124" stroke="#b3a99a" stroke-width="1.6" stroke-dasharray="4 4"/>
+              <line x1="424" y1="42" x2="436" y2="124" stroke="#c5bcb0" stroke-width="1.3" stroke-dasharray="3 4"/>
 
-              <div class="wf-role-card wf-role-card--teacher">
-                <div class="wf-role-top">
-                  ${renderPixelAvatar('teacher-shirakawa.png', 26)}
-                  <div>
-                    <div class="persona-roster-name">启发导师 · 白川 / 夜久</div>
-                    <span class="wf-badge-inline wf-badge-inline--beta">记得你的习惯 · 在易滑步处先叫停</span>
-                  </div>
-                </div>
-                <p class="wf-role-quote">“先停笔，上周你在例 4 硬解 ln x₀ + x₀ = 0 绕进死胡同了。今天看见 eˣ⁰ = a，别急着反求 x₀，先看看原来式子里的 eˣ⁰ 能不能直接换掉？”</p>
-              </div>
-            </div>
+              <g>
+                <circle cx="258" cy="88" r="11" fill="#f3ebe1" stroke="#7d5c46" stroke-width="1.8"/>
+                <circle cx="258" cy="88" r="5.5" fill="#7d5c46"/>
+                <text x="258" y="67" text-anchor="middle" font-size="11" font-weight="600" fill="#26211c">多项式逼近与单侧界 (总结)</text>
+              </g>
+              <g>
+                <circle cx="112" cy="44" r="6" fill="#7d5c46"/>
+                <text x="112" y="27" text-anchor="middle" font-size="10.5" fill="#2c2722">切线放缩 eˣ ≥ x+1</text>
+              </g>
+              <g>
+                <circle cx="108" cy="134" r="6" fill="#524a41"/>
+                <text x="108" y="154" text-anchor="middle" font-size="10.5" fill="#2c2722">反例 f(t)=t³ 穿切线</text>
+              </g>
+              <g>
+                <circle cx="258" cy="144" r="5.5" fill="#524a41"/>
+                <text x="258" y="164" text-anchor="middle" font-size="10.5" fill="#2c2722">对数上界 ln x ≤ x-1</text>
+              </g>
+              <g>
+                <circle cx="424" cy="42" r="6" fill="#fdfbf7" stroke="#8b735f" stroke-width="1.7"/>
+                <text x="424" y="25" text-anchor="middle" font-size="10.5" fill="#6c6358">联考 T21·极值点偏移 (新加入)</text>
+              </g>
+              <g>
+                <circle cx="436" cy="124" r="6" fill="#fdfbf7" stroke="#8b735f" stroke-width="1.7"/>
+                <text x="436" y="146" text-anchor="middle" font-size="10.5" fill="#6c6358">帕德有理近似边界 (待探索)</text>
+              </g>
+            </svg>
           </div>
         </div>
-      </div>
-    </article>
 
-    <!-- Core Workflow 05: Honest Dual-Mode Spaced Review -->
-    <article class="act-row" id="wf-review">
-      <div class="act-copy">
-        <div class="act-meta-line">
-          <span class="act-num">05 · 间隔重复与 AI 导学融合的双轨复习</span>
-          <span class="wf-tag">本人确认完成条件 × 阶段专题复习课并轨</span>
-        </div>
-        <h3>日常由你自己确认作答方式跟踪记忆节奏，隔一段时间备出专门复习课向深处和广处发散。</h3>
-        <p>
-          学习严肃的数理与专业课程时，单靠 Anki 闪卡翻看正反面很难复习到位，瞄一眼提示顺手点“认识”还会造成已经掌握的假象。在 Notara 中，每次复习都由你本人如实确认完成方式：只有<strong>无提示独立写出关键步骤</strong>，间隔才按 <code>1 → 3 → 7 → 16 → 35 天</code> 拉长；中途借用过提示或讲解则保持原间隔不变，并在<strong>次日安排一次 1 天短复查</strong>。
-        </p>
-        <p>
-          在此基础上，「日常间隔重复轨」与「AI 专题导学轨」随时可以并轨：隔一段时间后，你可以让备课老师把近期陆续到期的卡片汇拢起来，<strong>专门为你准备一节复习课</strong>。上次靠提示才走通的地方撤掉拐杖重新梳透；上次已经掌握稳固的内容不再机械重刷原题，通过改变条件探索失效边界、拉出跨章节同类题横向对比，把理解推得更深、联系拓得更广。
-        </p>
-      </div>
-      <div class="act-specimen">
-        <div class="specimen-window" data-review-demo>
+        <div id="wf-review" class="specimen-window" data-review-demo>
           <div class="specimen-bar">
-            <span style="font-weight:600;color:var(--pa-ink);">课堂复习确认卡 · 按真实完成方式排下次时间</span>
-            <span style="font-size:11.5px;color:var(--pa-ink-muted);">点下面三种真实作答情况看排期变化</span>
+            <span style="font-weight:600;color:var(--pa-ink);">复习时间与复习课调度 · 按真实完成方式排期</span>
+            <span style="font-size:11.5px;color:var(--pa-ink-muted);">点下面三种作答情况看复习变化</span>
           </div>
           <div class="specimen-body" style="display:flex;flex-direction:column;gap:11px;">
             <div class="wf-review-switcher" role="group" aria-label="选择本次复习完成方式">
@@ -1137,8 +1044,8 @@ export function renderWorkbenchActs() {
             <div class="wf-tracks-diagram">
               <div class="wf-track-lane is-highlighted" data-track-lane="a">
                 <div class="wf-track-label">
-                  <strong>主通道 · 无提示独立过关</strong>
-                  <span>只有自己独自写对关键步才拉长间隔，并记入知识星图真实掌握</span>
+                  <strong>独立算通 · 拉长复习间隔</strong>
+                  <span>不看提示写对关键步，间隔才会逐步拉长，并记入图谱已掌握</span>
                 </div>
                 <div class="wf-track-steps">
                   <span>1天</span><i>→</i><span>3天</span><i>→</i><strong class="wf-step-active">7天 (本次升档)</strong><i>→</i><span>16天</span><i>→</i><span>35天</span>
@@ -1147,11 +1054,11 @@ export function renderWorkbenchActs() {
 
               <div class="wf-track-lane" data-track-lane="b">
                 <div class="wf-track-label">
-                  <strong>保底通道 · 靠提示走通</strong>
-                  <span>看懂提示不等同于自己想得出，先原间隔不动，明天不看提示重试一次</span>
+                  <strong>靠提示走通 · 安排短复查与复习课</strong>
+                  <span>看懂提示不算自己会做，原间隔先不动，明早再裸题重验或汇总进专题复习课</span>
                 </div>
                 <div class="wf-track-steps">
-                  <span>原间隔先冻结不虚增</span><i>→</i><strong class="wf-step-amber">明日 1 天短复查（裸题再试一次）</strong>
+                  <span>原间隔先冻结</span><i>→</i><strong class="wf-step-amber">明日 1 天短复查 / 汇总备复习课</strong>
                 </div>
               </div>
             </div>
@@ -1162,12 +1069,22 @@ export function renderWorkbenchActs() {
                 <code>目标卡片：导数隐零点代换-例4.md</code>
               </div>
               <p data-rev-audit><strong>本次作答记录：</strong>未借用中途提示或拆步填空，独立写出了 x₀eˣ⁰ = a 整体消元与单调区间判断过程。</p>
-              <p data-rev-next class="wf-receipt-sub"><strong>下次探讨问题（延伸对比）：</strong>与上周《导数同构-例6》放在一起比较：同样同时出现 ln x 与 eˣ，什么条件下适合设隐零点，什么条件下适合构造同构函数？</p>
+              <p data-rev-next class="wf-receipt-sub"><strong>复习课延伸对比题：</strong>与上周《导数同构-例6》放在一起比较：同样同时出现 ln x 与 eˣ，什么条件下适合设隐零点，什么条件下适合构造同构函数？</p>
             </div>
           </div>
         </div>
       </div>
     </article>
+  </div>
+
+  <div class="assistant-loop-banner">
+    <span class="assistant-loop-label">闭环运转 · 一句话看懂「个人学习助手」是怎么陪你自习的</span>
+    <p class="assistant-loop-flow">
+      你平时只需要<strong>把问题和资料丢给「个人学习助手」</strong> → 助手自动帮你归档进<strong>「智能笔记本」</strong>，并调出你的薄弱点备好课 → 开启<strong>「互动课堂」</strong>，用动态微课和白板带你一步步把问题想通 → 下课后，助手再把这节课的新卡点记回笔记本、更新进度图谱，并帮你排好下一次的复习时间。
+    </p>
+    <p class="assistant-loop-sub">
+      你不用再花体力当“抄题工”和“窗口管理员”，你的个人学习助手会记住你的一切，你只管专心思考和学会知识。（至于背后保障资料事实可靠性与整个学习流程鲁棒性的多重校验机制，全部由软件在底层默默完成，无需你额外操心。）
+    </p>
   </div>`;
 }
 
@@ -1228,20 +1145,20 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
           <div class="market-scout-pillars">
             <div class="market-scout-point">
               <span class="pedagogy-stage-idx">01 · 过滤无关情绪噪音</span>
-              <h4>刷帖筛信息的体力活交给 Personal AI 代劳</h4>
-              <p>考前自己翻公开社区找题时，往往被大量渲染紧张情绪的帖子消耗精力。由了解你当前进度的个人助手去浏览公开讨论，直接筛出贴合你当下卡点的好题、反例与别人有启发性的思路。</p>
+              <h4>刷帖找资料的杂活交给个人学习助手</h4>
+              <p>考前自己翻公开社区找题时，往往被大量渲染紧张情绪的帖子消耗精力。由了解你当前进度的个人学习助手去浏览公开讨论，直接筛出贴合你当下卡点的好题、反例与别人有启发性的思路。</p>
             </div>
 
             <div class="market-scout-point">
-              <span class="pedagogy-stage-idx">02 · AI 看得懂画面的互动教具</span>
-              <h4>用代码画出来的动态微课与反例卡可直接并入书桌</h4>
-              <p>公开源里分享的互动微课和函数探针直接由代码驱动画面：不仅你自己点开就能拖动参数看变化，书房里的老师也能直接读懂画面背后的公式和当前数值拿来给你讲题。</p>
+              <span class="pedagogy-stage-idx">02 · 能看懂你动作的动态微课</span>
+              <h4>随时暂停拖滑块，AI 也能看清你停在哪一幕</h4>
+              <p>公开源里分享的动态微课和函数探针直接由代码驱动画面：不仅你自己点开就能拖动滑块看变化，书房里的老师也能直接读懂你停在哪个画面和参数上，顺着当前画面给你讲明白。</p>
             </div>
 
             <div class="market-scout-point">
-              <span class="pedagogy-stage-idx">03 · 论坛拉取与发帖的分工策略</span>
-              <h4>拉取筛选交给助手，但落笔理解与发帖必须经自己思考</h4>
-              <p>在资料拉取和未来论坛互动上采取读写不对称策略：浏览公开讨论、筛除噪音的活交给 AI 代劳，但写进卡片的个人理解与发往社区的帖子必须出自你自己的大脑思考；对外分享学习集前也会先自动剥离私人记录。</p>
+              <span class="pedagogy-stage-idx">03 · 省心又清醒的人机分工</span>
+              <h4>找资料归档交给助手，思考与发帖留给自己</h4>
+              <p>浏览公开讨论、筛除无关噪音与归档资料的活交给个人学习助手代劳，但写进智能笔记本的理解与发往社区的帖子必须出自你自己的大脑思考；对外分享课程包前，系统也会先帮你剥离私人记录。</p>
             </div>
           </div>
         </div>
@@ -1297,7 +1214,7 @@ export function renderMarketPlaza({ inLibraryPage = false } = {}) {
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;flex:none;">
             <a class="pa-sdoc-secondary-btn" href="/code-video/" style="text-decoration:none;flex:none;">
-              <span>在线试玩 20 KB 代码视频</span>
+              <span>在线试玩互动代码微课</span>
               ${icons.arrowRight}
             </a>
             <a class="pa-sdoc-ghost-btn pa-sdoc-ghost-btn--bordered" href="${actionHref}" style="text-decoration:none;flex:none;">
