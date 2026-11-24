@@ -33,23 +33,23 @@ const vendorAssetsDir = join(rootDir, 'vendor-assets');
 const isStandalone = existsSync(vendorAssetsDir);
 const distDir = join(rootDir, 'dist');
 
-const WIN_INSTALLER_VERSION = 'v0.1.0-preview.10';
-const WIN_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.10-x64-Setup.exe';
-const WIN_INSTALLER_SIZE_LABEL = '690 MB';
-const WIN_INSTALLER_SHA256 = 'd1b4a394318dd7e95dfb3f047d0ace88c9cbb023a43f9f8a71c5b6ce91b3527d';
+const WIN_INSTALLER_VERSION = 'v0.1.0-preview.12';
+const WIN_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.12-x64-Setup.exe';
+const WIN_INSTALLER_SIZE_LABEL = '约 725 MB';
+const WIN_INSTALLER_SHA256 = '82374867ecc74cf3b499ae08e5a79698c7b9b9ea42d554a6840d7f89802c4199';
 const WIN_INSTALLER_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.10/Notara-PersonalAgent-0.1.0-preview.10-x64-Setup.exe';
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.12/Notara-PersonalAgent-0.1.0-preview.12-x64-Setup.exe';
 const WIN_SHA256SUMS_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.10/SHA256SUMS.txt';
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.12/SHA256SUMS.txt';
 const WIN_RELEASE_PAGE_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/tag/v0.1.0-preview.10';
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/tag/v0.1.0-preview.12';
 const DESKTOP_ISSUES_URL = 'https://github.com/TongZi2003/Notara-Desktop-Releases/issues';
-const MAC_INSTALLER_VERSION = 'v0.1.0-preview.10';
-const MAC_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.10-arm64.dmg';
-const MAC_INSTALLER_SIZE_LABEL = '562 MB';
-const MAC_INSTALLER_SHA256 = 'e497eeb43179773dfe141e32699239b764a5848f70b9237387644c1f32d56afd';
+const MAC_INSTALLER_VERSION = 'v0.1.0-preview.12';
+const MAC_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.12-arm64.dmg';
+const MAC_INSTALLER_SIZE_LABEL = '约 637 MB';
+const MAC_INSTALLER_SHA256 = '855f54b68fc84be29eb5cc7ff83774471096eee7db26ef667b39aa168b0a2432';
 const MAC_INSTALLER_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.10/Notara-PersonalAgent-0.1.0-preview.10-arm64.dmg';
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.12/Notara-PersonalAgent-0.1.0-preview.12-arm64.dmg';
 
 function pageShell({ title, description, currentPath, body, appPage = false }) {
   const isFeatures = currentPath === '/features/' || currentPath.startsWith('/features');
@@ -626,7 +626,7 @@ function renderGuide(currentPath = '/guide/') {
         <p class="section-rubric">Beta 2 桌面版下载与上手指南</p>
         <h1>将课本、讲义与错题放进本地电脑，搭建长期连贯的自习空间。</h1>
         <p>
-          当前版本为公开测试版（Beta 2 · v0.1.0-preview.10）。安装后无需注册账号，在本地填入你自己的模型 API 密钥或已有模型订阅即可开始使用；你可以先体验随包内置的公开学科学习集，也可以直接拖入学校的 PDF 讲义、试卷和随堂笔记进行整理。
+          当前版本为公开测试版（Beta 2 · v0.1.0-preview.12）。安装后无需注册账号，在本地填入你自己的模型 API 密钥或已有模型订阅即可开始使用；你可以先体验随包内置的公开学科学习集，也可以直接拖入学校的 PDF 讲义、试卷和随堂笔记进行整理。
         </p>
         <div style="margin-top:16px;">
           <a class="btn-quiet" href="/features/">先看图文功能与上手说明 →</a>
@@ -682,21 +682,21 @@ function renderGuide(currentPath = '/guide/') {
 
         <div class="install-notes-sheet" style="margin-bottom:24px;">
           <div class="install-notes-head">
-            <h3>Beta 2（v0.1.0-preview.10）新变化一览</h3>
-            <span>围绕学习进度可见性、图谱生长过程与日常上课衔接三项问题完成改进</span>
+            <h3>Beta 2（v0.1.0-preview.12）新变化一览</h3>
+            <span>读原页、确认计划，把自己的笔记留在本地</span>
           </div>
           <div class="install-notes-grid">
             <div class="install-note-item">
-              <h4>1. 新增学习统计页与近 12 周书房足迹</h4>
-              <p>书房总览顶部与各学习集内新增了「统计」视图，完全依据本地真实的日记日期与卡片复习记录，展示近 12 周活跃天数热力图、卡片巩固阶段分布以及未来 7 天到期题量；点击对应日期柱即可直接筛出待复习卡片。</p>
+              <h4>打开 PDF，接着上次那一页读</h4>
+              <p>重开一本书会回到上次停下的页码。同一页框了两段，输入框会标出「选区 1 / 2」；点哪一段，就回原页高亮哪一段。</p>
             </div>
             <div class="install-note-item">
-              <h4>2. 新增知识星图按日期回放与后台建卡提示</h4>
-              <p>知识星图右上角新增了时间轴「回放」开关，拖动底部日期滑块即可按时间顺序重看已学节点点亮并接通实线的过程；下课后后台工作员整理出新卡片时，资料库标签只显示简短的 <code>+N</code> 数字提示，不打断当前阅读。</p>
+              <h4>先看计划，再让助手拆书</h4>
+              <p>摸底后，助手会把计划交给你评审。可以在卡内滚动阅读，也可在右栏看全文；批准后才开始整理。扫描页的 OCR 辅助由你选择是否开启。</p>
             </div>
             <div class="install-note-item">
-              <h4>3. 打通备课路线推进与随时自由提问</h4>
-              <p>课堂机制同时打通了系统慢学与日常快问：既可以顺着备课路线由老师按实际作答表现动态推进（遇到难点可在导读里原地插入铺垫节），也可以不建课表直接新建对话提问或准备阶段复习课，所有收获都会沉淀回同一套知识库。</p>
+              <h4>更新课程，保留自己的解题记录</h4>
+              <p>新增或勘误的讲义可以直接同步；你和作者都改过的文件会列出来，由你选择保留本地版本或稍后核对。做复习卡时，点「向老师要提示」只准备草稿，不会记成你已经看过提示。</p>
             </div>
           </div>
         </div>
