@@ -638,7 +638,7 @@ function renderGuide(currentPath = '/guide/') {
           <div class="download-card download-card--featured">
             <span class="download-card-tag">Windows · 10 / 11 (64-bit) · Beta 2 开放下载</span>
             <h2>Notara 桌面端 for Windows</h2>
-            <p>支持 Windows 10 / 11（64 位）。安装包自带运行环境、高清看卷与离线公式排版；你建的所有卡片、白板与学习进度全保存在本机文件夹里，版本升级绝不覆盖个人笔记。</p>
+            <p>支持 Windows 10 / 11（64 位）。升级前先退出 Notara，沿用原安装位置和 Windows 默认临时目录；学习集不用搬动。覆盖安装可能需要十余分钟。</p>
             <div class="download-card-actions">
               <a class="btn-primary" href="${WIN_INSTALLER_URL}" rel="noopener" data-download-win>下载 Windows 安装包（.exe · ${WIN_INSTALLER_SIZE_LABEL}）</a>
               <a class="btn-quiet" href="${WIN_RELEASE_PAGE_URL}" target="_blank" rel="noopener">Beta 2 更新清单与附件 ↗</a>
@@ -717,7 +717,7 @@ function renderGuide(currentPath = '/guide/') {
             </div>
             <div class="install-note-item">
               <h4>3. 遇到异常或报错如何导出脱敏诊断</h4>
-              <p>如果在使用过程中遇到界面卡顿或任务报错，可在「设置 → 外观与常用连接 → 问题反馈与诊断」中点击<strong>「导出脱敏诊断」</strong>。系统会自动剔除你的 API 密钥与个人笔记正文，只生成包含运行状态摘要的 JSON 文件，方便发送到内测群或 <a href="${DESKTOP_ISSUES_URL}" target="_blank" rel="noopener">桌面版 Issues ↗</a> 协助排查。</p>
+              <p>如果在使用过程中遇到界面卡顿或任务报错，可在「设置 → 系统与更新 → 问题反馈与诊断」中点击<strong>「导出脱敏诊断」</strong>。系统会自动剔除你的 API 密钥与个人笔记正文，只生成包含运行状态摘要的 JSON 文件，方便发送到内测群或 <a href="${DESKTOP_ISSUES_URL}" target="_blank" rel="noopener">桌面版 Issues ↗</a> 协助排查。</p>
             </div>
           </div>
         </div>
