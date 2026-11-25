@@ -118,7 +118,7 @@ export function renderLeftRail({ activeVaultId = '', hubActive = false, embedMod
     })
     .join('');
 
-  return `<aside class="pa-rail" aria-label="学习集书脊导航栏">
+  return `<div class="pa-rail-slot"><aside class="pa-rail" aria-label="学习集书脊导航栏">
     <${hubTag}
       class="pa-global-hub-btn"
       ${hubActive ? 'data-active="true"' : ''}
@@ -142,7 +142,7 @@ export function renderLeftRail({ activeVaultId = '', hubActive = false, embedMod
       <span class="pa-rail-btn">${icons.techo}</span>
       <span class="pa-rail-btn">${icons.sliders}</span>
     </div>
-  </aside>`;
+  </aside></div>`;
 }
 
 export function renderClothBookshelf(sets) {

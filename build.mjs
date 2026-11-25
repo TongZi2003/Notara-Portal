@@ -33,23 +33,15 @@ const vendorAssetsDir = join(rootDir, 'vendor-assets');
 const isStandalone = existsSync(vendorAssetsDir);
 const distDir = join(rootDir, 'dist');
 
-const WIN_INSTALLER_VERSION = 'v0.1.0-preview.12';
-const WIN_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.12-x64-Setup.exe';
-const WIN_INSTALLER_SIZE_LABEL = '约 725 MB';
-const WIN_INSTALLER_SHA256 = '82374867ecc74cf3b499ae08e5a79698c7b9b9ea42d554a6840d7f89802c4199';
+const WIN_INSTALLER_SIZE_LABEL = '约 502 MB';
 const WIN_INSTALLER_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.12/Notara-PersonalAgent-0.1.0-preview.12-x64-Setup.exe';
-const WIN_SHA256SUMS_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.12/SHA256SUMS.txt';
-const WIN_RELEASE_PAGE_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/tag/v0.1.0-preview.12';
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.13/Notara-PersonalAgent-0.1.0-preview.13-x64-Setup.exe';
+const DESKTOP_RELEASE_PAGE_URL =
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/tag/v0.1.0-preview.13';
 const DESKTOP_ISSUES_URL = 'https://github.com/TongZi2003/Notara-Desktop-Releases/issues';
-const MAC_INSTALLER_VERSION = 'v0.1.0-preview.12';
-const MAC_INSTALLER_FILENAME = 'Notara-PersonalAgent-0.1.0-preview.12-arm64.dmg';
-const MAC_INSTALLER_SIZE_LABEL = '约 637 MB';
-const MAC_INSTALLER_SHA256 = '855f54b68fc84be29eb5cc7ff83774471096eee7db26ef667b39aa168b0a2432';
+const MAC_INSTALLER_SIZE_LABEL = '约 411 MB';
 const MAC_INSTALLER_URL =
-  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.12/Notara-PersonalAgent-0.1.0-preview.12-arm64.dmg';
+  'https://github.com/TongZi2003/Notara-Desktop-Releases/releases/download/v0.1.0-preview.13/Notara-PersonalAgent-0.1.0-preview.13-arm64.dmg';
 
 function pageShell({ title, description, currentPath, body, appPage = false }) {
   const isFeatures = currentPath === '/features/' || currentPath.startsWith('/features');
@@ -623,10 +615,10 @@ function renderGuide(currentPath = '/guide/') {
   const body = `
     <div class="wrap">
       <header class="page-header">
-        <p class="section-rubric">Beta 2 桌面版下载与上手指南</p>
+        <p class="section-rubric">Beta 3 桌面版下载与上手指南</p>
         <h1>将课本、讲义与错题放进本地电脑，搭建长期连贯的自习空间。</h1>
         <p>
-          当前版本为公开测试版（Beta 2 · v0.1.0-preview.12）。安装后无需注册账号，在本地填入你自己的模型 API 密钥或已有模型订阅即可开始使用；你可以先体验随包内置的公开学科学习集，也可以直接拖入学校的 PDF 讲义、试卷和随堂笔记进行整理。
+          当前版本为公开测试版（Beta 3 · v0.1.0-preview.13）。安装后无需注册账号，在本地填入你自己的模型 API 密钥或已有模型订阅即可开始使用；你可以先体验随包内置的公开学科学习集，也可以直接拖入学校的 PDF 讲义、试卷和随堂笔记进行整理。
         </p>
         <div style="margin-top:16px;">
           <a class="btn-quiet" href="/features/">先看图文功能与上手说明 →</a>
@@ -636,67 +628,53 @@ function renderGuide(currentPath = '/guide/') {
       <section id="download">
         <div class="download-grid">
           <div class="download-card download-card--featured">
-            <span class="download-card-tag">Windows · 10 / 11 (64-bit) · Beta 2 开放下载</span>
+            <span class="download-card-tag">Windows · 10 / 11 (64-bit) · Beta 3 开放下载</span>
             <h2>Notara 桌面端 for Windows</h2>
-            <p>支持 Windows 10 / 11（64 位）。升级前先退出 Notara，沿用原安装位置和 Windows 默认临时目录；学习集不用搬动。覆盖安装可能需要十余分钟。</p>
+            <p>支持 Windows 10 / 11（64 位）。升级前先退出 Notara，沿用原安装位置和 Windows 默认临时目录；学习集不用搬动。覆盖安装会先卸载旧程序，请等安装结束再打开。</p>
             <div class="download-card-actions">
-              <a class="btn-primary" href="${WIN_INSTALLER_URL}" rel="noopener" data-download-win>下载 Windows 安装包（.exe · ${WIN_INSTALLER_SIZE_LABEL}）</a>
-              <a class="btn-quiet" href="${WIN_RELEASE_PAGE_URL}" target="_blank" rel="noopener">Beta 2 更新清单与附件 ↗</a>
-            </div>
-            <div class="download-meta-box">
-              <div class="download-meta-file">
-                <span>当前测试版本：<strong>${WIN_INSTALLER_VERSION}（Beta 2）</strong></span>
-                <code>${WIN_INSTALLER_FILENAME}</code>
-              </div>
-              <div class="download-sha-row">
-                <span class="download-sha-label">SHA-256</span>
-                <code class="download-sha-code">${WIN_INSTALLER_SHA256}</code>
-                <button type="button" class="download-copy-btn" data-copy-sha="${WIN_INSTALLER_SHA256}">复制 SHA-256</button>
-                <a class="download-sha-link" href="${WIN_SHA256SUMS_URL}" target="_blank" rel="noopener">SHA256SUMS.txt ↗</a>
-              </div>
+              <a class="btn-primary" href="${WIN_INSTALLER_URL}" rel="noopener" data-download-win>下载 Windows 版（${WIN_INSTALLER_SIZE_LABEL}）</a>
             </div>
           </div>
 
           <div class="download-card download-card--featured">
-            <span class="download-card-tag">macOS · Apple Silicon (M1–M4) · Beta 2 开放下载</span>
+            <span class="download-card-tag">macOS · Apple Silicon · Beta 3 开放下载</span>
             <h2>Notara 桌面端 for macOS</h2>
-            <p>支持 macOS 13 及以上（Apple Silicon M1–M4 芯片）。内置全套看卷渲染与离线字体；暂时使用 Intel Mac 或还没准备下载的同学，可先免登录体验 <a href="/first-lesson/" style="color:var(--umber-deep);text-decoration:underline;">1:1 在线实景课堂</a>。</p>
+            <p>支持 macOS 13 及以上（Apple 芯片）。内置全套看卷渲染与离线字体；暂时使用 Intel Mac 或还没准备下载的同学，可先免登录体验 <a href="/first-lesson/" style="color:var(--umber-deep);text-decoration:underline;">1:1 在线实景课堂</a>。</p>
             <div class="download-card-actions">
-              <a class="btn-primary" href="${MAC_INSTALLER_URL}" rel="noopener" data-download-mac>下载 macOS 安装包（.dmg · ${MAC_INSTALLER_SIZE_LABEL}）</a>
-              <a class="btn-quiet" href="${WIN_RELEASE_PAGE_URL}" target="_blank" rel="noopener">Beta 2 更新清单与附件 ↗</a>
-            </div>
-            <div class="download-meta-box">
-              <div class="download-meta-file">
-                <span>当前测试版本：<strong>${MAC_INSTALLER_VERSION}（Beta 2）</strong></span>
-                <code>${MAC_INSTALLER_FILENAME}</code>
-              </div>
-              <div class="download-sha-row">
-                <span class="download-sha-label">SHA-256</span>
-                <code class="download-sha-code">${MAC_INSTALLER_SHA256}</code>
-                <button type="button" class="download-copy-btn" data-copy-sha="${MAC_INSTALLER_SHA256}">复制 SHA-256</button>
-                <a class="download-sha-link" href="${WIN_SHA256SUMS_URL}" target="_blank" rel="noopener">SHA256SUMS.txt ↗</a>
-              </div>
+              <a class="btn-primary" href="${MAC_INSTALLER_URL}" rel="noopener" data-download-mac>下载 macOS 版（${MAC_INSTALLER_SIZE_LABEL}）</a>
             </div>
           </div>
         </div>
 
         <div class="install-notes-sheet" style="margin-bottom:24px;">
           <div class="install-notes-head">
-            <h3>Beta 2（v0.1.0-preview.12）新变化一览</h3>
-            <span>读原页、确认计划，把自己的笔记留在本地</span>
+            <h3>Beta 3（v0.1.0-preview.13）新变化一览</h3>
+            <a class="btn-quiet" href="${DESKTOP_RELEASE_PAGE_URL}" target="_blank" rel="noopener">完整发布说明 ↗</a>
           </div>
           <div class="install-notes-grid">
             <div class="install-note-item">
-              <h4>打开 PDF，接着上次那一页读</h4>
-              <p>重开一本书会回到上次停下的页码。同一页框了两段，输入框会标出「选区 1 / 2」；点哪一段，就回原页高亮哪一段。</p>
+              <h4>安装包小了约三成</h4>
+              <p>相比上一版，两端都少带了重复文件。Windows 测试机首装约 3 分 50 秒；覆盖升级还要等待旧版卸载。</p>
             </div>
             <div class="install-note-item">
-              <h4>先看计划，再让助手拆书</h4>
-              <p>摸底后，助手会把计划交给你评审。可以在卡内滚动阅读，也可在右栏看全文；批准后才开始整理。扫描页的 OCR 辅助由你选择是否开启。</p>
+              <h4>学完一段，安排一次考察</h4>
+              <p>考察课可以单独选模型。跨日计划列出接下来要做的事，日历里也能回看每天的刷卡和学习安排。</p>
             </div>
             <div class="install-note-item">
-              <h4>更新课程，保留自己的解题记录</h4>
-              <p>新增或勘误的讲义可以直接同步；你和作者都改过的文件会列出来，由你选择保留本地版本或稍后核对。做复习卡时，点「向老师要提示」只准备草稿，不会记成你已经看过提示。</p>
+              <h4>刷卡翻面，直接四选一</h4>
+              <p>记下是没想起、看提示才通，还是独立做出来。课堂和自主刷卡共用复习排期，只有独立完成才拉长间隔。</p>
+            </div>
+            <div class="install-note-item">
+              <h4>浅色和深色，各留一套配色</h4>
+              <p>两套模式分别记住强调色、背景色和文字色；换主题保留自定义颜色，恢复主题配色也不动字体。</p>
+            </div>
+            <div class="install-note-item">
+              <h4>从分组里找回课堂</h4>
+              <p>用分组树或搜索回到上次那堂课。重新整理导读时，也会保留手动编辑的内容。</p>
+            </div>
+            <div class="install-note-item">
+              <h4>分享伴读包，留下私人笔记</h4>
+              <p>导出不带个人理解记录，也不附原书 PDF。收到包的人补上同版原书，就能从卡片跳回原页。</p>
             </div>
           </div>
         </div>
@@ -704,12 +682,12 @@ function renderGuide(currentPath = '/guide/') {
         <div class="install-notes-sheet">
           <div class="install-notes-head">
             <h3>安装放行、接模型与省钱配置说明</h3>
-            <span>面向 Beta 2 免注册自带模型用户（macOS Apple Silicon / Windows 64 位）</span>
+            <span>面向 Beta 3 免注册自带模型用户（macOS Apple Silicon / Windows 64 位）</span>
           </div>
           <div class="install-notes-grid">
             <div class="install-note-item">
               <h4>1. 首次打开遇到系统安全提示怎么处理</h4>
-              <p><strong>macOS</strong>：将 <code>Notara.app</code> 拖进「应用程序」后，若系统提示未验证开发者而无法打开，在终端运行 <code>xattr -cr /Applications/Notara.app</code>（或到「系统设置 → 隐私与安全性」底部点击「仍要打开」）即可正常启动。<br><strong>Windows</strong>：若弹出 SmartScreen「Windows 已保护你的电脑」提示，核对上方 SHA-256 校验值无误后，点击「更多信息 → 仍要运行」。</p>
+              <p><strong>macOS</strong>：将 Notara.app 拖入「应用程序」。此 Beta 版采用临时签名、未经公证；若系统提示无法验证开发者，请确认是从本页下载，再查看「系统设置 → 隐私与安全性」中的提示。<br><strong>Windows</strong>：安装包未使用商业代码签名，首次打开可能看到 SmartScreen 提示。若使用学校或单位管理的电脑，请联系管理员。</p>
             </div>
             <div class="install-note-item">
               <h4>2. 怎么搭配模型更省钱又够用</h4>
@@ -768,7 +746,7 @@ function renderFeaturesPage() {
   const body = `
     <div class="wrap">
       <header class="page-header">
-        <p class="section-rubric">功能与使用说明 · Beta 2</p>
+        <p class="section-rubric">功能与使用说明 · Beta 3</p>
         <h1>Notara 桌面端功能与日常使用指南。</h1>
         <p>
           结合桌面端实景截图，逐项说明「个人学习助手」平时如何替你整理资料、安排互动课堂与跟踪复习进度。无论是初次上手配置，还是查看具体功能的操作方式，都可以在下方按章节直接查阅。
@@ -937,7 +915,7 @@ function renderFeaturesPage() {
           <p>下载对应系统的安装包后五分钟内即可完成模型配置开始使用；如果暂时不便安装，也可以先免登录打开网页端 1:1 实景课堂体验完整交互。</p>
         </div>
         <div class="feature-cta-actions">
-          <a class="btn-primary" href="/guide/#download">前往下载 Beta 2 安装包</a>
+          <a class="btn-primary" href="/guide/#download">前往下载 Beta 3 安装包</a>
           <a class="btn-quiet" href="/first-lesson/">免登录试一课实景课堂 →</a>
         </div>
       </section>
@@ -946,7 +924,7 @@ function renderFeaturesPage() {
 
   return pageShell({
     title: '功能与使用说明 · Notara',
-    description: '围绕个人学习助手、互动课堂与智能笔记本的 Notara Beta 2 桌面端图文使用指南：资料合并、分步讲解、动态微课、交互白板、间隔复习课与日常六大问题对照。',
+    description: '围绕个人学习助手、互动课堂与智能笔记本的 Notara Beta 3 桌面端图文使用指南：资料合并、分步讲解、动态微课、交互白板、间隔复习课与日常六大问题对照。',
     currentPath: '/features/',
     body,
   });

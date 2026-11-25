@@ -616,31 +616,4 @@
     }
   }
 
-  // 13. Copy Installer SHA-256 on /guide/ and /install/
-  for (const copyBtn of document.querySelectorAll('[data-copy-sha]')) {
-    const defaultLabel = copyBtn.textContent || '复制 SHA-256';
-    let resetTimer = null;
-    copyBtn.addEventListener('click', async () => {
-      const sha = copyBtn.dataset.copySha || '';
-      if (!sha) return;
-      try {
-        if (!navigator.clipboard?.writeText) throw new Error('unavailable');
-        await navigator.clipboard.writeText(sha);
-      } catch {
-        const codeEl = copyBtn.closest('.download-sha-row')?.querySelector('.download-sha-code');
-        if (codeEl && window.getSelection) {
-          const range = document.createRange();
-          range.selectNodeContents(codeEl);
-          const sel = window.getSelection();
-          sel?.removeAllRanges();
-          sel?.addRange(range);
-        }
-      }
-      copyBtn.textContent = '已复制';
-      if (resetTimer) clearTimeout(resetTimer);
-      resetTimer = setTimeout(() => {
-        copyBtn.textContent = defaultLabel;
-      }, 1800);
-    });
-  }
 })();
